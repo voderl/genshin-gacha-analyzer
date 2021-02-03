@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { FC, useCallback, useContext, useState } from 'react';
-import { Button, Upload, message, Alert, Spin } from 'antd';
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
-import { RcFile, UploadChangeParam } from 'antd/lib/upload';
+import { Button, Upload, Alert, Spin } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+import { RcFile } from 'antd/lib/upload';
 import XLSX from 'xlsx';
-import GlobalContext from '../context/GlobalContext';
+import GlobalContext from 'context/GlobalContext';
 
 const { Dragger } = Upload;
 type LoadPageProps = {
@@ -18,7 +18,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const { updateWorkbook } = useContext(GlobalContext);
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
-      setErrorMessage('wrong file type');
+      setErrorMessage('文件类型错误，请重新上传');
       return false;
     }
     setLoading(true);
@@ -72,6 +72,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
         accept='.xlsx'
         multiple={false}
         beforeUpload={handleUpload}
+        showUploadList={false}
         css={css`
           min-width: 600px;
           padding: 40px;
@@ -100,7 +101,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
             </Button>
           </div>
         }
-        type='info'
+        type='warning'
         showIcon
       />
     </div>
