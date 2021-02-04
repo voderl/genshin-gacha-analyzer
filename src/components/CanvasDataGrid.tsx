@@ -39,8 +39,7 @@ export const CanvasDataGrid: FC<
     onCreate && onCreate(grid);
     gridRef.current = grid;
     return () => {
-      grid.remove();
-      window.removeEventListener('resize', grid.resize);
+      grid.dispose();
     };
   }, []);
   return <div ref={divEl} {...props} />;
