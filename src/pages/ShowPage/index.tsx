@@ -6,6 +6,9 @@ import XLSX, { WorkSheet as WorkSheetType } from 'xlsx';
 import GlobalContext from 'context/GlobalContext';
 import { SHOW_DATA_ALL_KEY } from 'const';
 import { ShowData } from './ShowData';
+import { Timeline } from './Timeline';
+import { Data, DataItem } from 'types';
+import { Achievements } from './Achievements';
 
 type ShowPageProps = {};
 const { Content, Sider } = Layout;
@@ -17,14 +20,16 @@ export const ShowPage: FC<ShowPageProps> = function () {
     const cache = Object.create(null);
     function getJson(key: string) {
       if (key in cache) return cache[key];
-      let data;
+      let data: Data;
       if (key === SHOW_DATA_ALL_KEY) {
         data = sheetNames.reduce((acc: Array<any>, cur: string) => acc.concat(getJson(cur)), []);
+        data.sort((a, b) => (a.date === b.date ? a.总次数 - b.总次数 : a.date - b.date));
       } else {
         const sheet = (workbook as any).Sheets[key] as WorkSheetType;
         data = XLSX.utils.sheet_to_json(sheet);
-        data.forEach((info: any) => {
+        data.forEach((info: DataItem) => {
           info.pool = key;
+          info.date = +new Date(info.时间);
         });
       }
       return (cache.key = data);
@@ -37,6 +42,8 @@ export const ShowPage: FC<ShowPageProps> = function () {
   }, []);
   const renderContent = useCallback((key) => {
     if (key === 'rawData') return <ShowData onGetData={getJson} tabs={sheetNames} />;
+    else if (key === 'timeline') return <Timeline onGetData={getJson} />;
+    else if (key === 'achievements') return <Achievements onGetData={getJson} />;
     else return <div>暂无</div>;
   }, []);
   return (
