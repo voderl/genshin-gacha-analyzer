@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.2",
     "canvas-datagrid": "0.3.1",
+    "echarts": "^5.0.1",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/echarts": "^4.9.3",
     "@types/lodash": "^4.14.168",
     "@types/react-router-dom": "^5.1.7"
   }
