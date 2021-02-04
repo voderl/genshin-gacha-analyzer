@@ -6,6 +6,7 @@ import { CanvasDataGrid } from './CanvasDataGrid';
 type WorkSheetProps = {
   data: Array<any>;
   schema: SchemaType;
+  onCreate?: (grid: any) => void;
 };
 
 type SchemaType = Array<{
@@ -19,15 +20,13 @@ type SchemaType = Array<{
   defaultValue?: any;
 }>;
 
-export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema }) {
-  const attributes = useMemo(() => {
-    return {
-      editable: false,
-      allowColumnResize: false,
-      allowRowResize: false,
-      orderBy: '时间',
-    };
-  }, []);
+const attributes = {
+  editable: false,
+  allowColumnResize: false,
+  allowRowResize: false,
+  orderBy: '时间',
+};
+export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate }) {
   const handleCreate = useCallback((node: any) => {
     (window as any).node = node;
     // fix filter number:
@@ -60,6 +59,7 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema }) {
     });
     node.style.height = '100%';
     node.style.margin = '0 auto';
+    onCreate && onCreate(node);
   }, []);
   return (
     <CanvasDataGrid
