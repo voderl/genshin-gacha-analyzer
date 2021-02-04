@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import React, { FC, useCallback, useState } from 'react';
 import { Tabs } from 'antd';
-import { SHOW_DATA_ALL_KEY } from 'const';
+import { SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
 import { WorkSheet } from 'components/WorkSheet';
 
 type ShowDataProps = {
@@ -11,21 +11,6 @@ type ShowDataProps = {
 };
 const { TabPane } = Tabs;
 
-const schema = [
-  { name: '时间', type: 'string', width: 180 },
-  { name: '编号', type: 'number', hidden: true, width: 120 },
-  { name: '名称', type: 'string', width: 130 },
-  { name: '类别', type: 'string', width: 50 },
-  { name: '星级', type: 'number', width: 50 },
-  { name: '总次数', type: 'number', hidden: true, width: 100 },
-  { name: '保底内', type: 'number', width: 80 },
-];
-const schemaAll = (schema as any).concat({
-  name: 'pool',
-  title: '池子名称',
-  type: 'string',
-  width: 120,
-});
 export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
   const [activeKey, setActiveKey] = useState(tabs[0]);
   const handleChange = useCallback((key) => {
@@ -60,7 +45,7 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
       </Tabs>
       <WorkSheet
         data={onGetData(activeKey)}
-        schema={activeKey === SHOW_DATA_ALL_KEY ? schemaAll : schema}
+        schema={activeKey === SHOW_DATA_ALL_KEY ? SCHEMA_ALL : SCHEMA}
       />
     </div>
   );
