@@ -18,7 +18,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const { updateWorkbook } = useContext(GlobalContext);
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
-      setErrorMessage('文件类型错误，请重新上传');
+      setErrorMessage('文件类型错误，请上传xlsx文件');
       return false;
     }
     setLoading(true);
@@ -57,7 +57,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
           <Alert
             message={
               <div>
-                不知道如何获取文件？
+                不知道如何获取xlsx文件？
                 <Button type='link'>请点击这里</Button>
               </div>
             }
@@ -80,9 +80,10 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       >
         {errorMessage && <Alert message={errorMessage} type='error' />}
         <p className='ant-upload-drag-icon'>
-          {loading ? <Spin tip='上传中...' /> : <InboxOutlined />}
+          {loading ? <Spin tip='分析中...' /> : <InboxOutlined />}
         </p>
-        <p className='ant-upload-text'>点击选择或者拖动文件来上传</p>
+        <p className='ant-upload-text'>点击选择文件或将文件拖拽到此区域</p>
+        <p className='ant-upload-text'>( 注：文件的后缀应为.xlsx )</p>
       </Dragger>
       <Alert
         css={css`
