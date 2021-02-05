@@ -152,7 +152,6 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
       };
       options && myChart.setOption(options);
       myChart.on('click', function (params: any) {
-        console.log(params);
         setCurrentDay(params.name);
       });
       myChartRef.current = myChart;
@@ -164,7 +163,6 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
   }, []);
   useEffect(() => {
     if (myChartRef.current) {
-      console.log('update');
       myChartRef.current.setOption({
         title: {
           text: `抽卡数据总览(共${onGetData(SHOW_DATA_ALL_KEY).length}抽)`,
