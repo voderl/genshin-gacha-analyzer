@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Genshin Impact Analyzer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 如何获取xlsx文件？
+https://ngabbs.com/read.php?tid=25004616
 
 ## Available Scripts
 
