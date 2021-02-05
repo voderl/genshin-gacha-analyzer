@@ -1,7 +1,11 @@
-# Genshin Impact Analyzer
+# Genshin Impact Analyzer | 原神抽卡记录分析工具
 
 ## 如何获取xlsx文件？
 https://ngabbs.com/read.php?tid=25004616
+
+## 网址
+没有进行打包优化，可能白屏加载时间较长  
+https://voderl.github.io/genshin-gacha-analyzer/
 
 ## Available Scripts
 
