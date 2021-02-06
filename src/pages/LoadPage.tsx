@@ -2,10 +2,10 @@
 import { css } from '@emotion/react';
 import { FC, useCallback, useContext, useState } from 'react';
 import { Button, Upload, Alert, Spin } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import InboxOutlined from '@ant-design/icons/InboxOutlined';
 import { RcFile } from 'antd/lib/upload';
-import XLSX from 'xlsx';
 import GlobalContext from 'context/GlobalContext';
+import XLSXNameSpace from 'xlsx/types';
 
 const { Dragger } = Upload;
 type LoadPageProps = {
@@ -15,6 +15,7 @@ type LoadPageProps = {
 export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [loading, setLoading] = useState<Boolean>(false);
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
+  const [loadingTip, setLoadingTip] = useState('加载中...');
   const { updateWorkbook } = useContext(GlobalContext);
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
@@ -24,12 +25,22 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
     setLoading(true);
     const reader = new FileReader();
     reader.onload = function (e: ProgressEvent<FileReader>) {
-      const data = new Uint8Array((e.target as FileReader).result as any);
-      const workbook = XLSX.read(data, { type: 'array' });
-      updateWorkbook(workbook);
+      setLoadingTip('xlsx解析文件加载中...');
+      // @ts-ignore
+      import(/* webpackPreload: true */ 'xlsx/dist/xlsx.full.min.js')
+        .then((module) => {
+          (window as any).XLSX = module;
+          const XLSX: typeof XLSXNameSpace = module;
+          const data = new Uint8Array((e.target as FileReader).result as any);
+          const workbook = XLSX.read(data, { type: 'array' });
+          updateWorkbook(workbook);
+        })
+        .catch(() => {
+          setErrorMessage('XLSX解析文件加载失败，请重新上传');
+        });
     };
     reader.onerror = function (e: ProgressEvent<FileReader>) {
-      setErrorMessage('解析文件失败');
+      setErrorMessage('解析文件失败, 请重新上传');
       setLoading(false);
     };
     reader.readAsArrayBuffer(file);
@@ -80,7 +91,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       >
         {errorMessage && <Alert message={errorMessage} type='error' />}
         <p className='ant-upload-drag-icon'>
-          {loading ? <Spin tip='分析中...' /> : <InboxOutlined />}
+          {loading ? <Spin tip={loadingTip} /> : <InboxOutlined />}
         </p>
         <p className='ant-upload-text'>点击选择文件或将文件拖拽到此区域</p>
         <p className='ant-upload-text'>( 注：文件的后缀应为.xlsx )</p>

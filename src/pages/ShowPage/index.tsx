@@ -1,14 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { Menu, Layout } from 'antd';
-import XLSX, { WorkSheet as WorkSheetType } from 'xlsx';
+import { FC, useCallback, useContext, useMemo, useRef, useState, Suspense, lazy } from 'react';
+import { Menu, Layout, Spin } from 'antd';
+
+import XLSXType, { WorkSheet as WorkSheetType } from 'xlsx/types';
 import GlobalContext from 'context/GlobalContext';
 import { SHOW_DATA_ALL_KEY } from 'const';
-import { ShowData } from './ShowData';
-import { Timeline } from './Timeline';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
+const Timeline = lazy(() =>
+  import(/* webpackPrefetch: true */ './Timeline').then((module) => ({
+    default: module.Timeline,
+  })),
+);
+const ShowData = lazy(() =>
+  import(/* webpackPreload: true */ './ShowData').then((module) => ({
+    default: module.ShowData,
+  })),
+);
 
 type ShowPageProps = {};
 const { Content, Sider } = Layout;
@@ -19,6 +28,7 @@ export const ShowPage: FC<ShowPageProps> = function () {
   const getJson = useMemo(() => {
     const cache = Object.create(null);
     function getJson(key: string) {
+      const XLSX: typeof XLSXType = (window as any).XLSX;
       if (key in cache) return cache[key];
       let data: Data;
       if (key === SHOW_DATA_ALL_KEY) {
@@ -84,7 +94,20 @@ export const ShowPage: FC<ShowPageProps> = function () {
             position: relative;
           `}
         >
-          {renderContent(activeMenu)}
+          <Suspense
+            fallback={
+              <Spin
+                size='large'
+                tip='加载中...'
+                css={css`
+                  display: block;
+                  margin: 150px auto;
+                `}
+              />
+            }
+          >
+            {renderContent(activeMenu)}
+          </Suspense>
         </Content>
       </Layout>
     </Layout>
