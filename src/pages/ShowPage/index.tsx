@@ -8,14 +8,14 @@ import GlobalContext from 'context/GlobalContext';
 import { SHOW_DATA_ALL_KEY } from 'const';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
+const ShowData = lazy(() =>
+  import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
+    default: module.ShowData,
+  })),
+);
 const Timeline = lazy(() =>
   import(/* webpackPrefetch: true */ './Timeline').then((module) => ({
     default: module.Timeline,
-  })),
-);
-const ShowData = lazy(() =>
-  import(/* webpackPreload: true */ './ShowData').then((module) => ({
-    default: module.ShowData,
   })),
 );
 

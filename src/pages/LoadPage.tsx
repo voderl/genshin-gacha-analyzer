@@ -11,6 +11,9 @@ const { Dragger } = Upload;
 type LoadPageProps = {
   onLoad?: () => void;
 };
+// 预加载
+// @ts-ignore
+import('xlsx/dist/xlsx.full.min.js');
 
 export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [loading, setLoading] = useState<Boolean>(false);
@@ -27,7 +30,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
     reader.onload = function (e: ProgressEvent<FileReader>) {
       setLoadingTip('xlsx解析文件加载中...');
       // @ts-ignore
-      import(/* webpackPreload: true */ 'xlsx/dist/xlsx.full.min.js')
+      import('xlsx/dist/xlsx.full.min.js')
         .then((module) => {
           (window as any).XLSX = module;
           const XLSX: typeof XLSXNameSpace = module;
