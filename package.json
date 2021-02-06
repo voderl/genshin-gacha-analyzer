@@ -24,6 +24,7 @@
     "xlsx": "^0.16.9"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,6 +51,6 @@
   "devDependencies": {
     "@types/echarts": "^4.9.3",
     "@types/lodash": "^4.14.168",
-    "@types/react-router-dom": "^5.1.7"
+    "source-map-explorer": "^2.5.2"
   }
 }
