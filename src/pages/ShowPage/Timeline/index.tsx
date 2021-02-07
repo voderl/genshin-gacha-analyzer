@@ -13,7 +13,7 @@ import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ECharts } from 'echarts/core';
 import { Data } from 'types';
-import { SHOW_DATA_ALL_KEY } from 'const';
+import { COLOR, SHOW_DATA_ALL_KEY } from 'const';
 import { Alert, Switch } from 'antd';
 import memoize from 'lodash/memoize';
 import { getDateInfo } from './getDateInfo';
@@ -38,7 +38,7 @@ function calculateData(data: Data) {
       countByDay.push({
         value: [current.day, current.count],
         itemStyle: {
-          color: '#BD6932',
+          color: COLOR.FIVE_STAR,
         },
       });
     } else countByDay.push([current.day, current.count]);

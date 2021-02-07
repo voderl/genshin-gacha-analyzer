@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { COLOR } from 'const';
 import React, { FC, useCallback, useMemo } from 'react';
 import { CanvasDataGrid } from './CanvasDataGrid';
 
@@ -45,13 +46,16 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
     node.addEventListener('rendertext', function (e: any) {
       const star = e.row['星级'];
       if (star === 4) {
-        e.ctx.fillStyle = '#A256E1';
+        e.ctx.fillStyle = COLOR.FOUR_STAR;
       } else if (star === 5) {
-        e.ctx.fillStyle = '#BD6932';
+        e.ctx.fillStyle = COLOR.FIVE_STAR;
       }
     });
     node.style.height = '100%';
     node.style.margin = '0 auto';
+    node.style.cellHorizontalAlignment = 'center';
+    node.style.activeCellHorizontalAlignment = 'center';
+    node.style.columnHeaderCellHorizontalAlignment = 'center';
     onCreate && onCreate(node);
   }, []);
   return (

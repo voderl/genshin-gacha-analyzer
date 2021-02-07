@@ -1,5 +1,9 @@
 export const SHOW_DATA_ALL_KEY = '总览';
 
+export const COLOR = {
+  FOUR_STAR: '#A65FE2',
+  FIVE_STAR: '#C0713D',
+};
 // fix: canvas-datagrid have error when filter number
 const numberFilter = function (value: number, filterFor: string | undefined) {
   if (!filterFor) {

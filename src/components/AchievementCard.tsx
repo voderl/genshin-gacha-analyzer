@@ -90,7 +90,7 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
           </span>
           <span
             css={css`
-              padding: 12px 0 6px;
+              padding: 10px 0 8px;
               font-size: 18px;
             `}
           >
