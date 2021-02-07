@@ -85,7 +85,9 @@ export const achievements: Array<(data: Source) => AchievementCardProps | false 
       endTime = data[index + 1].时间;
     return {
       title: '「仓鼠专家」',
-      info: `从${formatTime(fromTime)}到${formatTime(endTime)}, 你没有进行抽卡。`,
+      info: `从${formatTime(fromTime)}到${formatTime(
+        endTime,
+      )}, 你没有进行抽卡，享受着属于仓鼠的快乐~`,
       value: calculateTime(maxWaitTime),
       achievedTime: endTime,
     };
@@ -97,7 +99,7 @@ export const achievements: Array<(data: Source) => AchievementCardProps | false 
     const gacha1Count = gacha[1].filter((v) => v.星级 === 5).length;
     return {
       title: '「单抽出奇迹？」',
-      info: `通过单抽获取的五星数目为${gacha1Count}, 通过十连获取的五星数目为${gacha10Count}。`,
+      info: `通过单抽获取的五星数目为 ${gacha1Count} , 通过十连获取的五星数目为 ${gacha10Count} `,
       value: `${gacha1Count}/${gacha1Count + gacha10Count}`,
     };
   },
@@ -124,7 +126,7 @@ export const achievements: Array<(data: Source) => AchievementCardProps | false 
     return {
       title: '「情有独钟(五星角色)」',
       info: `你共抽取了 ${names.join('、')}，这是上天对你的眷顾还是你对${
-        names.length === 1 ? 'ta' : 'ta们'
+        names.length === 1 ? ' ta ' : '他们'
       }的情有独钟呢？`,
     };
   },
@@ -138,7 +140,7 @@ export const achievements: Array<(data: Source) => AchievementCardProps | false 
     return {
       title: '「情有独钟(四星角色)」',
       info: `你共抽取了 ${names.join('、')}，这是上天对你的眷顾还是你对${
-        names.length === 1 ? 'ta' : 'ta们'
+        names.length === 1 ? ' ta ' : '他们'
       }的情有独钟呢？`,
     };
   },

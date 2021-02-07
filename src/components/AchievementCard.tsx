@@ -45,6 +45,8 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
         css={css`
           margin: 0 16px;
           flex: 0 1;
+          width: 104px;
+          height: 104px;
         `}
       />
       <div
