@@ -1,8 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useCallback, useContext, useMemo, useRef, useState, Suspense, lazy } from 'react';
+import {
+  FC,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  Suspense,
+  lazy,
+  memo,
+} from 'react';
 import { Menu, Layout, Spin } from 'antd';
-
+import RawGithubCorner from 'react-github-corner';
 import XLSXType, { WorkSheet as WorkSheetType } from 'xlsx/types';
 import GlobalContext from 'context/GlobalContext';
 import { SHOW_DATA_ALL_KEY } from 'const';
@@ -18,7 +28,19 @@ const Timeline = lazy(() =>
     default: module.Timeline,
   })),
 );
-
+const GithubCorner = memo(
+  () => (
+    <RawGithubCorner
+      href='https://github.com/voderl/genshin-gacha-analyzer'
+      target='_blank'
+      direction='left'
+      bannerColor='#70B7FD'
+      octoColor='#fff'
+      size={60}
+    />
+  ),
+  () => true,
+);
 type ShowPageProps = {};
 const { Content, Sider } = Layout;
 
@@ -69,13 +91,13 @@ export const ShowPage: FC<ShowPageProps> = function () {
           height: '100vh',
         }}
       >
-        <div className='logo' />
+        <GithubCorner />
         <Menu
           mode='inline'
           defaultSelectedKeys={['rawData']}
           onSelect={handleMenuChange}
           css={css`
-            margin-top: 60px;
+            margin-top: 80px;
             .ant-menu-item {
               height: 60px;
               line-height: 60px;
