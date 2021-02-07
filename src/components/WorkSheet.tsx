@@ -28,14 +28,7 @@ const attributes = {
 };
 export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate }) {
   const handleCreate = useCallback((node: any) => {
-    (window as any).node = node;
-    // fix filter number:
-    node.filters.number = function (value: any, filterFor: any) {
-      if (!filterFor) {
-        return true;
-      }
-      return value == filterFor;
-    };
+    if (process.env.NODE_ENV === 'development') (window as any).node = node;
     const oldStringSorter = node.sorters.string;
     // sortBy 时间
     node.sorters.string = function (columnName: string, direction: string) {
