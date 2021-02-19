@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { Divider } from 'antd';
 import { AchievementCard, AchievementCardProps } from 'components/AchievementCard';
 import { SHOW_DATA_ALL_KEY } from 'const';
 import React, { FC, useMemo } from 'react';
@@ -91,6 +92,11 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
       {allAchievements.map((props) => (
         <AchievementCard {...props} />
       ))}
+      <Divider>
+        <a href='https://github.com/voderl/genshin-gacha-analyzer/issues' target='_blank'>
+          更多成就开发中，欢迎前往issue提出你的建议...
+        </a>
+      </Divider>
     </div>
   );
 };
