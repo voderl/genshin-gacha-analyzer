@@ -5,10 +5,48 @@ import max from 'lodash/max';
 import { AchievementCardProps } from 'components/AchievementCard';
 
 /*
-
 TODO: 是否是歪了up池，各个up池的持续时间 
-
 */
+/**
+ * 成就计算相互独立，每个为一个函数，传入给定的参数，返回规定的格式。具体参数和返回格式见下面。
+ */
+type Show = {
+  单个数据类型: DataItem;
+  函数返回类型: AchievementCardProps | AchievementCardProps[]; // 返回flase， undefined表示没有
+  传入参数展示: {
+    // 在开发模式下传入参数会在控制台输出
+    character: {
+      5: {
+        七七: {
+          data: DataItem[]; // 七七的所有抽卡记录
+        };
+      };
+      4: '同上';
+    };
+    weapon: {
+      5: {
+        狼的末路: {
+          data: DataItem[]; // 狼的末路的所有抽卡记录
+        };
+      };
+      4: '同上';
+      3: '同上';
+    };
+    all: '结构同上，包含角色与武器';
+    gacha: {
+      10: [DataItem[]]; // 十抽数据的数组,
+      1: [DataItem]; // 单抽数据的数组
+    };
+    data: DataItem[]; // 全部抽卡记录源数据
+    day: {
+      // 不同天数的抽卡记录
+      '2020-9-16': {
+        data: DataItem[];
+      };
+    };
+  };
+};
+
 function toPercent(point: number) {
   return Number(point * 100).toFixed(2) + '%';
 }
@@ -28,7 +66,9 @@ const calculateTime = (t: number) => {
   var h = Math.floor((t / 1000 / 60 / 60) % 24);
   return d + ' 天' + h + ' 时';
 };
-export const achievements: Array<(data: Source) => AchievementCardProps | false | void> = [
+export const achievements: Array<(
+  data: Source,
+) => AchievementCardProps | AchievementCardProps[] | false | void> = [
   function maxGacha({ all }: Source) {
     const name = maxBy(Object.keys(all[5]), (cur) => {
       const items = all[5][cur].data;

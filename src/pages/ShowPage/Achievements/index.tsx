@@ -69,18 +69,22 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
         i++;
       }
     }
+    const info = {
+      all,
+      character,
+      weapon,
+      data: allData,
+      gacha,
+      day,
+    };
+    if (process.env.NODE_ENV === 'development') console.log(info);
     return achievements
-      .map((func) =>
-        func({
-          all,
-          character,
-          weapon,
-          data: allData,
-          gacha,
-          day,
-        }),
-      )
-      .filter((v) => typeof v === 'object') as Array<AchievementCardProps>;
+      .map((func) => func(info))
+      .reduce((acc: Array<any>, cur: any) => {
+        if (Array.isArray(cur)) return acc.concat(cur);
+        if (typeof cur === 'object') acc.push(cur);
+        return acc;
+      }, []);
   }, []);
   return (
     <div
