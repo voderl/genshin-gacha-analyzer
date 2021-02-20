@@ -14,6 +14,7 @@ type AchievementsProps = {
 export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
   const allData = onGetData(SHOW_DATA_ALL_KEY);
   const allAchievements = useMemo(() => {
+    // 将数据分散到表里面，做一个缓存处理，方便对数据进行筛选
     const character: StarCacheType = {
       '5': {},
       '4': {},
@@ -35,9 +36,12 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
     };
     const walk = (item: DataItem) => {
       let cache = item.类别 === '角色' ? character : weapon;
-      all[item.星级][item.名称] = {
-        data: [item],
-      };
+      if (item.名称 in all[item.星级]) all[item.星级][item.名称].data.push(item);
+      else {
+        all[item.星级][item.名称] = {
+          data: [item],
+        };
+      }
       const currentDay = item.时间.slice(0, 10);
       if (currentDay in day) {
         day[currentDay].data.push(item);
