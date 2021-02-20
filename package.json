@@ -12,7 +12,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.2",
-    "canvas-datagrid": "0.3.1",
+    "canvas-datagrid": "^0.3.3",
     "echarts": "^5.0.1",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
@@ -25,6 +25,7 @@
     "xlsx": "^0.16.9"
   },
   "scripts": {
+    "postinstall": "patch-package",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -53,6 +54,8 @@
   "devDependencies": {
     "@types/echarts": "^4.9.3",
     "@types/lodash": "^4.14.168",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "source-map-explorer": "^2.5.2"
   }
 }
