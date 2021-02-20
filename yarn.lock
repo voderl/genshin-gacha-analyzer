@@ -3277,10 +3277,10 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, can
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001159.tgz#bebde28f893fa9594dadcaa7d6b8e2aa0299df20"
   integrity sha512-w9Ph56jOsS8RL20K9cLND3u/+5WASWdhC/PPrf+V3/HsM3uHOavWOR1Xzakbv4Puo/srmPHudkmCRWM7Aq+/UA==
 
-canvas-datagrid@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/canvas-datagrid/-/canvas-datagrid-0.3.3.tgz#5bf02a6c99c2f744b01e910bd780bbf68a1aebc0"
-  integrity sha512-ug8XoXeSToOJ5t66JGovk34opRRx3z7L5rRbmAnUpay/FHLvV0YT/G+bj/C1aSuMkoA9gvxoF18oRnP1iRfycA==
+canvas-datagrid@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/canvas-datagrid/-/canvas-datagrid-0.3.1.tgz#7988e87cf156f86393fa6f48b06a3030e212fb0b"
+  integrity sha512-yGWR0tMxSel87/OQhZcP3I2CSy/6oRRBDq+3AJzAgcsjyyJQ09Z3u1Zkm2GKv2fC/vsPxJhfNFTsEy7S69bHlw==
   dependencies:
     is-printable-key-event "1.0.0"
 

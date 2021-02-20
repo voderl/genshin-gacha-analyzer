@@ -21,16 +21,16 @@ index 40fea42..5235e21 100644
    return component;
  }
 diff --git a/node_modules/canvas-datagrid/package.json b/node_modules/canvas-datagrid/package.json
-index cb097ad..cb34ad2 100644
+index 5338514..a45937f 100644
 --- a/node_modules/canvas-datagrid/package.json
 +++ b/node_modules/canvas-datagrid/package.json
 @@ -2,8 +2,7 @@
    "name": "canvas-datagrid",
-   "version": "0.3.3",
+   "version": "0.3.1",
    "description": "Canvas based data grid web component. Capable of displaying millions of contiguous hierarchical rows and columns without paging or loading, on a single canvas element.",
 -  "main": "./dist/canvas-datagrid.js",
 -  "module": "./dist/canvas-datagrid.module.js",
 +  "main": "./lib/main.js",
    "scripts": {
      "build": "rollup -c && webpack",
-     "postbuild": "npm run build:types",
+     "build:docs": "jsdoc -c ./jsdoc.conf.js && cp dist/canvas-datagrid.* docs/ && cp -r tutorials/* images docs/",
