@@ -3,6 +3,7 @@ import maxBy from 'lodash/maxBy';
 import minBy from 'lodash/minBy';
 import max from 'lodash/max';
 import { AchievementCardProps } from 'components/AchievementCard';
+import { CHARACTER_POOLS } from 'const';
 
 /*
 TODO: 是否是歪了up池，各个up池的持续时间 
@@ -44,6 +45,12 @@ type Show = {
         data: DataItem[];
       };
     };
+    pools: {
+      character: DataItem[]; // 人物Up池所有抽卡
+      weapon: DataItem[]; // 武器up池数据
+      novice: DataItem[]; //  新手池数据
+      permanent: DataItem[]; // 常驻池数据
+    };
   };
 };
 
@@ -77,6 +84,7 @@ export const achievements: Array<(
     if (!name) return false;
     const item = maxBy(all[5][name].data, (item) => item.保底内);
     if (!item) return false;
+    if (item.保底内 < 75) return;
     return {
       title: '「原来非酋竟是我自己」',
       info: `抽了 ${item.保底内} 次才最终抽到了「${item.名称}」`,
@@ -92,11 +100,83 @@ export const achievements: Array<(
     if (!name) return false;
     const item = minBy(all[5][name].data, (item) => item.保底内);
     if (!item) return false;
+    if (item.保底内 > 15) return;
     return {
       title: '「欧皇在世」',
       info: `只抽了 ${item.保底内} 次就抽到了「${item.名称}」`,
       achievedTime: item.时间,
       value: item.保底内,
+    };
+  },
+  // 不碰某些池子
+  function ({ pools }) {
+    const matches = [];
+    if (pools.character.length === 0)
+      matches.push({
+        title: '「角色Up池? 不稀罕!」',
+        info: '没有在角色活动祈愿中进行抽卡',
+      });
+    if (pools.weapon.length === 0)
+      matches.push({
+        title: '「武器池？能吃吗？」',
+        info: '没有在武器活动祈愿中进行抽卡',
+      });
+    if (pools.novice.length === 0)
+      matches.push({
+        title: '「永远的新手」',
+        info: '没有在新手祈愿中进行抽卡',
+      });
+    if (pools.permanent.length === 0)
+      matches.push({
+        title: '「传说中的毒池」',
+        info: '没有在常驻祈愿中进行抽卡',
+      });
+    return matches;
+  },
+  // 人物Up池歪的比例
+  function upWrong({ pools }) {
+    const data = pools.character.filter((data) => data.星级 === 5);
+    if (data.length === 0) return;
+    // 是否是Up角色
+    function isHitUp(item: DataItem) {
+      const date = item.date;
+      const pool = CHARACTER_POOLS.find((pool) => date >= pool.from && date <= pool.to);
+      if (!pool) return false;
+      return pool.five.includes(item.名称);
+    }
+    let notHitCount = 0,
+      hitCount = 0;
+    for (let i = 0; i < data.length; i++) {
+      if (isHitUp(data[i])) {
+        i++;
+        hitCount++;
+      } else notHitCount++;
+    }
+    if (notHitCount === 0)
+      return {
+        title: '「不倒翁」',
+        info: `在「角色活动祈愿」中抽中的五星角色均为当期Up角色`,
+      };
+    const obj = {
+      value: `${notHitCount} / ${hitCount + notHitCount}`,
+      achievedTime: '小保底歪的概率',
+    };
+    if (hitCount > notHitCount)
+      return {
+        title: '「晴时总比雨时多」',
+        info: `在「角色活动祈愿」中，小保底偏向于抽中当期Up角色`,
+        ...obj,
+      };
+    if (hitCount === notHitCount)
+      return {
+        title: '「不偏不倚」',
+        info: `在「角色活动祈愿」中小保底歪与不歪持平`,
+        ...obj,
+      };
+    return {
+      title: '「雨时偏比晴时多」',
+      info: `在「角色活动祈愿」中，小保底偏向于没有抽中当期Up角色`,
+      ...obj,
     };
   },
   function maxGachaDay({ day, data }) {
@@ -123,13 +203,26 @@ export const achievements: Array<(
     const index = waitTime.indexOf(maxWaitTime);
     const fromTime = data[index].时间,
       endTime = data[index + 1].时间;
+    const waitDay = maxWaitTime / 3600 / 24 / 1000;
+    let level, info;
+    if (waitDay <= 10) {
+      level = '初级';
+      info = '是一只不太合格的仓鼠呢~';
+    } else if (waitDay <= 20) {
+      level = '中级';
+      info = '你已经是一只合格的仓鼠了';
+    } else if (waitDay <= 40) {
+      level = '高级';
+      info = '作为仓鼠，你就是专家!';
+    } else {
+      level = '大师';
+      info = '您的传说受到了众仓鼠的景仰!';
+    }
     return {
-      title: '「仓鼠专家」',
-      info: `从${formatTime(fromTime)}到${formatTime(
-        endTime,
-      )}, 你没有进行抽卡，享受着属于仓鼠的快乐~`,
+      title: `「${level}仓鼠」`,
+      info: `从${formatTime(fromTime)}到${formatTime(endTime)}没有进行抽卡。${info}`,
       value: calculateTime(maxWaitTime),
-      achievedTime: endTime,
+      achievedTime: '持续时间',
     };
   },
   function oneGachaGetFiveStar({ gacha }) {
@@ -149,9 +242,11 @@ export const achievements: Array<(
     });
     if (!maxGacha) return;
     const count = maxGacha.data.filter((v) => v.星级 === 5).length;
+    if (count <= 1) return;
+    const mapping = ['单', '双', '三', '四', '五', '六', '七', '八', '九', '十'];
     return {
-      title: '「双黄蛋？」',
-      info: `一次十连中，你最多抽取到的五星数量为 ${count} 只`,
+      title: `「${mapping[count - 1]}黄蛋!」`,
+      info: `在一次十连中，你抽取到了 ${count} 只五星。`,
       value: count,
       achievedTime: maxGacha.data[0].时间,
     };

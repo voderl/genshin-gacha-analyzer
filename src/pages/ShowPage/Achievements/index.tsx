@@ -9,9 +9,27 @@ import { achievements } from './achievements';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
+  sheetNames: string[];
 };
 
-export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
+export const POOLS = {
+  CHARACTER: 0,
+  WEAPON: 1,
+  PERMANENT: 2,
+  NOVICE: 3,
+};
+export const EN_SHEETS = [
+  'Character Event Wish',
+  'Weapon Event Wish',
+  'Permanent Wish',
+  'Novice Wish',
+];
+export const CN_SHEETS = ['角色活动祈愿', '武器活动祈愿', '常驻祈愿', '新手祈愿'];
+function getSheetKey(key: any, sheetNames: string[]) {
+  const isChinese = CN_SHEETS.indexOf(sheetNames[0]) !== -1;
+  return isChinese ? CN_SHEETS[key] : EN_SHEETS[key];
+}
+export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetNames }) {
   const allData = onGetData(SHOW_DATA_ALL_KEY);
   const allAchievements = useMemo(() => {
     // 将数据分散到表里面，做一个缓存处理，方便对数据进行筛选
@@ -33,6 +51,12 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
     const gacha: GachaCacheType = {
       10: [],
       1: [],
+    };
+    const pools = {
+      character: onGetData(getSheetKey(POOLS.CHARACTER, sheetNames)),
+      weapon: onGetData(getSheetKey(POOLS.WEAPON, sheetNames)),
+      novice: onGetData(getSheetKey(POOLS.NOVICE, sheetNames)),
+      permanent: onGetData(getSheetKey(POOLS.PERMANENT, sheetNames)),
     };
     const walk = (item: DataItem) => {
       let cache = item.类别 === '角色' ? character : weapon;
@@ -76,6 +100,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData }) {
       data: allData,
       gacha,
       day,
+      pools,
     };
     if (process.env.NODE_ENV === 'development') console.log(info);
     return achievements

@@ -11,7 +11,7 @@ export type AchievementCardProps = {
   value?: string | number;
   achievedTime?: string;
 };
-
+const isDate = (str: string) => new Date(str).toString() !== 'Invalid Date';
 export const AchievementCard: FC<AchievementCardProps> = function ({
   title,
   info,
@@ -19,6 +19,12 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
   achievedTime,
 }) {
   const isAchieved = !!achievedTime;
+  let formatTime;
+  if (achievedTime) {
+    formatTime = isDate(achievedTime)
+      ? achievedTime.slice(0, 10).replaceAll('-', '/')
+      : achievedTime;
+  }
   return (
     <div
       style={{
@@ -85,18 +91,18 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
         >
           <span
             css={css`
-              font-size: 18px;
+              font-size: 20px;
             `}
           >
             {value === undefined ? '达成' : value}
           </span>
           <span
             css={css`
-              padding: 10px 0 8px;
-              font-size: 18px;
+              padding: 10px 0 9px;
+              font-size: 16px;
             `}
           >
-            {(achievedTime as string).slice(0, 10).replaceAll('-', '/')}
+            {formatTime}
           </span>
         </div>
       ) : (

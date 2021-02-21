@@ -37,6 +37,12 @@ export type Source = {
   gacha: GachaCacheType;
   data: Data;
   day: DayCacheType;
+  pools: {
+    character: DataItem[];
+    weapon: DataItem[];
+    novice: DataItem[];
+    permanent: DataItem[];
+  };
 };
 export type PoolType = {
   from: number;
