@@ -148,9 +148,11 @@ export const achievements: Array<(
       hitCount = 0;
     for (let i = 0; i < data.length; i++) {
       if (isHitUp(data[i])) {
-        i++;
         hitCount++;
-      } else notHitCount++;
+      } else {
+        i++;
+        notHitCount++;
+      }
     }
     if (notHitCount === 0)
       return {
