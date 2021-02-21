@@ -38,3 +38,11 @@ export type Source = {
   data: Data;
   day: DayCacheType;
 };
+export type PoolType = {
+  from: number;
+  to: number;
+  five: string[];
+  four: string[];
+  name: string;
+  type: 'character' | 'weapon';
+};
