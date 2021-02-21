@@ -2,14 +2,76 @@
 import { css } from '@emotion/react';
 import { Button, Input, Popover, Form } from 'antd';
 import { ButtonSelect } from './ButtonSelect';
-import { COLOR } from 'const';
-import React, { FC, useCallback, useState } from 'react';
+import { CHARACTER_POOLS, WEAPON_POOLS, COLOR } from 'const';
+import React, { FC, useCallback, useState, useMemo, useEffect } from 'react';
 import FilterOutlined from '@ant-design/icons/FilterOutlined';
+import { PoolSelect } from './PoolSelect';
+import { DataItem } from 'types';
 
 type FilterProps = {
+  activeKey?: string;
   onChange?: (values: any) => any;
 };
+// 根据值数组 做一个filter
+function makeFilterByArray(array: any[], format?: (v: any) => any) {
+  const handle = (v: any) => (typeof v === 'string' ? '"' + v + '"' : v);
+  const expr =
+    'return ' + array.map((value) => `v===${handle(format ? format(value) : value)}`).join('||');
+  return new Function('v', expr);
+}
+// 测试字符串是不是值的一部分，支持正则
+const filterString = function (value: string, filterFor: string) {
+  var filterRegExp,
+    regEnd = /\/(i|g|m)*$/,
+    pattern = regEnd.exec(filterFor),
+    flags = pattern ? pattern[0].substring(1) : '',
+    flagLength = flags.length;
+  if (filterFor.substring(0, 1) === '/' && pattern) {
+    try {
+      filterRegExp = new RegExp(filterFor.substring(1, filterFor.length - (flagLength + 1)), flags);
+    } catch (e) {
+      return;
+    }
+    return filterRegExp.test(value);
+  }
+  return value.toString
+    ? value.toString().toLocaleUpperCase().indexOf(filterFor.toLocaleUpperCase()) !== -1
+    : false;
+};
+// 根据form的值， 做一个filter
+function makeFilterByForm(values: {
+  pool?: {
+    from: number;
+    to: number;
+  };
+  search?: string;
+  star: string[];
+  type: string[];
+}) {
+  const matchs: any[] = [];
+  const { type = [], star = [], search, pool } = values;
+  if (type.length !== 0) {
+    const mapping = {
+      weapon: '武器',
+      character: '角色',
+    };
+    const compare = makeFilterByArray(type, (key: keyof typeof mapping) => mapping[key]);
+    matchs.push((data: DataItem) => compare(data.类别));
+  }
+  if (star.length !== 0) {
+    const compare = makeFilterByArray(star, (key: string) => parseInt(key));
+    matchs.push((data: DataItem) => compare(data.星级));
+  }
+  if (pool) matchs.push((data: DataItem) => data.date >= pool.from && data.date <= pool.to);
 
+  if (search) matchs.push((data: DataItem) => filterString(data.名称, search));
+
+  return matchs.length === 0
+    ? undefined
+    : (data: DataItem) => {
+        return matchs.every((func) => func(data));
+      };
+}
 // 计算当前筛选条目有几个
 function countObjectProperty(object: any): number {
   return Object.values(object).filter((v) => {
@@ -17,7 +79,7 @@ function countObjectProperty(object: any): number {
     return true;
   }).length;
 }
-export const Filter: FC<FilterProps> = function ({ onChange }) {
+export const Filter: FC<FilterProps> = function ({ activeKey, onChange }) {
   const [visible, setVisible] = useState(false);
   const [count, setCount] = useState(0);
   const [form] = Form.useForm();
@@ -25,15 +87,38 @@ export const Filter: FC<FilterProps> = function ({ onChange }) {
     setVisible(v);
     setCount(countObjectProperty(form.getFieldsValue(true)));
   }, []);
-  const handleFinish = (values: any) => {
-    onChange && onChange(values);
+  const handleFormChange = useCallback((v?: any) => {
+    onChange && onChange(makeFilterByForm(v || form.getFieldsValue(true)));
+  }, []);
+  const pools = useMemo(() => {
+    // 切换页面时应重置filter
+    form.setFields([
+      {
+        name: 'pool',
+        value: undefined,
+      },
+    ]);
+    handleFormChange();
+    switch (activeKey) {
+      case '角色活动祈愿':
+      case 'Character Event Wish':
+        return CHARACTER_POOLS;
+      case '武器活动祈愿':
+      case 'Weapon Event Wish':
+        return WEAPON_POOLS;
+      default:
+        return [];
+    }
+  }, [activeKey]);
+  const handleFinish = useCallback((values: any) => {
+    handleFormChange(values);
     handleVisibleChange(false);
-  };
-  const handleReset = (values: any) => {
+  }, []);
+  const handleReset = useCallback((values: any) => {
     form.resetFields();
-    onChange && onChange(form.getFieldsValue(true));
+    handleFormChange();
     handleVisibleChange(false);
-  };
+  }, []);
   const content = (
     <Form
       layout='vertical'
@@ -64,6 +149,9 @@ export const Filter: FC<FilterProps> = function ({ onChange }) {
             <div style={{ color: COLOR.FIVE_STAR }}>五星</div>
           </ButtonSelect.Item>
         </ButtonSelect>
+      </Form.Item>
+      <Form.Item name='pool' hidden={pools.length === 0}>
+        <PoolSelect pools={pools} />
       </Form.Item>
       <Form.Item
         css={css`
