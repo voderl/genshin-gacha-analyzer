@@ -1,16 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import {
-  FC,
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-  Suspense,
-  lazy,
-  memo,
-} from 'react';
+import { FC, useCallback, useContext, useMemo, useState, Suspense, lazy, memo } from 'react';
 import { Menu, Layout, Spin } from 'antd';
 import RawGithubCorner from 'react-github-corner';
 import XLSXType, { WorkSheet as WorkSheetType } from 'xlsx/types';
@@ -18,6 +8,10 @@ import GlobalContext from 'context/GlobalContext';
 import { SHOW_DATA_ALL_KEY } from 'const';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
+import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
+import UnorderedListOutlined from '@ant-design/icons/UnorderedListOutlined';
+import StarOutlined from '@ant-design/icons/StarOutlined';
+
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
     default: module.ShowData,
@@ -75,7 +69,8 @@ export const ShowPage: FC<ShowPageProps> = function () {
   const renderContent = useCallback((key) => {
     if (key === 'rawData') return <ShowData onGetData={getJson} tabs={sheetNames} />;
     else if (key === 'timeline') return <Timeline onGetData={getJson} />;
-    else if (key === 'achievements') return <Achievements onGetData={getJson} />;
+    else if (key === 'achievements')
+      return <Achievements onGetData={getJson} sheetNames={sheetNames} />;
     else return <div>暂无</div>;
   }, []);
   return (
@@ -104,9 +99,15 @@ export const ShowPage: FC<ShowPageProps> = function () {
             }
           `}
         >
-          <Menu.Item key='timeline'>时间轴</Menu.Item>
-          <Menu.Item key='rawData'>原数据</Menu.Item>
-          <Menu.Item key='achievements'>成就表</Menu.Item>
+          <Menu.Item key='timeline' icon={<BarChartOutlined />}>
+            时间轴
+          </Menu.Item>
+          <Menu.Item key='rawData' icon={<UnorderedListOutlined />}>
+            原数据
+          </Menu.Item>
+          <Menu.Item key='achievements' icon={<StarOutlined />}>
+            成就表
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
