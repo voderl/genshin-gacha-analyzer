@@ -34,25 +34,25 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
       css={css`
         width: 100%;
         max-width: 800px;
-        min-height: 119px;
+        min-height: 100px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border: 2px solid #e0d6cb;
         color: #bca895;
-        color: #a0907c;
+        color: #988b81;
         font-size: 16px;
-        font-weight: 600;
         margin: 4px auto;
       `}
     >
       <img
         src={/* isAchieved ? AchievedPng : UnAchievedPng */ AchievedPng}
+        width='104'
+        height='104'
         css={css`
           margin: 0 16px;
-          flex: 0 1;
-          width: 104px;
-          height: 104px;
+          width: 80px;
+          height: 80px;
         `}
       />
       <div
@@ -67,7 +67,6 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
         <p
           css={css`
             color: #585757;
-            font-weight: bold;
             font-size: 20px;
           `}
         >
@@ -78,11 +77,10 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
       {isAchieved ? (
         <div
           css={css`
-            width: 147px;
-            margin-left: 13px;
-            height: 119px;
-            flex: none;
-            background-image: url(${ShowPng});
+            width: 128px;
+            margin-left: 12px;
+            height: 96px;
+            background: url(${ShowPng}) no-repeat right/cover;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -98,8 +96,8 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
           </span>
           <span
             css={css`
-              padding: 10px 0 9px;
-              font-size: 16px;
+              padding: 8px 0 0px;
+              font-size: 15px;
             `}
           >
             {formatTime}
@@ -108,16 +106,15 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
       ) : (
         <div
           css={css`
-            width: 160px;
-            height: 120px;
+            width: 128px;
+            height: 96px;
             background-color: #ebe2d8;
             text-align: center;
           `}
         >
           <span
             css={css`
-              line-height: 120px;
-              height: 120px;
+              line-height: 96px;
               font-size: 18px;
             `}
           >
