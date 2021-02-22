@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { COLOR } from 'const';
+import { COLOR, FONT_FAMILY } from 'const';
 import React, { FC, useCallback, useMemo } from 'react';
 import { CanvasDataGrid } from './CanvasDataGrid';
 
@@ -56,6 +56,13 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
     node.style.cellHorizontalAlignment = 'center';
     node.style.activeCellHorizontalAlignment = 'center';
     node.style.columnHeaderCellHorizontalAlignment = 'center';
+    const font = '16px ' + FONT_FAMILY;
+    node.style.cellFont = font;
+    node.style.activeCellFont = font;
+    node.style.columnHeaderCellFont = font;
+    node.style.rowHeaderCellFont = font;
+    node.style.cellColor = '#262626';
+    node.style.activeCellColor = '#262626';
     onCreate && onCreate(node);
   }, []);
   return (
