@@ -6,7 +6,7 @@
 .pnp.js
 .eslintcache
 .vscode
-
+/src/font
 # testing
 /coverage
 

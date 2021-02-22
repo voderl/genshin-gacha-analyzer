@@ -1,6 +1,9 @@
 import { PoolType } from 'types';
 export const SHOW_DATA_ALL_KEY = '总览';
 
+export const FONT_FAMILY = 'HYWenHei-65W';
+export const FONT_FAMILY_BOLD = 'HYWenHei-85W';
+
 export const COLOR = {
   FOUR_STAR: '#A65FE2',
   FIVE_STAR: '#C0713D',
@@ -13,7 +16,7 @@ const numberFilter = function (value: number, filterFor: string | undefined) {
   return value.toString() === filterFor;
 };
 export const SCHEMA = [
-  { name: '时间', type: 'string', width: 180 },
+  { name: '时间', type: 'string', width: 200 },
   { name: '编号', type: 'number', hidden: true, width: 120, filter: numberFilter },
   { name: '名称', type: 'string', width: 130 },
   { name: '类别', type: 'string', width: 50 },
