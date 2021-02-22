@@ -13,7 +13,7 @@ import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ECharts } from 'echarts/core';
 import { Data } from 'types';
-import { COLOR, SHOW_DATA_ALL_KEY } from 'const';
+import { COLOR, FONT_FAMILY, SHOW_DATA_ALL_KEY } from 'const';
 import { Alert, Switch } from 'antd';
 import memoize from 'lodash/memoize';
 import { getDateInfo } from './getDateInfo';
@@ -103,7 +103,12 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
     let myChart: ECharts;
     if (echartsWrapper.current) {
       myChart = echarts.init(echartsWrapper.current);
+      const textStyle = {
+        fontFamily: FONT_FAMILY,
+        fontWeight: 'normal',
+      };
       const options = {
+        textStyle,
         tooltip: {
           trigger: 'axis',
           position: function (pt: any) {
@@ -113,6 +118,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
         title: {
           left: 'center',
           text: '抽卡数据总览',
+          textStyle,
         },
         toolbox: {
           feature: {
@@ -150,7 +156,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
           },
         ],
       };
-      options && myChart.setOption(options);
+      options && myChart.setOption(options as any);
       myChart.on('click', function (params: any) {
         setCurrentDay(params.name);
       });

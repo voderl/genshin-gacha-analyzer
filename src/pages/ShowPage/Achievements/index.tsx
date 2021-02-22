@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import { Divider } from 'antd';
 import { AchievementCard, AchievementCardProps } from 'components/AchievementCard';
-import { SHOW_DATA_ALL_KEY } from 'const';
+import { FONT_FAMILY_BOLD, FONT_FAMILY, SHOW_DATA_ALL_KEY } from 'const';
 import React, { FC, useMemo } from 'react';
 import { Data, DataItem, StarCacheType, GachaCacheType, DayCacheType } from 'types';
 import { achievements } from './achievements';
@@ -120,6 +120,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
         overflow-y: auto;
         overflow-x: hidden;
         position: absolute;
+        font-family: ${FONT_FAMILY_BOLD}, ${FONT_FAMILY};
       `}
     >
       {allAchievements.map((props) => (
