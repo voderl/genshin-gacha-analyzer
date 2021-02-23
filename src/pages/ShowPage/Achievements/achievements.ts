@@ -84,10 +84,14 @@ export const achievements: Array<(
     if (!name) return false;
     const item = maxBy(all[5][name].data, (item) => item.保底内);
     if (!item) return false;
-    if (item.保底内 < 75) return;
+    if (item.保底内 < 80) return;
+    let info = '';
+    if (item.保底内 >= 84) {
+      info = ', 你竟是' + ['百', '千', '万', '十万', '百万'][item.保底内 - 84] + '里挑一的非酋!';
+    }
     return {
       title: '「原来非酋竟是我自己」',
-      info: `抽了 ${item.保底内} 次才最终抽到了「${item.名称}」`,
+      info: `抽了 ${item.保底内} 次才最终抽到了「${item.名称}」${info}`,
       achievedTime: item.时间,
       value: item.保底内,
     };
@@ -100,10 +104,13 @@ export const achievements: Array<(
     if (!name) return false;
     const item = minBy(all[5][name].data, (item) => item.保底内);
     if (!item) return false;
-    if (item.保底内 > 15) return;
+    const count = item.保底内;
+    if (count > 10) return;
+    let info = '';
+    if (count <= 3) info = `, 你的欧气无人能敌!`;
     return {
       title: '「欧皇在世」',
-      info: `只抽了 ${item.保底内} 次就抽到了「${item.名称}」`,
+      info: `只抽了 ${item.保底内} 次就抽到了「${item.名称}」${info}`,
       achievedTime: item.时间,
       value: item.保底内,
     };
@@ -114,22 +121,22 @@ export const achievements: Array<(
     if (pools.character.length === 0)
       matches.push({
         title: '「角色Up池? 不稀罕!」',
-        info: '没有在角色活动祈愿中进行抽卡',
+        info: '没有在「角色活动祈愿」中进行抽卡',
       });
     if (pools.weapon.length === 0)
       matches.push({
         title: '「武器池？能吃吗？」',
-        info: '没有在武器活动祈愿中进行抽卡',
+        info: '没有在「武器活动祈愿」中进行抽卡',
       });
     if (pools.novice.length === 0)
       matches.push({
         title: '「永远的新手」',
-        info: '没有在新手祈愿中进行抽卡',
+        info: '没有在「新手祈愿」中进行抽卡',
       });
     if (pools.permanent.length === 0)
       matches.push({
         title: '「传说中的毒池」',
-        info: '没有在常驻祈愿中进行抽卡',
+        info: '没有在「常驻祈愿」中进行抽卡',
       });
     return matches;
   },
@@ -187,12 +194,14 @@ export const achievements: Array<(
     const percent = _day.data.length / data.length;
     const result = _day.data.filter((item) => item.星级 === 5);
     const resultStr =
-      result.length === 0 ? '' : `在抽到${formatByName(result).join('、')}时，你有没有很开心呢？`;
+      result.length === 0
+        ? '然而并没有出黄，很痛苦'
+        : `在抽到${formatByName(result).join('、')}时，你有没有很开心呢？`;
     return {
       title: '「豪掷千金」',
       info: `在${formatTime(_day.data[0].时间)}这一天，你共抽取了 ${
         _day.data.length
-      } 次，占总抽取次数的${toPercent(percent)}。${resultStr}`,
+      } 次。${resultStr}`,
       achievedTime: _day.data[0].时间,
       value: _day.data.length,
     };
@@ -228,14 +237,13 @@ export const achievements: Array<(
     };
   },
   function oneGachaGetFiveStar({ gacha }) {
-    const gacha10Count = Object.values(gacha[10]).reduce((acc, cur) => {
-      return acc + cur.data.filter((v) => v.星级 === 5).length;
-    }, 0);
-    const gacha1Count = gacha[1].filter((v) => v.星级 === 5).length;
+    const data = gacha[1].filter((v) => v.星级 === 5 && v.保底内 <= 30);
+    if (data.length === 0) return;
     return {
-      title: '「单抽出奇迹？」',
-      info: `通过单抽获取的五星数目为 ${gacha1Count} , 通过十连获取的五星数目为 ${gacha10Count} `,
-      value: `${gacha1Count}/${gacha1Count + gacha10Count}`,
+      title: '「单抽出奇迹!」',
+      info: `在30发内，通过单抽获取五星角色或武器`,
+      value: `${data.length}`,
+      achievedTime: '达成次数',
     };
   },
   function gacha10Data({ gacha }) {
