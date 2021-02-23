@@ -1,10 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Tabs } from 'antd';
+import UpOutlined from '@ant-design/icons/UpOutlined';
+import DownOutlined from '@ant-design/icons/DownOutlined';
 import { SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
 import { WorkSheet } from 'components/WorkSheet';
 import { Filter } from './Filter';
+import { IconButton } from 'components/IconButton';
 
 type ShowDataProps = {
   onGetData: (key: string) => any;
@@ -33,6 +36,17 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
     if (!filter.current) return data;
     return data.filter(filter.current);
   }, [filter.current, activeKey]);
+  const canvasDataRef = useRef();
+  const handleCreateWorkSheet = useCallback((node) => {
+    canvasDataRef.current = node;
+  }, []);
+  const handleGoTop = useCallback(() => {
+    if (canvasDataRef.current) (canvasDataRef.current as any).scrollTop = 0;
+  }, []);
+  const handleGoBottom = useCallback(() => {
+    const node: any = canvasDataRef.current;
+    if (node) node.scrollTop = node.scrollHeight;
+  }, []);
   return (
     <div
       css={css`
@@ -61,7 +75,28 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
         <TabPane tab={SHOW_DATA_ALL_KEY} key={SHOW_DATA_ALL_KEY} />
         <Filter onChange={handleFilterChange} activeKey={activeKey} />
       </Tabs>
-      <WorkSheet data={data} schema={activeKey === SHOW_DATA_ALL_KEY ? SCHEMA_ALL : SCHEMA} />
+      <div
+        css={css`
+          position: absolute;
+          right: 10%;
+          z-index: 999;
+          top: 72px;
+        `}
+      >
+        <IconButton placement='right' tip='前往顶部' icon={<UpOutlined />} onClick={handleGoTop} />
+        <br />
+        <IconButton
+          placement='right'
+          tip='前往底部'
+          icon={<DownOutlined />}
+          onClick={handleGoBottom}
+        />
+      </div>
+      <WorkSheet
+        data={data}
+        schema={activeKey === SHOW_DATA_ALL_KEY ? SCHEMA_ALL : SCHEMA}
+        onCreate={handleCreateWorkSheet}
+      />
     </div>
   );
 };
