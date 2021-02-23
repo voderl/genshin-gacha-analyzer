@@ -28,19 +28,25 @@ export const CanvasDataGrid: FC<
     }
   }, [data]);
   useEffect(() => {
-    const grid = canvasDataGrid({
-      parentNode: divEl.current,
-      schema: schema,
-      data: data,
-      ...attributes,
+    let grid: any;
+    const timer = setTimeout(() => {
+      grid = canvasDataGrid({
+        parentNode: divEl.current,
+        schema: schema,
+        ...attributes,
+      });
+      grid.style.scrollBarBoxWidth = 10;
+      grid.style.scrollBarWidth = 13;
+      onCreate && onCreate(grid);
+      gridRef.current = grid;
+      setTimeout(() => {
+        if (gridRef.current) (gridRef.current as any).data = data;
+      });
     });
-    grid.style.scrollBarBoxWidth = 10;
-    grid.style.scrollBarWidth = 13;
-    onCreate && onCreate(grid);
-    gridRef.current = grid;
     return () => {
-      grid.dispose();
+      clearTimeout(timer);
+      if (gridRef.current) (gridRef.current as any).dispose();
     };
   }, []);
-  return <div ref={divEl} {...props} />;
+  return <div ref={divEl} {...props}></div>;
 };
