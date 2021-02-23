@@ -74,6 +74,7 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
         overflow-y: hidden;
         overflow-x: auto;
         margin-bottom: 20px;
+        padding-right: 70px;
         border-bottom: 2px dotted thistle;
       `}
       onCreate={handleCreate}

@@ -81,7 +81,7 @@ export const ShowPage: FC<ShowPageProps> = function () {
     >
       <Sider
         theme='light'
-        width='20%'
+        width='15%'
         style={{
           height: '100vh',
         }}
