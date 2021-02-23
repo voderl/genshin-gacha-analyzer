@@ -166,11 +166,26 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
   const [isEditMode, setEditMode] = useState(false);
   const handleRenderPng = useCallback(() => {
     const data = achievements.filter((item) => item.visible !== false);
+    const key = 'renderPNG';
+    message.loading({
+      content: '生成图片中...',
+      key,
+    });
     renderToCanvas(data, (canvas, ctx) => {
-      console.log(canvas, ctx);
-      canvas.toBlob(function (blob) {
-        saveAs(blob, 'achievements.png');
-      });
+      try {
+        canvas.toBlob(function (blob) {
+          saveAs(blob, 'achievements.png');
+          message.success({
+            content: '生成图片成功',
+            key,
+          });
+        });
+      } catch (e) {
+        message.error({
+          content: '生成图片失败，请重试或更换浏览器',
+          key,
+        });
+      }
     });
   }, [achievements]);
   const handleEdit = useCallback(() => {
