@@ -149,6 +149,9 @@ const loadImage = (function () {
           cache[src] = image;
           data.forEach((f) => f(image));
         };
+        image.onerror = function (e) {
+          delete loading[src];
+        };
       }
     }
   }
@@ -329,6 +332,37 @@ function drawRightZone(
   };
 }
 
+function drawEndLine(ctx: CanvasRenderingContext2D) {
+  const LINE_PADDING = 20;
+  const { width: fontWidth, height, draw } = drawText(ctx, {
+    text: 'https://voderl.github.io/genshin-gacha-analyzer/',
+    font: `13px ${FONT_FAMILY}`,
+    fillStyle: '#988b81',
+    letterSpace: 1,
+    textBaseline: 'middle',
+  });
+  const HEIGHT = 20;
+  return {
+    height: HEIGHT,
+    draw(top: number) {
+      ctx.fillStyle = '#585757';
+      ctx.lineCap = 'round';
+      ctx.lineWidth = 2;
+      const centerY = top + HEIGHT / 2;
+      ctx.beginPath();
+      ctx.moveTo(LINE_PADDING, centerY);
+      ctx.lineTo(WIDTH / 2 - fontWidth / 2 - LINE_PADDING, centerY);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(WIDTH / 2 + fontWidth / 2 + LINE_PADDING, centerY);
+      ctx.lineTo(WIDTH - LINE_PADDING, centerY);
+      ctx.closePath();
+      ctx.stroke();
+      draw(WIDTH / 2 - fontWidth / 2, centerY);
+    },
+  };
+}
 export function renderToCanvas(
   achievements: AchievementCardProps[],
   cb: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => void,
@@ -337,8 +371,6 @@ export function renderToCanvas(
   const ctx: CanvasRenderingContext2D = canvas.getContext('2d', {
     alpha: false,
   }) as any;
-  (window as any).canvas = canvas;
-  (window as any).ctx = ctx;
   loadImage([AchievedPng, ShowPng], (data) => {
     const TOP_BOTTOM_PADDING = 2;
     let x = 0,
@@ -354,11 +386,13 @@ export function renderToCanvas(
       );
       y += height;
     }
+    const { height: endLineHeight, draw: drawEnd } = drawEndLine(ctx);
     canvas.width = WIDTH;
-    canvas.height = y + TOP_BOTTOM_PADDING;
+    canvas.height = y + TOP_BOTTOM_PADDING + endLineHeight;
     ctx.fillStyle = '#f0eae2';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     draws.forEach((f) => f());
+    drawEnd(y);
     cb(canvas, ctx);
   });
 }
