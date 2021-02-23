@@ -1,11 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Divider } from 'antd';
+import { Divider, message } from 'antd';
 import { AchievementCard, AchievementCardProps } from 'components/AchievementCard';
+import { IconButton } from 'components/IconButton';
+import ShareAltOutlined from '@ant-design/icons/ShareAltOutlined';
+import FormOutlined from '@ant-design/icons/FormOutlined';
+import MinusCircleTwoTone from '@ant-design/icons/MinusCircleTwoTone';
+import PlusCircleTwoTone from '@ant-design/icons/PlusCircleTwoTone';
+import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import { FONT_FAMILY_BOLD, FONT_FAMILY, SHOW_DATA_ALL_KEY } from 'const';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Data, DataItem, StarCacheType, GachaCacheType, DayCacheType } from 'types';
-import { achievements } from './achievements';
+import { achievements as achievementsFunc } from './achievements';
+import { renderToCanvas } from './renderToCanvas';
+//@ts-ignore
+import { saveAs } from 'file-saver';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
@@ -29,9 +38,42 @@ function getSheetKey(key: any, sheetNames: string[]) {
   const isChinese = CN_SHEETS.indexOf(sheetNames[0]) !== -1;
   return isChinese ? CN_SHEETS[key] : EN_SHEETS[key];
 }
+const iconCss = css`
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  padding: 10px;
+`;
+const WrappedAchievementCard: FC<{
+  isEditMode: boolean;
+  visible: boolean;
+  item: AchievementCardProps & {
+    visible: boolean;
+  };
+}> = function ({ isEditMode, item, visible }) {
+  const [isVisible, setVisible] = useState(visible);
+  const handleHide = useCallback(() => {
+    setVisible(!isVisible);
+    item.visible = !isVisible;
+  }, [isVisible]);
+  return (
+    <div style={{ opacity: isVisible ? 1 : 0.5, position: 'relative' }}>
+      <AchievementCard {...item}>
+        {isEditMode &&
+          (isVisible ? (
+            <MinusCircleTwoTone twoToneColor='#ee675c' css={iconCss} onClick={handleHide} />
+          ) : (
+            <PlusCircleTwoTone twoToneColor='#5bb974' css={iconCss} onClick={handleHide} />
+          ))}
+      </AchievementCard>
+    </div>
+  );
+};
 export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetNames }) {
-  const allData = onGetData(SHOW_DATA_ALL_KEY);
   const allAchievements = useMemo(() => {
+    const allData = onGetData(SHOW_DATA_ALL_KEY);
     // 将数据分散到表里面，做一个缓存处理，方便对数据进行筛选
     const character: StarCacheType = {
       '5': {},
@@ -103,14 +145,41 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
       pools,
     };
     if (process.env.NODE_ENV === 'development') console.log(info);
-    return achievements
+    const isDate = (str: string) => new Date(str).toString() !== 'Invalid Date';
+    const result = achievementsFunc
       .map((func) => func(info))
       .reduce((acc: Array<any>, cur: any) => {
         if (Array.isArray(cur)) return acc.concat(cur);
         if (typeof cur === 'object') acc.push(cur);
         return acc;
       }, []);
+    result.forEach((data) => {
+      const achievedTime = data.achievedTime;
+      if (achievedTime && isDate(achievedTime)) {
+        data.achievedTime = achievedTime.slice(0, 10).replaceAll('-', '/');
+      }
+      data.visible = true;
+    });
+    return result;
   }, []);
+  const [achievements, setAchievements] = useState(allAchievements);
+  const [isEditMode, setEditMode] = useState(false);
+  const handleRenderPng = useCallback(() => {
+    const data = achievements.filter((item) => item.visible !== false);
+    renderToCanvas(data, (canvas, ctx) => {
+      console.log(canvas, ctx);
+      canvas.toBlob(function (blob) {
+        saveAs(blob, 'achievements.png');
+      });
+    });
+  }, [achievements]);
+  const handleEdit = useCallback(() => {
+    setEditMode(!isEditMode);
+    if (!isEditMode) {
+      message.info('进入编辑模式，可以设置单个成就是否展示');
+      setAchievements(allAchievements);
+    } else setAchievements(allAchievements.filter((item) => item.visible));
+  }, [isEditMode]);
   return (
     <div
       css={css`
@@ -123,8 +192,35 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
         font-family: ${FONT_FAMILY_BOLD}, ${FONT_FAMILY};
       `}
     >
-      {allAchievements.map((props) => (
-        <AchievementCard {...props} />
+      <div
+        css={css`
+          position: fixed;
+          right: 10%;
+          z-index: 999;
+          top: 5px;
+        `}
+      >
+        <IconButton
+          placement='right'
+          tip='生成图片'
+          icon={<ShareAltOutlined />}
+          onClick={handleRenderPng}
+        />
+        <br />
+        <IconButton
+          placement='right'
+          tip={isEditMode ? '退出编辑' : '编辑成就'}
+          icon={isEditMode ? <CloseOutlined /> : <FormOutlined />}
+          onClick={handleEdit}
+        />
+      </div>
+      {achievements.map((props) => (
+        <WrappedAchievementCard
+          key={props.title}
+          item={props}
+          visible={props.visible}
+          isEditMode={isEditMode}
+        />
       ))}
       <Divider>
         <a href='https://github.com/voderl/genshin-gacha-analyzer/issues' target='_blank'>

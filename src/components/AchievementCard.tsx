@@ -11,20 +11,15 @@ export type AchievementCardProps = {
   value?: string | number;
   achievedTime?: string;
 };
-const isDate = (str: string) => new Date(str).toString() !== 'Invalid Date';
+
 export const AchievementCard: FC<AchievementCardProps> = function ({
   title,
   info,
   value,
   achievedTime,
+  children,
 }) {
   const isAchieved = !!achievedTime;
-  let formatTime;
-  if (achievedTime) {
-    formatTime = isDate(achievedTime)
-      ? achievedTime.slice(0, 10).replaceAll('-', '/')
-      : achievedTime;
-  }
   return (
     <div
       style={{
@@ -32,6 +27,7 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
         backgroundColor: '#ebe2d8',
       }}
       css={css`
+        position: relative;
         width: 100%;
         max-width: 800px;
         min-height: 100px;
@@ -45,6 +41,7 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
         margin: 4px auto;
       `}
     >
+      {children}
       <img
         src={/* isAchieved ? AchievedPng : UnAchievedPng */ AchievedPng}
         width='104'
@@ -100,7 +97,7 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
               font-size: 15px;
             `}
           >
-            {formatTime}
+            {achievedTime}
           </span>
         </div>
       ) : (
@@ -115,7 +112,7 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
           <span
             css={css`
               line-height: 96px;
-              font-size: 18px;
+              font-size: 20px;
             `}
           >
             {value}
