@@ -17,6 +17,7 @@ https://voderl.github.io/genshin-gacha-analyzer/
 
 ## 更新
 * 2.23
+  * 由于仅需要xlsx格式支持，更换xlsx.mini.min.js, 打包大小 -1M (最开始就试过换mini了，不过当时报错，现在可以正常使用了，不懂什么原因，迷惑
   * 成就页可以生成所获得成就的png图片
   * 一些ui上的优化，成就文案上的调整
 * 2.22
