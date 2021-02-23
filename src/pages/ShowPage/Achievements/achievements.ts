@@ -67,7 +67,7 @@ function formatByName(data: Data, format = defaultFormatter) {
   });
   return Object.keys(cache).map((key) => format(key, cache[key]));
 }
-const formatTime = (str: string) => str.slice(0, 10).replaceAll('-', '/');
+const formatTime = (str: string) => str.slice(0, 10).replace(/-/g, '/');
 const calculateTime = (t: number) => {
   var d = Math.floor(t / 1000 / 60 / 60 / 24);
   var h = Math.floor((t / 1000 / 60 / 60) % 24);

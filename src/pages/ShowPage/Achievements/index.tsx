@@ -156,7 +156,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
     result.forEach((data) => {
       const achievedTime = data.achievedTime;
       if (achievedTime && isDate(achievedTime)) {
-        data.achievedTime = achievedTime.slice(0, 10).replaceAll('-', '/');
+        data.achievedTime = achievedTime.slice(0, 10).replace(/-/g, '/');
       }
       data.visible = true;
     });
@@ -195,7 +195,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
       <div
         css={css`
           position: fixed;
-          right: 10%;
+          right: 8%;
           z-index: 999;
           top: 5px;
         `}

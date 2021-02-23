@@ -52,7 +52,7 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
       }
     });
     node.style.height = '100%';
-    node.style.margin = '0 auto';
+    node.canvas.style.margin = '0 auto';
     node.style.cellHorizontalAlignment = 'center';
     node.style.activeCellHorizontalAlignment = 'center';
     node.style.columnHeaderCellHorizontalAlignment = 'center';
