@@ -209,7 +209,9 @@ export const achievements: Array<(
   },
   function CangshuExpert({ pools }) {
     const { character, weapon } = pools;
-    const data = character.concat(weapon);
+    const data = character
+      .concat(weapon)
+      .sort((a, b) => (a.date === b.date ? a.总次数 - b.总次数 : a.date - b.date));
     const waitTime = data.slice(1).map((v, index) => v.date - data[index].date);
     if (waitTime.length === 0) return;
     const maxWaitTime = max(waitTime as Array<number>);
