@@ -4,7 +4,7 @@
 https://ngabbs.com/read.php?tid=25004616
 
 ## 网址
-https://voderl.github.io/genshin-gacha-analyzer/
+https://genshin-gacha-analyzer.vercel.app/
 
 如果你有一些建议或者想法，欢迎在[issue](https://github.com/voderl/genshin-gacha-analyzer/issues)中提出  
 你的建议非常重要，谢谢~

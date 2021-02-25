@@ -335,7 +335,7 @@ function drawRightZone(
 function drawEndLine(ctx: CanvasRenderingContext2D) {
   const LINE_PADDING = 20;
   const { width: fontWidth, height, draw } = drawText(ctx, {
-    text: 'https://voderl.github.io/genshin-gacha-analyzer/',
+    text: 'https://genshin-gacha-analyzer.vercel.app/',
     font: `13px ${FONT_FAMILY}`,
     fillStyle: '#988b81',
     letterSpace: 1,
