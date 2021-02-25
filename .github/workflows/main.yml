@@ -30,8 +30,8 @@ jobs:
           GENERATE_SOURCEMAP: ${{ secrets.GENERATE_SOURCEMAP }}
           PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
         run: |
-          npm install
-          npm run build
+          yarn
+          yarn build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.0.0
