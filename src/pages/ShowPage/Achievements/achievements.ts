@@ -207,7 +207,9 @@ export const achievements: Array<(
       value: _day.data.length,
     };
   },
-  function CangshuExpert({ data }) {
+  function CangshuExpert({ pools }) {
+    const { character, weapon } = pools;
+    const data = character.concat(weapon);
     const waitTime = data.slice(1).map((v, index) => v.date - data[index].date);
     if (waitTime.length === 0) return;
     const maxWaitTime = max(waitTime as Array<number>);
@@ -232,7 +234,9 @@ export const achievements: Array<(
     }
     return {
       title: `「${level}仓鼠」`,
-      info: `从${formatTime(fromTime)}到${formatTime(endTime)}没有进行抽卡。${info}`,
+      info: `从${formatTime(fromTime)}到${formatTime(
+        endTime,
+      )}没有使用「纠缠之缘」进行抽卡。${info}`,
       value: calculateTime(maxWaitTime),
       achievedTime: '持续时间',
     };
