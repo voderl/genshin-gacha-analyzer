@@ -105,11 +105,11 @@ export const achievements: Array<(
     const item = minBy(all[5][name].data, (item) => item.保底内);
     if (!item) return false;
     const count = item.保底内;
-    if (count > 10) return;
+    if (count > 30) return;
     let info = '';
-    if (count <= 3) info = `, 你的欧气无人能敌!`;
+    if (count <= 5) info = `, 你的欧气无人能敌!`;
     return {
-      title: '「欧皇在世」',
+      title: '「欧皇时刻」',
       info: `只抽了 ${item.保底内} 次就抽到了「${item.名称}」${info}`,
       achievedTime: item.时间,
       value: item.保底内,
@@ -161,15 +161,16 @@ export const achievements: Array<(
         notHitCount++;
       }
     }
-    if (notHitCount === 0)
-      return {
-        title: '「不倒翁」',
-        info: `在「角色活动祈愿」中抽中的五星角色均为当期Up角色`,
-      };
     const obj = {
       value: `${notHitCount} / ${hitCount + notHitCount}`,
       achievedTime: '小保底歪的概率',
     };
+    if (notHitCount === 0)
+      return {
+        title: '「不倒翁」',
+        info: `在「角色活动祈愿」中抽中的五星角色均为当期Up角色`,
+        ...obj,
+      };
     if (hitCount > notHitCount)
       return {
         title: '「晴时总比雨时多」',
@@ -178,7 +179,7 @@ export const achievements: Array<(
       };
     if (hitCount === notHitCount)
       return {
-        title: '「不偏不倚」',
+        title: '「晴雨各半」',
         info: `在「角色活动祈愿」中小保底歪与不歪持平`,
         ...obj,
       };
@@ -191,8 +192,8 @@ export const achievements: Array<(
   function maxGachaDay({ day, data }) {
     const _day = maxBy(Object.values(day), (today) => today.data.length);
     if (!_day) return false;
-    const percent = _day.data.length / data.length;
     const result = _day.data.filter((item) => item.星级 === 5);
+    if (result.length === 0) return;
     const resultStr =
       result.length === 0
         ? '然而并没有出黄，很痛苦'
@@ -216,14 +217,14 @@ export const achievements: Array<(
       endTime = data[index + 1].时间;
     const waitDay = maxWaitTime / 3600 / 24 / 1000;
     let level, info;
-    if (waitDay <= 10) {
-      level = '初级';
+    if (waitDay <= 15) {
+      level = '随缘';
       info = '是一只不太合格的仓鼠呢~';
-    } else if (waitDay <= 20) {
-      level = '中级';
+    } else if (waitDay <= 30) {
+      level = '合格';
       info = '你已经是一只合格的仓鼠了';
-    } else if (waitDay <= 40) {
-      level = '高级';
+    } else if (waitDay <= 60) {
+      level = '专家';
       info = '作为仓鼠，你就是专家!';
     } else {
       level = '大师';
@@ -263,7 +264,9 @@ export const achievements: Array<(
   },
   function maxFiveStarCharacter({ character }) {
     const sortedData = Object.values(character[5]).sort((b, a) => a.data.length - b.data.length);
+    if (sortedData.length === 0) return;
     const maxNum = sortedData[0].data.length;
+    if (maxNum === 1) return;
     const endIndex = sortedData.findIndex((v) => v.data.length !== maxNum);
     const names = sortedData
       .slice(0, endIndex)
@@ -277,7 +280,9 @@ export const achievements: Array<(
   },
   function maxFourStarCharacter({ character }) {
     const sortedData = Object.values(character[4]).sort((b, a) => a.data.length - b.data.length);
+    if (sortedData.length === 0) return;
     const maxNum = sortedData[0].data.length;
+    if (maxNum === 1) return;
     const endIndex = sortedData.findIndex((v) => v.data.length !== maxNum);
     const names = sortedData
       .slice(0, endIndex)
