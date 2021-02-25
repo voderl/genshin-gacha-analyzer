@@ -1,0 +1,31 @@
+{
+  "files": {
+    "static/js/0.cdd93c80.chunk.js": "./static/js/0.cdd93c80.chunk.js",
+    "static/js/1.69323054.chunk.js": "./static/js/1.69323054.chunk.js",
+    "static/js/2.391f78ae.chunk.js": "./static/js/2.391f78ae.chunk.js",
+    "main.css": "./static/css/main.45dcaa55.chunk.css",
+    "main.js": "./static/js/main.02d4bbe7.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.6e86c381.js",
+    "static/css/5.613b5f81.chunk.css": "./static/css/5.613b5f81.chunk.css",
+    "static/js/5.db9ede19.chunk.js": "./static/js/5.db9ede19.chunk.js",
+    "static/js/6.f5721fb8.chunk.js": "./static/js/6.f5721fb8.chunk.js",
+    "static/js/7.06546f72.chunk.js": "./static/js/7.06546f72.chunk.js",
+    "static/js/8.73852214.chunk.js": "./static/js/8.73852214.chunk.js",
+    "static/js/9.b6844120.chunk.js": "./static/js/9.b6844120.chunk.js",
+    "static/js/10.e50be786.chunk.js": "./static/js/10.e50be786.chunk.js",
+    "index.html": "./index.html",
+    "static/js/1.69323054.chunk.js.LICENSE.txt": "./static/js/1.69323054.chunk.js.LICENSE.txt",
+    "static/js/5.db9ede19.chunk.js.LICENSE.txt": "./static/js/5.db9ede19.chunk.js.LICENSE.txt",
+    "static/js/6.f5721fb8.chunk.js.LICENSE.txt": "./static/js/6.f5721fb8.chunk.js.LICENSE.txt",
+    "static/media/App.css": "./static/media/HYWenHei-85W.d7edea32.woff",
+    "static/media/achievement_achieved.49d0cc2e.png": "./static/media/achievement_achieved.49d0cc2e.png",
+    "static/media/achievement_show.b270d366.png": "./static/media/achievement_show.b270d366.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6e86c381.js",
+    "static/css/5.613b5f81.chunk.css",
+    "static/js/5.db9ede19.chunk.js",
+    "static/css/main.45dcaa55.chunk.css",
+    "static/js/main.02d4bbe7.chunk.js"
+  ]
+}
