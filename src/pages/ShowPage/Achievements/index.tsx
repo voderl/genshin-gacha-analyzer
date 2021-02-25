@@ -36,7 +36,7 @@ export const EN_SHEETS = [
 export const CN_SHEETS = ['角色活动祈愿', '武器活动祈愿', '常驻祈愿', '新手祈愿'];
 function getSheetKey(key: any, sheetNames: string[]) {
   const isChinese = CN_SHEETS.indexOf(sheetNames[0]) !== -1;
-  return isChinese ? CN_SHEETS[key] : EN_SHEETS[key];
+  return isChinese ? CN_SHEETS[key] : sheetNames[key];
 }
 const iconCss = css`
   position: absolute;
@@ -185,6 +185,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
           content: '生成图片失败，请重试或更换浏览器',
           key,
         });
+        throw new Error(e);
       }
     });
   }, [achievements]);
