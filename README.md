@@ -1,7 +1,8 @@
 # Genshin Gacha Analyzer | 原神抽卡记录分析工具
 
 ## 如何获取xlsx文件？
-https://ngabbs.com/read.php?tid=25004616
+sunfkny的[抽卡记录导出工具](https://ngabbs.com/read.php?tid=25004616)  
+lvlvl的[electron版抽卡记录导出工具](https://ngabbs.com/read.php?tid=25559039)，导出数据后选择导出Excel
 
 ## 网址
 https://genshin-gacha-analyzer.vercel.app/
@@ -16,7 +17,8 @@ https://genshin-gacha-analyzer.vercel.app/
 
 
 ## 更新
-* 2.24 // 希望成就能展示更多正面的东西，让大家开心
+* 2.25
+ // 希望成就能展示更多正面的东西，让大家开心
   * 「欧皇在世」(<=10抽显示)  =>  「欧皇时刻」(<=30抽显示)
   * 「豪掷千金」(最多抽数的一天) =>  「豪掷千金」(最多抽数的一天，如果没出黄则不展示)
   * 「仓鼠」文案修改，节点分别为 15天，30天，60天
