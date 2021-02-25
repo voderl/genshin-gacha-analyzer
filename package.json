@@ -30,7 +30,8 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node scripts/compressFont.js && react-scripts start",
     "build": "node scripts/compressFont.js && react-scripts build",
-    "build:no-source-map": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "build:no-source-map": "set \"GENERATE_SOURCEMAP=false\" && node scripts/compressFont.js && react-scripts build",
+    "build:local": "set \"PUBLIC_URL=./\" && set \"GENERATE_SOURCEMAP=false\" && node scripts/compressFont.js && react-scripts build",
     "compressFont": "node scripts/compressFont.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
