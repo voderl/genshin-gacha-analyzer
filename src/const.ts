@@ -89,6 +89,13 @@ export const CHARACTER_POOLS: PoolType[] = [
     four: ['凝光', '班尼特', '芭芭拉'],
     name: '鱼龙灯昼',
   },
+  {
+    from: '2021-03-02 18:00:00',
+    to: '2021-03-16 14:59:59',
+    five: ['胡桃'],
+    four: ['行秋', '香菱', '重云'],
+    name: '赤团开时',
+  },
 ].map((v) => {
   const o: PoolType = v as any;
   o.from = +new Date(v.from);
