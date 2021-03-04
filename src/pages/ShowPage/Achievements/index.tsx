@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Divider, message } from 'antd';
+import { Button, Divider, message } from 'antd';
 import { AchievementCard, AchievementCardProps } from 'components/AchievementCard';
 import { IconButton } from 'components/IconButton';
 import ShareAltOutlined from '@ant-design/icons/ShareAltOutlined';
@@ -8,7 +8,7 @@ import FormOutlined from '@ant-design/icons/FormOutlined';
 import MinusCircleTwoTone from '@ant-design/icons/MinusCircleTwoTone';
 import PlusCircleTwoTone from '@ant-design/icons/PlusCircleTwoTone';
 import CloseOutlined from '@ant-design/icons/CloseOutlined';
-import { FONT_FAMILY_BOLD, FONT_FAMILY, SHOW_DATA_ALL_KEY } from 'const';
+import { FONT_FAMILY_BOLD, FONT_FAMILY, SHOW_DATA_ALL_KEY, ISMOBILE } from 'const';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Data, DataItem, StarCacheType, GachaCacheType, DayCacheType } from 'types';
 import { achievements as achievementsFunc } from './achievements';
@@ -208,28 +208,30 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
         font-family: ${FONT_FAMILY_BOLD}, ${FONT_FAMILY};
       `}
     >
-      <div
-        css={css`
-          position: fixed;
-          right: 8%;
-          z-index: 999;
-          top: 5px;
-        `}
-      >
-        <IconButton
-          placement='right'
-          tip='生成图片'
-          icon={<ShareAltOutlined />}
-          onClick={handleRenderPng}
-        />
-        <br />
-        <IconButton
-          placement='right'
-          tip={isEditMode ? '退出编辑' : '编辑成就'}
-          icon={isEditMode ? <CloseOutlined /> : <FormOutlined />}
-          onClick={handleEdit}
-        />
-      </div>
+      {!ISMOBILE && (
+        <div
+          css={css`
+            position: fixed;
+            right: 8%;
+            z-index: 999;
+            top: 64px;
+          `}
+        >
+          <IconButton
+            placement='right'
+            tip='生成图片'
+            icon={<ShareAltOutlined />}
+            onClick={handleRenderPng}
+          />
+          <br />
+          <IconButton
+            placement='right'
+            tip={isEditMode ? '退出编辑' : '编辑成就'}
+            icon={isEditMode ? <CloseOutlined /> : <FormOutlined />}
+            onClick={handleEdit}
+          />
+        </div>
+      )}
       {achievements.map((props) => (
         <WrappedAchievementCard
           key={props.title}
@@ -238,6 +240,18 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
           isEditMode={isEditMode}
         />
       ))}
+      {ISMOBILE && (
+        <Button
+          type='primary'
+          css={css`
+            display: block;
+            margin: 10px auto;
+          `}
+          onClick={handleRenderPng}
+        >
+          生成图片
+        </Button>
+      )}
       <Divider>
         <a href='https://github.com/voderl/genshin-gacha-analyzer/issues' target='_blank'>
           更多成就开发中，欢迎前往issue提出你的建议...

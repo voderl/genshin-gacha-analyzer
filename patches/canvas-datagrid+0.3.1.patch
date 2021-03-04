@@ -20,6 +20,18 @@ index 40fea42..5235e21 100644
    };
    return component;
  }
+diff --git a/node_modules/canvas-datagrid/lib/main.js b/node_modules/canvas-datagrid/lib/main.js
+index 0a74d76..42a675f 100644
+--- a/node_modules/canvas-datagrid/lib/main.js
++++ b/node_modules/canvas-datagrid/lib/main.js
+@@ -61,6 +61,7 @@ function Grid(args) {
+     self.parentNode = self.shadowRoot;
+   }
+   self.init();
++  self.intf.self = self;
+   return self.intf;
+ }
+ if (window.HTMLElement) {
 diff --git a/node_modules/canvas-datagrid/package.json b/node_modules/canvas-datagrid/package.json
 index 5338514..a45937f 100644
 --- a/node_modules/canvas-datagrid/package.json

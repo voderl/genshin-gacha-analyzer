@@ -1,4 +1,10 @@
 import { PoolType } from 'types';
+import isMobile from 'ismobilejs';
+
+export const DEVICE = isMobile(window.navigator);
+
+export const ISMOBILE = DEVICE.any;
+
 export const SHOW_DATA_ALL_KEY = '总览';
 
 export const FONT_FAMILY = 'HYWenHei-65W';

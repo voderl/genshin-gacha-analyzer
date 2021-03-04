@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { COLOR, FONT_FAMILY } from 'const';
-import React, { FC, useCallback, useMemo } from 'react';
+import { COLOR, FONT_FAMILY, ISMOBILE } from 'const';
+import React, { FC, useCallback } from 'react';
 import { CanvasDataGrid } from './CanvasDataGrid';
 
 type WorkSheetProps = {
@@ -26,6 +26,8 @@ const attributes = {
   allowColumnResize: false,
   allowRowResize: false,
   orderBy: '时间',
+  touchZoomMin: 0.5,
+  touchZoomMax: 1.5,
 };
 export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate }) {
   const handleCreate = useCallback((node: any) => {
@@ -52,6 +54,7 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
       }
     });
     node.style.height = '100%';
+    if (ISMOBILE) node.style.width = '100%';
     node.canvas.style.margin = '0 auto';
     node.style.cellHorizontalAlignment = 'center';
     node.style.activeCellHorizontalAlignment = 'center';
@@ -73,8 +76,6 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
         position: relative;
         overflow-y: hidden;
         overflow-x: auto;
-        margin-bottom: 20px;
-        padding-right: 70px;
         border-bottom: 2px dotted thistle;
       `}
       onCreate={handleCreate}

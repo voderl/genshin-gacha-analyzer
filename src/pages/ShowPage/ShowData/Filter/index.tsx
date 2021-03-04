@@ -11,6 +11,7 @@ import { DataItem } from 'types';
 type FilterProps = {
   activeKey?: string;
   onChange?: (values: any) => any;
+  [key: string]: any;
 };
 // 根据值数组 做一个filter
 function makeFilterByArray(array: any[], format?: (v: any) => any) {
@@ -79,7 +80,7 @@ function countObjectProperty(object: any): number {
     return true;
   }).length;
 }
-export const Filter: FC<FilterProps> = function ({ activeKey, onChange }) {
+export const Filter: FC<FilterProps> = function ({ activeKey, onChange, ...props }) {
   const [visible, setVisible] = useState(false);
   const [count, setCount] = useState(0);
   const [form] = Form.useForm();
@@ -177,15 +178,7 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange }) {
       visible={visible}
       onVisibleChange={handleVisibleChange}
     >
-      <Button
-        type='primary'
-        css={css`
-          position: absolute;
-          top: 68px;
-          z-index: 999;
-        `}
-        icon={<FilterOutlined />}
-      >
+      <Button type='primary' icon={<FilterOutlined />} {...props}>
         筛选{count === 0 ? '' : `(${count})`}
       </Button>
     </Popover>
