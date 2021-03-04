@@ -254,18 +254,22 @@ export const achievements: Array<(
     };
   },
   function gacha10Data({ gacha }) {
-    const maxGacha = maxBy(gacha[10], (item) => {
-      return item.data.filter((v) => v.星级 === 5).length;
-    });
-    if (!maxGacha) return;
-    const count = maxGacha.data.filter((v) => v.星级 === 5).length;
-    if (count <= 1) return;
+    const gachaFiveStarCountArr = gacha[10].map(
+      (item) => item.data.filter((v) => v.星级 === 5).length,
+    );
+    if (gachaFiveStarCountArr.length === 0) return;
+    gachaFiveStarCountArr.sort((a, b) => b - a);
+    const fiveStarCount = gachaFiveStarCountArr[0];
+    if (fiveStarCount <= 1) return;
+    const count = gachaFiveStarCountArr.lastIndexOf(fiveStarCount) + 1; // 达成次数
     const mapping = ['单', '双', '三', '四', '五', '六', '七', '八', '九', '十'];
+    let extraInfo = '';
+    if (fiveStarCount >= 3) extraInfo = '，你就是极致的欧皇!';
     return {
-      title: `「${mapping[count - 1]}黄蛋!」`,
-      info: `在一次十连中，你抽取到了 ${count} 只五星。`,
+      title: `「${mapping[fiveStarCount - 1]}黄蛋!」`,
+      info: `在一次十连中，你抽取到了 ${fiveStarCount} 只五星${extraInfo}`,
       value: count,
-      achievedTime: maxGacha.data[0].时间,
+      achievedTime: '达成次数',
     };
   },
   function maxFiveStarCharacter({ character }) {
