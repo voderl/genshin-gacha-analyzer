@@ -4,7 +4,7 @@ import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Tabs } from 'antd';
 import UpOutlined from '@ant-design/icons/UpOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
-import { SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
+import { ISMOBILE, SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
 import { WorkSheet } from 'components/WorkSheet';
 import { Filter } from './Filter';
 import { IconButton } from 'components/IconButton';
@@ -55,43 +55,70 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
         height: 100%;
         display: flex;
         flex-direction: column;
+        padding-bottom: ${ISMOBILE ? 0 : 20}px;
       `}
     >
       <Tabs
         activeKey={activeKey}
         onChange={handleChange}
-        size='large'
+        size={ISMOBILE ? 'middle' : 'large'}
         centered
-        css={css`
-          .ant-tabs-nav {
-            background: #fff;
-            height: 64px;
-          }
-        `}
+        css={
+          ISMOBILE
+            ? css`
+                background: #fff;
+                padding: 0 10px;
+                .ant-tabs-nav {
+                  background: #fff;
+                  height: 48px;
+                }
+              `
+            : css`
+                .ant-tabs-nav {
+                  background: #fff;
+                  height: 64px;
+                }
+              `
+        }
       >
         {tabs.map((name: string) => (
           <TabPane tab={name} key={name} />
         ))}
         <TabPane tab={SHOW_DATA_ALL_KEY} key={SHOW_DATA_ALL_KEY} />
-        <Filter onChange={handleFilterChange} activeKey={activeKey} />
       </Tabs>
-      <div
+      <Filter
         css={css`
           position: absolute;
-          right: 10%;
+          top: ${ISMOBILE ? 56 : 68}px;
           z-index: 999;
-          top: 72px;
         `}
-      >
-        <IconButton placement='right' tip='前往顶部' icon={<UpOutlined />} onClick={handleGoTop} />
-        <br />
-        <IconButton
-          placement='right'
-          tip='前往底部'
-          icon={<DownOutlined />}
-          onClick={handleGoBottom}
-        />
-      </div>
+        onChange={handleFilterChange}
+        activeKey={activeKey}
+      />
+      {!ISMOBILE && (
+        <div
+          css={css`
+            position: absolute;
+            right: 10%;
+            z-index: 999;
+            top: 72px;
+          `}
+        >
+          <IconButton
+            placement='right'
+            tip='前往顶部'
+            icon={<UpOutlined />}
+            onClick={handleGoTop}
+          />
+          <br />
+          <IconButton
+            placement='right'
+            tip='前往底部'
+            icon={<DownOutlined />}
+            onClick={handleGoBottom}
+          />
+        </div>
+      )}
       <WorkSheet
         data={data}
         schema={activeKey === SHOW_DATA_ALL_KEY ? SCHEMA_ALL : SCHEMA}

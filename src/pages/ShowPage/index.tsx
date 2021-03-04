@@ -1,16 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useCallback, useContext, useMemo, useState, Suspense, lazy, memo } from 'react';
-import { Menu, Layout, Spin } from 'antd';
-import RawGithubCorner from 'react-github-corner';
+import { FC, useCallback, useMemo, useState, Suspense, lazy, memo } from 'react';
+import { Layout, Spin } from 'antd';
 import XLSXType, { WorkSheet as WorkSheetType } from 'xlsx/types';
-import GlobalContext from 'context/GlobalContext';
+import { useGlobalContext } from 'context/GlobalContext';
 import { SHOW_DATA_ALL_KEY } from 'const';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
-import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
-import UnorderedListOutlined from '@ant-design/icons/UnorderedListOutlined';
-import StarOutlined from '@ant-design/icons/StarOutlined';
+import CustomSider from './CustomSider';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
@@ -22,24 +19,12 @@ const Timeline = lazy(() =>
     default: module.Timeline,
   })),
 );
-const GithubCorner = memo(
-  () => (
-    <RawGithubCorner
-      href='https://github.com/voderl/genshin-gacha-analyzer'
-      target='_blank'
-      direction='left'
-      bannerColor='#70B7FD'
-      octoColor='#fff'
-      size={60}
-    />
-  ),
-  () => true,
-);
+
 type ShowPageProps = {};
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 export const ShowPage: FC<ShowPageProps> = function () {
-  const { workbook } = useContext(GlobalContext);
+  const { workbook, isVertical } = useGlobalContext();
   const sheetNames = (workbook as any).SheetNames;
   const getJson = useMemo(() => {
     const cache = Object.create(null);
@@ -76,63 +61,41 @@ export const ShowPage: FC<ShowPageProps> = function () {
   return (
     <Layout
       css={css`
-        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
       `}
+      style={{
+        flexDirection: isVertical ? 'column' : 'row',
+      }}
     >
-      <Sider
-        theme='light'
-        width='15%'
-        style={{
-          height: '100vh',
-        }}
+      <CustomSider isVertical={isVertical} onMenuChange={handleMenuChange} />
+      <Content
+        css={css`
+          margin: 0;
+          position: relative;
+          width: 100%;
+          height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+        `}
       >
-        <GithubCorner />
-        <Menu
-          mode='inline'
-          defaultSelectedKeys={['rawData']}
-          onSelect={handleMenuChange}
-          css={css`
-            margin-top: 80px;
-            .ant-menu-item {
-              height: 60px;
-              line-height: 60px;
-            }
-          `}
+        <Suspense
+          fallback={
+            <Spin
+              size='large'
+              tip='加载中...'
+              css={css`
+                display: block;
+                margin: 150px auto;
+              `}
+            />
+          }
         >
-          <Menu.Item key='timeline' icon={<BarChartOutlined />}>
-            时间轴
-          </Menu.Item>
-          <Menu.Item key='rawData' icon={<UnorderedListOutlined />}>
-            原数据
-          </Menu.Item>
-          <Menu.Item key='achievements' icon={<StarOutlined />}>
-            成就表
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout>
-        <Content
-          css={css`
-            margin: 0;
-            position: relative;
-          `}
-        >
-          <Suspense
-            fallback={
-              <Spin
-                size='large'
-                tip='加载中...'
-                css={css`
-                  display: block;
-                  margin: 150px auto;
-                `}
-              />
-            }
-          >
-            {renderContent(activeMenu)}
-          </Suspense>
-        </Content>
-      </Layout>
+          {renderContent(activeMenu)}
+        </Suspense>
+      </Content>
     </Layout>
   );
 };

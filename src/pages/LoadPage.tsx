@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useCallback, useContext, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Button, Upload, Alert, Spin } from 'antd';
 import InboxOutlined from '@ant-design/icons/InboxOutlined';
 import { RcFile } from 'antd/lib/upload';
-import GlobalContext from 'context/GlobalContext';
+import { useGlobalContext } from 'context/GlobalContext';
 import XLSXNameSpace from 'xlsx/types';
 
 const { Dragger } = Upload;
@@ -19,7 +19,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [loading, setLoading] = useState<Boolean>(false);
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
   const [loadingTip, setLoadingTip] = useState('加载中...');
-  const { updateWorkbook } = useContext(GlobalContext);
+  const { updateWorkbook } = useGlobalContext();
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
       setErrorMessage('文件类型错误，请上传xlsx文件');
@@ -52,9 +52,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   return (
     <div
       css={css`
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        overflow: auto;
       `}
     >
       <div
@@ -83,12 +81,14 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       </div>
       <Dragger
         name='file'
-        accept='.xlsx'
+        accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xlsx'
         multiple={false}
         beforeUpload={handleUpload}
         showUploadList={false}
         css={css`
-          min-width: 600px;
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
           padding: 40px;
         `}
       >
@@ -101,8 +101,9 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       </Dragger>
       <Alert
         css={css`
-          margin: 20px 0;
-          width: 600px;
+          margin: 20px auto;
+          width: 100%;
+          max-width: 600px;
         `}
         message={
           <div>
