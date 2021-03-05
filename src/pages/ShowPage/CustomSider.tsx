@@ -7,6 +7,7 @@ import RawGithubCorner from 'react-github-corner';
 import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
 import UnorderedListOutlined from '@ant-design/icons/UnorderedListOutlined';
 import StarOutlined from '@ant-design/icons/StarOutlined';
+import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
 
 const { Sider, Header } = Layout;
 
@@ -54,6 +55,9 @@ const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange }) => {
     >
       <Menu.Item key='timeline' icon={<BarChartOutlined />}>
         时间轴
+      </Menu.Item>
+      <Menu.Item key='analysisChart' icon={<PieChartOutlined />}>
+        分析图
       </Menu.Item>
       <Menu.Item key='rawData' icon={<UnorderedListOutlined />}>
         原数据
