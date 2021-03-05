@@ -71,6 +71,7 @@ const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange }) => {
     return (
       <Header
         css={css`
+          padding-right: 0px;
           background: #fff;
           line-height: 56px;
         `}
