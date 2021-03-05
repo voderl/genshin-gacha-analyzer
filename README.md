@@ -10,13 +10,30 @@ https://genshin-gacha-analyzer.vercel.app/
 如果你有一些建议或者想法，欢迎在[issue](https://github.com/voderl/genshin-gacha-analyzer/issues)中提出  
 你的建议非常重要，谢谢~
 
+## Available Scripts
+
+In the project directory, you can run:
+### `yarn`
+Install
+
+### `yarn start`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
 ## TODO:
-1. 增加更多的成就，并限制展示条件。比如只有出双黄才有双黄成就，比如仓鼠专家(初级|中级|高级)  
+1. 增加更多的成就，并限制展示条件。 
    如果你对成就有建议可以在[issue](https://github.com/voderl/genshin-gacha-analyzer/issues)中提出。
-2. 更多的分析图表
+2. 饼图可以导出为图片
+3. 进一步重构，由于项目开始时的个人能力与规划问题，代码需要进一步重构
 
 
 ## 更新
+* 3.06
+  * 饼图，参考自[nga链接](https://ngabbs.com/read.php?tid=25559039)
+  * 增加全局缓存，避免因Menu和Tabs的切换而造成多次计算
+* 3.05
+  * 手机端更好的展示，现在勉强能用了
+  * fix #4
 * 2.25
  // 希望成就能展示更多正面的东西，让大家开心
   * 「欧皇在世」(<=10抽显示)  =>  「欧皇时刻」(<=30抽显示)
@@ -33,19 +50,3 @@ https://genshin-gacha-analyzer.vercel.app/
 * 2.21 
   * 在角色活动祈愿，武器活动祈愿中，筛选按钮增加往期Up池筛选
   * 成就增加 小保底是否歪了 相关成就，并修改部分成就的显示条件(有些成就不满足条件不显示)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn build`
-
-
