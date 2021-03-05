@@ -8,6 +8,7 @@ import { SHOW_DATA_ALL_KEY } from 'const';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
 import CustomSider from './CustomSider';
+import { CacheContextProvider } from 'context/CacheContext';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
@@ -17,6 +18,11 @@ const ShowData = lazy(() =>
 const Timeline = lazy(() =>
   import(/* webpackPrefetch: true */ './Timeline').then((module) => ({
     default: module.Timeline,
+  })),
+);
+const AnalysisChart = lazy(() =>
+  import(/* webpackPrefetch: true */ './AnalysisChart').then((module) => ({
+    default: module.AnalysisChart,
   })),
 );
 
@@ -53,6 +59,8 @@ export const ShowPage: FC<ShowPageProps> = function () {
   }, []);
   const renderContent = useCallback((key) => {
     if (key === 'rawData') return <ShowData onGetData={getJson} tabs={sheetNames} />;
+    else if (key === 'analysisChart')
+      return <AnalysisChart sheetNames={sheetNames} onGetData={getJson} />;
     else if (key === 'timeline') return <Timeline onGetData={getJson} />;
     else if (key === 'achievements')
       return <Achievements onGetData={getJson} sheetNames={sheetNames} />;
@@ -81,20 +89,22 @@ export const ShowPage: FC<ShowPageProps> = function () {
           overflow-y: auto;
         `}
       >
-        <Suspense
-          fallback={
-            <Spin
-              size='large'
-              tip='加载中...'
-              css={css`
-                display: block;
-                margin: 150px auto;
-              `}
-            />
-          }
-        >
-          {renderContent(activeMenu)}
-        </Suspense>
+        <CacheContextProvider path={activeMenu}>
+          <Suspense
+            fallback={
+              <Spin
+                size='large'
+                tip='加载中...'
+                css={css`
+                  display: block;
+                  margin: 150px auto;
+                `}
+              />
+            }
+          >
+            {renderContent(activeMenu)}
+          </Suspense>
+        </CacheContextProvider>
       </Content>
     </Layout>
   );

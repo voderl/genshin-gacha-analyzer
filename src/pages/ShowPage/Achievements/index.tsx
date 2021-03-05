@@ -15,6 +15,7 @@ import { achievements as achievementsFunc } from './achievements';
 import { renderToCanvas } from './renderToCanvas';
 //@ts-ignore
 import { saveAs } from 'file-saver';
+import { useCacheMemo } from 'context/CacheContext';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
@@ -72,96 +73,100 @@ const WrappedAchievementCard: FC<{
   );
 };
 export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetNames }) {
-  const allAchievements = useMemo(() => {
-    const allData = onGetData(SHOW_DATA_ALL_KEY);
-    // 将数据分散到表里面，做一个缓存处理，方便对数据进行筛选
-    const character: StarCacheType = {
-      '5': {},
-      '4': {},
-    };
-    const all: StarCacheType = {
-      '5': {},
-      '4': {},
-      '3': {},
-    };
-    const weapon: StarCacheType = {
-      '5': {},
-      '4': {},
-      '3': {},
-    };
-    const day: DayCacheType = {};
-    const gacha: GachaCacheType = {
-      10: [],
-      1: [],
-    };
-    const pools = {
-      character: onGetData(getSheetKey(POOLS.CHARACTER, sheetNames)),
-      weapon: onGetData(getSheetKey(POOLS.WEAPON, sheetNames)),
-      novice: onGetData(getSheetKey(POOLS.NOVICE, sheetNames)),
-      permanent: onGetData(getSheetKey(POOLS.PERMANENT, sheetNames)),
-    };
-    const walk = (item: DataItem) => {
-      let cache = item.类别 === '角色' ? character : weapon;
-      if (item.名称 in all[item.星级]) all[item.星级][item.名称].data.push(item);
-      else {
-        all[item.星级][item.名称] = {
-          data: [item],
-        };
+  const allAchievements = useCacheMemo(
+    () => {
+      const allData = onGetData(SHOW_DATA_ALL_KEY);
+      // 将数据分散到表里面，做一个缓存处理，方便对数据进行筛选
+      const character: StarCacheType = {
+        '5': {},
+        '4': {},
+      };
+      const all: StarCacheType = {
+        '5': {},
+        '4': {},
+        '3': {},
+      };
+      const weapon: StarCacheType = {
+        '5': {},
+        '4': {},
+        '3': {},
+      };
+      const day: DayCacheType = {};
+      const gacha: GachaCacheType = {
+        10: [],
+        1: [],
+      };
+      const pools = {
+        character: onGetData(getSheetKey(POOLS.CHARACTER, sheetNames)),
+        weapon: onGetData(getSheetKey(POOLS.WEAPON, sheetNames)),
+        novice: onGetData(getSheetKey(POOLS.NOVICE, sheetNames)),
+        permanent: onGetData(getSheetKey(POOLS.PERMANENT, sheetNames)),
+      };
+      const walk = (item: DataItem) => {
+        let cache = item.类别 === '角色' ? character : weapon;
+        if (item.名称 in all[item.星级]) all[item.星级][item.名称].data.push(item);
+        else {
+          all[item.星级][item.名称] = {
+            data: [item],
+          };
+        }
+        const currentDay = item.时间.slice(0, 10);
+        if (currentDay in day) {
+          day[currentDay].data.push(item);
+        } else {
+          day[currentDay] = { data: [item] };
+        }
+        if (!(item.名称 in cache[item.星级])) {
+          cache[item.星级][item.名称] = {
+            data: [item],
+          };
+        } else cache[item.星级][item.名称].data.push(item);
+      };
+      for (let i = 0, len = allData.length; i < len; ) {
+        const current = allData[i];
+        if (i < len - 1 && allData[i + 1].date === current.date) {
+          const temp = allData.slice(i, i + 10);
+          temp.forEach(walk);
+          gacha[10].push({
+            data: temp,
+          });
+          i = i + 10;
+        } else {
+          walk(current);
+          gacha[1].push(current);
+          i++;
+        }
       }
-      const currentDay = item.时间.slice(0, 10);
-      if (currentDay in day) {
-        day[currentDay].data.push(item);
-      } else {
-        day[currentDay] = { data: [item] };
-      }
-      if (!(item.名称 in cache[item.星级])) {
-        cache[item.星级][item.名称] = {
-          data: [item],
-        };
-      } else cache[item.星级][item.名称].data.push(item);
-    };
-    for (let i = 0, len = allData.length; i < len; ) {
-      const current = allData[i];
-      if (i < len - 1 && allData[i + 1].date === current.date) {
-        const temp = allData.slice(i, i + 10);
-        temp.forEach(walk);
-        gacha[10].push({
-          data: temp,
-        });
-        i = i + 10;
-      } else {
-        walk(current);
-        gacha[1].push(current);
-        i++;
-      }
-    }
-    const info = {
-      all,
-      character,
-      weapon,
-      data: allData,
-      gacha,
-      day,
-      pools,
-    };
-    if (process.env.NODE_ENV === 'development') console.log(info);
-    const isDate = (str: string) => new Date(str).toString() !== 'Invalid Date';
-    const result = achievementsFunc
-      .map((func) => func(info))
-      .reduce((acc: Array<any>, cur: any) => {
-        if (Array.isArray(cur)) return acc.concat(cur);
-        if (typeof cur === 'object') acc.push(cur);
-        return acc;
-      }, []);
-    result.forEach((data) => {
-      const achievedTime = data.achievedTime;
-      if (achievedTime && isDate(achievedTime)) {
-        data.achievedTime = achievedTime.slice(0, 10).replace(/-/g, '/');
-      }
-      data.visible = true;
-    });
-    return result;
-  }, []);
+      const info = {
+        all,
+        character,
+        weapon,
+        data: allData,
+        gacha,
+        day,
+        pools,
+      };
+      if (process.env.NODE_ENV === 'development') console.log(info);
+      const isDate = (str: string) => new Date(str).toString() !== 'Invalid Date';
+      const result = achievementsFunc
+        .map((func) => func(info))
+        .reduce((acc: Array<any>, cur: any) => {
+          if (Array.isArray(cur)) return acc.concat(cur);
+          if (typeof cur === 'object') acc.push(cur);
+          return acc;
+        }, []);
+      result.forEach((data) => {
+        const achievedTime = data.achievedTime;
+        if (achievedTime && isDate(achievedTime)) {
+          data.achievedTime = achievedTime.slice(0, 10).replace(/-/g, '/');
+        }
+        data.visible = true;
+      });
+      return result;
+    },
+    [],
+    'achievements',
+  );
   const [achievements, setAchievements] = useState(allAchievements);
   const [isEditMode, setEditMode] = useState(false);
   const handleRenderPng = useCallback(() => {

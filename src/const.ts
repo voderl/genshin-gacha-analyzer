@@ -13,6 +13,7 @@ export const FONT_FAMILY_BOLD = 'HYWenHei-85W';
 export const COLOR = {
   FOUR_STAR: '#A65FE2',
   FIVE_STAR: '#C0713D',
+  THREE_STAR: '#4D8DF7',
 };
 // fix: canvas-datagrid have error when filter number
 const numberFilter = function (value: number, filterFor: string | undefined) {
