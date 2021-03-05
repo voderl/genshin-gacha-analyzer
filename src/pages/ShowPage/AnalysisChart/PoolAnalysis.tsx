@@ -8,6 +8,7 @@ import meanBy from 'lodash/meanBy';
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { DataItem } from 'types';
 import { timeFormatter, percent, getColorByPercent } from './utils';
+import { useCacheMemo } from 'context/CacheContext';
 
 interface PoolAnalysisProps {
   sheetName: string;
@@ -15,50 +16,54 @@ interface PoolAnalysisProps {
 }
 
 export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
-  const info = useMemo(() => {
-    // 解析数据
-    const isWeaponPool = (sheetName: string) => sheetName.indexOf('武器') !== -1;
-    const poolMax = isWeaponPool(sheetName) ? 80 : 90;
-    const isWeapon = (item: DataItem) => item.类别 === '武器';
-    const keys = ['character5', 'weapon5', 'character4', 'weapon4', 'weapon3'];
-    const langs = ['5星角色', '5星武器', '4星角色', '4星武器', '3星武器'];
-    const colors = ['#fac858', '#ee6666', '#5470c6', '#91cc75', '#73c0de'];
-    const colorByKey = Object.fromEntries(keys.map((key, index) => [key, colors[index]]));
-    const countByKey = Object.fromEntries(keys.map((key) => [key, 0]));
-    const langByKey = Object.fromEntries(keys.map((key, index) => [key, langs[index]]));
-    const fiveStarHistory: DataItem[] = [];
-    data.forEach((item) => {
-      if (item.星级 === 5) fiveStarHistory.push(item);
-      countByKey[`${isWeapon(item) ? 'weapon' : 'character'}${item.星级}`] += 1;
-    });
-    const lastFiveStar = fiveStarHistory.length === 0 ? null : takeRight(fiveStarHistory)[0];
-    const leftCount = lastFiveStar
-      ? data.length - data.lastIndexOf(lastFiveStar!) - 1
-      : data.length;
-    const chartDataList = keys.filter((key) => countByKey[key] !== 0);
-    const chartData = chartDataList.map((key) => ({
-      value: countByKey[key],
-      name: langByKey[key],
-    }));
-    const chartColors = chartDataList.map((key) => colorByKey[key]);
-    return {
-      chartSelected: {
-        [langByKey['weapon3']]: data.length > 20 ? false : true,
-      },
-      poolMax,
-      chartData,
-      chartColors,
-      fromTime: data[0].date,
-      toTime: data[data.length - 1].date,
-      totalCount: data.length,
-      leftCount,
-      fiveStarCount: fiveStarHistory.length,
-      fourStarCount: countByKey['weapon4'] + countByKey['character4'],
-      threeStarCount: countByKey['weapon3'],
-      fiveStarHistory,
-      fiveStarAverage: meanBy(fiveStarHistory, (o) => o.保底内),
-    };
-  }, [data]);
+  const info = useCacheMemo(
+    () => {
+      // 解析数据
+      const isWeaponPool = (sheetName: string) => sheetName.indexOf('武器') !== -1;
+      const poolMax = isWeaponPool(sheetName) ? 80 : 90;
+      const isWeapon = (item: DataItem) => item.类别 === '武器';
+      const keys = ['character5', 'weapon5', 'character4', 'weapon4', 'weapon3'];
+      const langs = ['5星角色', '5星武器', '4星角色', '4星武器', '3星武器'];
+      const colors = ['#fac858', '#ee6666', '#5470c6', '#91cc75', '#73c0de'];
+      const colorByKey = Object.fromEntries(keys.map((key, index) => [key, colors[index]]));
+      const countByKey = Object.fromEntries(keys.map((key) => [key, 0]));
+      const langByKey = Object.fromEntries(keys.map((key, index) => [key, langs[index]]));
+      const fiveStarHistory: DataItem[] = [];
+      data.forEach((item) => {
+        if (item.星级 === 5) fiveStarHistory.push(item);
+        countByKey[`${isWeapon(item) ? 'weapon' : 'character'}${item.星级}`] += 1;
+      });
+      const lastFiveStar = fiveStarHistory.length === 0 ? null : takeRight(fiveStarHistory)[0];
+      const leftCount = lastFiveStar
+        ? data.length - data.lastIndexOf(lastFiveStar!) - 1
+        : data.length;
+      const chartDataList = keys.filter((key) => countByKey[key] !== 0);
+      const chartData = chartDataList.map((key) => ({
+        value: countByKey[key],
+        name: langByKey[key],
+      }));
+      const chartColors = chartDataList.map((key) => colorByKey[key]);
+      return {
+        chartSelected: {
+          [langByKey['weapon3']]: data.length > 20 ? false : true,
+        },
+        poolMax,
+        chartData,
+        chartColors,
+        fromTime: data[0].date,
+        toTime: data[data.length - 1].date,
+        totalCount: data.length,
+        leftCount,
+        fiveStarCount: fiveStarHistory.length,
+        fourStarCount: countByKey['weapon4'] + countByKey['character4'],
+        threeStarCount: countByKey['weapon3'],
+        fiveStarHistory,
+        fiveStarAverage: meanBy(fiveStarHistory, (o) => o.保底内),
+      };
+    },
+    [data],
+    sheetName,
+  );
   const chartRef = useRef<ECharts>();
   const handlePieChartCreate = useCallback((chart: ECharts) => {
     chartRef.current = chart;

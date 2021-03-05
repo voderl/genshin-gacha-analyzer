@@ -89,20 +89,22 @@ export const ShowPage: FC<ShowPageProps> = function () {
           overflow-y: auto;
         `}
       >
-        <Suspense
-          fallback={
-            <Spin
-              size='large'
-              tip='加载中...'
-              css={css`
-                display: block;
-                margin: 150px auto;
-              `}
-            />
-          }
-        >
-          {renderContent(activeMenu)}
-        </Suspense>
+        <CacheContextProvider path={activeMenu}>
+          <Suspense
+            fallback={
+              <Spin
+                size='large'
+                tip='加载中...'
+                css={css`
+                  display: block;
+                  margin: 150px auto;
+                `}
+              />
+            }
+          >
+            {renderContent(activeMenu)}
+          </Suspense>
+        </CacheContextProvider>
       </Content>
     </Layout>
   );

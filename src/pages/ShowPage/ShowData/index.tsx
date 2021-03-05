@@ -8,6 +8,7 @@ import { ISMOBILE, SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
 import { WorkSheet } from 'components/WorkSheet';
 import { Filter } from './Filter';
 import { IconButton } from 'components/IconButton';
+import { useCacheState } from 'context/CacheContext';
 
 type ShowDataProps = {
   onGetData: (key: string) => any;
@@ -16,7 +17,7 @@ type ShowDataProps = {
 const { TabPane } = Tabs;
 
 export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
-  const [activeKey, setActiveKey] = useState(tabs[0]);
+  const [activeKey, setActiveKey] = useCacheState(tabs[0], 'activeKey');
   const handleChange = useCallback((key) => {
     setActiveKey(key);
   }, []);

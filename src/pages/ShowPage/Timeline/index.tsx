@@ -18,6 +18,7 @@ import { Alert, Switch } from 'antd';
 import memoize from 'lodash/memoize';
 import { getDateInfo } from './getDateInfo';
 import { CollapseWorkSheet } from './CollapseWorkSheet';
+import { useCacheMemo } from 'context/CacheContext';
 
 echarts.use([
   TitleComponent,
@@ -72,33 +73,38 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
   const [currentday, setCurrentDay] = useState<string>();
 
   // 获取数据，并写入缓存。
-  const getData = useMemo(() => {
-    let getData: any;
-    getData = memoize((isHideZeroDay: boolean) => {
-      if (!isHideZeroDay) {
-        const countByDay = getData(true);
-        // 如果中间日期需要显示
-        const getDay = (data: any) => (Array.isArray(data) ? data[0] : data.value[0]);
-        // 获取最开始一天和最后一天中间的日期
-        const dateList = getDateInfo(
-          getDay(countByDay[0]),
-          getDay(countByDay[countByDay.length - 1]),
-        ).map((day: string) => [day, 0]);
-        let j = 0;
-        for (let i = 0; i < countByDay.length; i++) {
-          const day = getDay(countByDay[i]);
-          while (day !== dateList[j][0]) {
-            j++;
-            if (j >= dateList.length) break;
+  const getData = useCacheMemo(
+    () => {
+      let getData: any;
+      getData = memoize((isHideZeroDay: boolean) => {
+        if (!isHideZeroDay) {
+          const countByDay = getData(true);
+          // 如果中间日期需要显示
+          const getDay = (data: any) => (Array.isArray(data) ? data[0] : data.value[0]);
+          // 获取最开始一天和最后一天中间的日期
+          const dateList = getDateInfo(
+            getDay(countByDay[0]),
+            getDay(countByDay[countByDay.length - 1]),
+          ).map((day: string) => [day, 0]);
+          let j = 0;
+          for (let i = 0; i < countByDay.length; i++) {
+            const day = getDay(countByDay[i]);
+            while (day !== dateList[j][0]) {
+              j++;
+              if (j >= dateList.length) break;
+            }
+            dateList[j] = countByDay[i];
           }
-          dateList[j] = countByDay[i];
+          return dateList;
         }
-        return dateList;
-      }
-      return calculateData(onGetData(SHOW_DATA_ALL_KEY));
-    });
-    return getData;
-  }, []);
+        return calculateData(onGetData(SHOW_DATA_ALL_KEY));
+      });
+      console.log('re-get-calculate');
+      return getData;
+    },
+    [],
+    'timeline',
+  );
   useEffect(() => {
     let myChart: ECharts;
     if (echartsWrapper.current) {
