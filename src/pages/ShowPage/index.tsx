@@ -8,7 +8,7 @@ import { SHOW_DATA_ALL_KEY } from 'const';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
 import CustomSider from './CustomSider';
-import { CacheContextProvider, useCacheContext } from 'context/CacheContext';
+import { CacheContextProvider } from 'context/CacheContext';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
