@@ -5,6 +5,7 @@ import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/compo
 import { PieChart as EchartsPieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ECharts } from 'echarts/core';
+import throttle from 'lodash/throttle';
 
 echarts.use([TitleComponent, TooltipComponent, LegendComponent, EchartsPieChart, CanvasRenderer]);
 
@@ -21,9 +22,9 @@ export const PieChart: FC<PieChartProps> = ({ onCreate, ...props }) => {
     if (echartsWrapperRef.current) {
       myChart = echarts.init(echartsWrapperRef.current);
       onCreate(myChart);
-      resize = () => {
+      resize = throttle(() => {
         myChart.resize();
-      };
+      }, 100);
       window.addEventListener('resize', resize);
     }
     return () => {
