@@ -4,10 +4,8 @@ import minBy from 'lodash/minBy';
 import max from 'lodash/max';
 import { AchievementCardProps } from 'components/AchievementCard';
 import { CHARACTER_POOLS } from 'const';
+import { isWeapon } from 'utils';
 
-/*
-TODO: 是否是歪了up池，各个up池的持续时间 
-*/
 /**
  * 成就计算相互独立，每个为一个函数，传入给定的参数，返回规定的格式。具体参数和返回格式见下面。
  */
@@ -270,6 +268,94 @@ export const achievements: Array<(
       info: `在一次十连中，你抽取到了 ${fiveStarCount} 只五星${extraInfo}`,
       value: count,
       achievedTime: '达成次数',
+    };
+  },
+  function gacha10getMoreThanFive({ gacha }) {
+    // github issue #5  @zhsitao (https://github.com/zhsitao)
+    if (gacha[10].length === 0) return;
+    const isFit = (item: DataItem) => item.星级 >= 4;
+    function getFourFiveStarCount(data: DataItem[]) {
+      let count = 0;
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+        if (isFit(item)) count++;
+      }
+      return count;
+    }
+    const list = gacha[10].filter(({ data }) => {
+      return getFourFiveStarCount(data) >= 5;
+    });
+    if (list.length === 0) {
+      const countMoreThanFourList = gacha[10].filter(({ data }) => {
+        return getFourFiveStarCount(data) >= 4;
+      });
+      if (countMoreThanFourList.length === 0) return;
+      return {
+        title: '「四叶草」',
+        info: `在一次十连中，抽取到 4 个或以上的 4 星或 5 星`,
+        value: `${countMoreThanFourList.length}`,
+        achievedTime: `达成次数`,
+      };
+    }
+    return {
+      title: '「福至五彩」',
+      info: `在一次十连中，抽取到 5 个或以上的 4 星或 5 星`,
+      value: `${list.length}`,
+      achievedTime: `达成次数`,
+    };
+  },
+  function characterMoreThanWeapon({ gacha }) {
+    // github issue #5  @zhsitao (https://github.com/zhsitao)
+    if (gacha[10].length === 0) return;
+    function getWeaponCount(data: DataItem[]) {
+      let count = 0;
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+        if (isWeapon(item)) count++;
+      }
+      return count;
+    }
+    const list = gacha[10].filter(({ data }) => {
+      return getWeaponCount(data) <= 5;
+    });
+    if (list.length === 0) return;
+    const maxData = minBy(list, ({ data }) => getWeaponCount(data))!;
+    const maxCount = 10 - getWeaponCount(maxData.data);
+    return {
+      title: '「这才是角色池！」',
+      info: `在一次十连中，抽出的角色不少于武器`,
+      value: `角色：${maxCount}`,
+      achievedTime: `${maxData.data[0].时间}`,
+    };
+  },
+  function gachaGetBeforeGuaranteed({ pools }) {
+    // github issue #5  @zhsitao (https://github.com/zhsitao)
+    const { character, permanent, weapon } = pools;
+    const weaponUpCount = 63; // 武器池63发概率UP来源：https://ngabbs.com/read.php?tid=25678614
+    const characterUpCount = 74; // 角色池74发概率UP来源：https://ngabbs.com/read.php?tid=25461793
+    const isFiveStar = (item: DataItem) => item.星级 === 5;
+    const weaponBeforeUp = (item: DataItem) => item.保底内 < weaponUpCount;
+    const characterBeforeUp = (item: DataItem) => item.保底内 < characterUpCount;
+    const weaponFiveStarData = weapon.filter((item) => isFiveStar(item) && weaponBeforeUp(item));
+    const characterFilter = (item: DataItem) => isFiveStar(item) && characterBeforeUp(item);
+    const characterFiveStarData = character
+      .filter(characterFilter)
+      .concat(permanent.filter(characterFilter));
+    const info = [];
+    if (characterFiveStarData.length !== 0) {
+      info.push(
+        `在「常驻祈愿」和「角色活动祈愿」中，有 ${characterFiveStarData.length} 次在保底（${characterUpCount}抽概率UP）前出金`,
+      );
+    }
+    if (weaponFiveStarData.length !== 0) {
+      info.push(
+        `在「武器活动祈愿」中，有 ${weaponFiveStarData.length} 次在保底（${weaponUpCount}抽概率UP）前出金`,
+      );
+    }
+    if (info.length === 0) return;
+    return {
+      title: '「拒当保底人，拜拜保底人」',
+      info: info.join('；'),
     };
   },
   function maxFiveStarCharacter({ character }) {
