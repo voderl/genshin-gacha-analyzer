@@ -101,23 +101,25 @@ export const AchievementCard: FC<AchievementCardProps> = function ({
           </span>
         </div>
       ) : (
-        <div
-          css={css`
-            width: 128px;
-            height: 96px;
-            background-color: #ebe2d8;
-            text-align: center;
-          `}
-        >
-          <span
+        value !== undefined && (
+          <div
             css={css`
-              line-height: 96px;
-              font-size: 20px;
+              width: 128px;
+              height: 96px;
+              background-color: #ebe2d8;
+              text-align: center;
             `}
           >
-            {value}
-          </span>
-        </div>
+            <span
+              css={css`
+                line-height: 96px;
+                font-size: 20px;
+              `}
+            >
+              {value}
+            </span>
+          </div>
+        )
       )}
     </div>
   );
