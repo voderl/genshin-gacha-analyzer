@@ -245,18 +245,16 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
           isEditMode={isEditMode}
         />
       ))}
-      {ISMOBILE && (
-        <Button
-          type='primary'
-          css={css`
-            display: block;
-            margin: 10px auto;
-          `}
-          onClick={handleRenderPng}
-        >
-          生成图片
-        </Button>
-      )}
+      <Button
+        type='primary'
+        css={css`
+          display: block;
+          margin: 10px auto;
+        `}
+        onClick={handleRenderPng}
+      >
+        生成图片
+      </Button>
       <Divider>
         <a href='https://github.com/voderl/genshin-gacha-analyzer/issues' target='_blank'>
           更多成就开发中，欢迎前往issue提出你的建议...
