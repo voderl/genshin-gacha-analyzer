@@ -44,6 +44,7 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
       }));
       const chartColors = chartDataList.map((key) => colorByKey[key]);
       return {
+        name: sheetName,
         chartSelected: {
           [langByKey['weapon3']]: data.length > 20 ? false : true,
         },
@@ -77,7 +78,7 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
         fontStyle: 'normal',
       },
       title: {
-        text: sheetName,
+        text: info.name,
         left: 'center',
         textStyle,
       },
@@ -101,7 +102,7 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
         color: info.chartColors,
         series: [
           {
-            name: sheetName,
+            name: info.name,
             type: 'pie',
             top: 50,
             startAngle: 70,

@@ -65,7 +65,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
           margin: 20px 0;
         `}
       >
-        <a href='https://ngabbs.com/read.php?tid=25004616' target='_blank'>
+        <a href='https://ngabbs.com/read.php?tid=25657464' target='_blank'>
           <Alert
             message={
               <div>

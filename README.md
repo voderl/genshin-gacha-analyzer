@@ -23,11 +23,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ## TODO:
 1. 增加更多的成就，并限制展示条件。 
    如果你对成就有建议可以在[issue](https://github.com/voderl/genshin-gacha-analyzer/issues)中提出。
-2. 饼图可以导出为图片
-3. 进一步重构，由于项目开始时的个人能力与规划问题，代码需要进一步重构
+2. 进一步重构，由于项目开始时的个人能力与规划问题，代码需要进一步重构
 
 
 ## 更新
+* 3.07 
+  * 饼图可以导出为图片(横屏或竖屏)
 * 3.06
   * 饼图，参考自[nga链接](https://ngabbs.com/read.php?tid=25559039)
   * 增加全局缓存，避免因Menu和Tabs的切换而造成多次计算

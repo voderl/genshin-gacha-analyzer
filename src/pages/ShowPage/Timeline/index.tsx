@@ -99,7 +99,6 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
         }
         return calculateData(onGetData(SHOW_DATA_ALL_KEY));
       });
-      console.log('re-get-calculate');
       return getData;
     },
     [],
