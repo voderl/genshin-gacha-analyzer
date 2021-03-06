@@ -328,36 +328,6 @@ export const achievements: Array<(
       achievedTime: `${maxData.data[0].时间}`,
     };
   },
-  function gachaGetBeforeGuaranteed({ pools }) {
-    // github issue #5  @zhsitao (https://github.com/zhsitao)
-    const { character, permanent, weapon } = pools;
-    const weaponUpCount = 63; // 武器池63发概率UP来源：https://ngabbs.com/read.php?tid=25678614
-    const characterUpCount = 74; // 角色池74发概率UP来源：https://ngabbs.com/read.php?tid=25461793
-    const isFiveStar = (item: DataItem) => item.星级 === 5;
-    const weaponBeforeUp = (item: DataItem) => item.保底内 < weaponUpCount;
-    const characterBeforeUp = (item: DataItem) => item.保底内 < characterUpCount;
-    const weaponFiveStarData = weapon.filter((item) => isFiveStar(item) && weaponBeforeUp(item));
-    const characterFilter = (item: DataItem) => isFiveStar(item) && characterBeforeUp(item);
-    const characterFiveStarData = character
-      .filter(characterFilter)
-      .concat(permanent.filter(characterFilter));
-    const info = [];
-    if (characterFiveStarData.length !== 0) {
-      info.push(
-        `在「常驻祈愿」和「角色活动祈愿」中，有 ${characterFiveStarData.length} 次在保底（${characterUpCount}抽概率UP）前出金`,
-      );
-    }
-    if (weaponFiveStarData.length !== 0) {
-      info.push(
-        `在「武器活动祈愿」中，有 ${weaponFiveStarData.length} 次在保底（${weaponUpCount}抽概率UP）前出金`,
-      );
-    }
-    if (info.length === 0) return;
-    return {
-      title: '「拒当保底人，拜拜保底人」',
-      info: info.join('；'),
-    };
-  },
   function maxFiveStarCharacter({ character }) {
     const sortedData = Object.values(character[5]).sort((b, a) => a.data.length - b.data.length);
     if (sortedData.length === 0) return;
