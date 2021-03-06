@@ -69,7 +69,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
           <Alert
             message={
               <div>
-                不知道如何获取xlsx文件？
+                不知道如何获取抽卡记录导出文件？
                 <Button type='link'>请点击这里</Button>
               </div>
             }
@@ -96,7 +96,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
         <p className='ant-upload-drag-icon'>
           {loading ? <Spin tip={loadingTip} /> : <InboxOutlined />}
         </p>
-        <p className='ant-upload-text'>点击选择文件或将文件拖拽到此区域</p>
+        <p className='ant-upload-text'>点击选择抽卡记录导出文件或将文件拖拽到此区域</p>
         <p className='ant-upload-text'>( 注：文件的后缀应为.xlsx )</p>
       </Dragger>
       <Alert
