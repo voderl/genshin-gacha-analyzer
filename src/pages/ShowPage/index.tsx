@@ -78,7 +78,11 @@ export const ShowPage: FC<ShowPageProps> = function () {
         flexDirection: isVertical ? 'column' : 'row',
       }}
     >
-      <CustomSider isVertical={isVertical} onMenuChange={handleMenuChange} />
+      <CustomSider
+        isVertical={isVertical}
+        onMenuChange={handleMenuChange}
+        activeMenu={activeMenu}
+      />
       <Content
         css={css`
           margin: 0;

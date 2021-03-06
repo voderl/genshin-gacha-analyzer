@@ -13,6 +13,7 @@ const { Sider, Header } = Layout;
 
 interface CustomSiderProps {
   isVertical: boolean;
+  activeMenu: string;
   onMenuChange: ({ key }: any) => any;
 }
 
@@ -44,12 +45,12 @@ const notIsVerticalMenuStyle = css`
     line-height: 60px;
   }
 `;
-const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange }) => {
+const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange, activeMenu }) => {
   const children = [
     <GithubCorner />,
     <Menu
       mode={isVertical ? 'horizontal' : 'inline'}
-      defaultSelectedKeys={['rawData']}
+      defaultSelectedKeys={[activeMenu]}
       onSelect={onMenuChange}
       css={isVertical ? isVerticalMenuStyle : notIsVerticalMenuStyle}
     >
