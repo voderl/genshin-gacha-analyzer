@@ -242,13 +242,37 @@ export const achievements: Array<(
     };
   },
   function oneGachaGetFiveStar({ gacha }) {
-    const data = gacha[1].filter((v) => v.星级 === 5 && v.保底内 <= 30);
-    if (data.length === 0) return;
+    const countLimit = 40; // 限制抽数，避免你看要保底了就单抽，而导致假的单抽出奇迹
+    const percentLimit = 0.3;
+    const starFilter = (item: DataItem) => item.星级 === 5;
+    const limitFilter = (item: DataItem) => item.保底内 <= countLimit;
+    const gacha1Data = gacha[1].filter(limitFilter); // 所有满足条件的单抽
+    const gacha10Data = gacha[10].reduce((acc, cur) => {
+      return acc.concat(cur.data.filter(limitFilter));
+    }, [] as DataItem[]);
+    const gacha1Count = gacha1Data.filter(starFilter).length;
+    const gacha10Count = gacha10Data.filter(starFilter).length;
+    if (gacha1Count === 0 && gacha10Count === 0) return;
+    const data = {
+      info: `在 ${countLimit} 抽内：${
+        gacha1Count ? `通过单抽获取的五星数目为 ${gacha1Count}，` : ''
+      }${gacha10Count ? `通过十连获取的五星数目为 ${gacha10Count}` : ''}`,
+    };
+    if (gacha1Count / gacha10Count < percentLimit) {
+      return {
+        title: '「十连出奇迹(√)」',
+        ...data,
+      };
+    }
+    if (gacha10Count / gacha1Count < percentLimit) {
+      return {
+        title: '「单抽出奇迹！」',
+        ...data,
+      };
+    }
     return {
-      title: '「单抽出奇迹!」',
-      info: `在30发内，通过单抽获取五星角色或武器`,
-      value: `${data.length}`,
-      achievedTime: '达成次数',
+      title: '「单抽出奇迹？」',
+      ...data,
     };
   },
   function gacha10Data({ gacha }) {
