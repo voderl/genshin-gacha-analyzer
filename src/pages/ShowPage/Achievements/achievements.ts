@@ -253,10 +253,13 @@ export const achievements: Array<(
     const gacha1Count = gacha1Data.filter(starFilter).length;
     const gacha10Count = gacha10Data.filter(starFilter).length;
     if (gacha1Count === 0 && gacha10Count === 0) return;
+    let info = [];
+    if (gacha1Count) info.push(`通过单抽获取的数目为 ${gacha1Count}`);
+    if (gacha10Count) info.push(`通过十连获取的数目为 ${gacha10Count}`);
     const data = {
-      info: `在 ${countLimit} 抽内：${
-        gacha1Count ? `通过单抽获取的五星数目为 ${gacha1Count}，` : ''
-      }${gacha10Count ? `通过十连获取的五星数目为 ${gacha10Count}` : ''}`,
+      info: `获取五星(抽卡数小于 ${countLimit}) 共计达成 ${
+        gacha1Count + gacha10Count
+      } 次 (其中${info.join('，')})`,
     };
     if (gacha1Count / gacha10Count < percentLimit) {
       return {
