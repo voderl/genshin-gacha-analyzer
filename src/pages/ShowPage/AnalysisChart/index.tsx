@@ -12,6 +12,7 @@ import { saveAs } from 'file-saver';
 import { ISMOBILE } from 'const';
 import { useGlobalContext } from 'context/GlobalContext';
 import { IconButton } from 'components/IconButton';
+import { FriendLinks } from 'components/FriendLinks';
 
 interface AnalysisChartProps {
   sheetNames: string[];
@@ -118,6 +119,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
           生成图片
         </Button>
       </div>
+      <FriendLinks mode='bottom' />
     </div>
   );
 };

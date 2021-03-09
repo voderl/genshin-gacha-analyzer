@@ -6,6 +6,7 @@ import InboxOutlined from '@ant-design/icons/InboxOutlined';
 import { RcFile } from 'antd/lib/upload';
 import { useGlobalContext } from 'context/GlobalContext';
 import XLSXNameSpace from 'xlsx/types';
+import { FriendLinks } from 'components/FriendLinks';
 
 const { Dragger } = Upload;
 type LoadPageProps = {
@@ -120,6 +121,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
         type='warning'
         showIcon
       />
+      <FriendLinks mode='bottom' visible />
     </div>
   );
 };
