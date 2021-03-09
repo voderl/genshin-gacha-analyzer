@@ -257,9 +257,9 @@ export const achievements: Array<(
     if (gacha1Count) info.push(`通过单抽获取的数目为 ${gacha1Count}`);
     if (gacha10Count) info.push(`通过十连获取的数目为 ${gacha10Count}`);
     const data = {
-      info: `获取五星(抽卡数小于等于 ${countLimit}) 共计达成 ${
-        gacha1Count + gacha10Count
-      } 次 (其中${info.join('，')})`,
+      info: `在 ${countLimit} 抽内获取 5 星共计 ${gacha1Count + gacha10Count} 次，其中${info.join(
+        '，',
+      )}`,
     };
     if (gacha1Count / gacha10Count < percentLimit) {
       return {
