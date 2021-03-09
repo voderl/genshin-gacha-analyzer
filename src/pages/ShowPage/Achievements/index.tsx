@@ -16,6 +16,7 @@ import { renderToCanvas } from './renderToCanvas';
 //@ts-ignore
 import { saveAs } from 'file-saver';
 import { useCacheMemo } from 'context/CacheContext';
+import { FriendLinks } from 'components/FriendLinks';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
@@ -260,6 +261,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
           更多成就开发中，欢迎前往issue提出你的建议...
         </a>
       </Divider>
+      <FriendLinks mode='bottom' />
     </div>
   );
 };

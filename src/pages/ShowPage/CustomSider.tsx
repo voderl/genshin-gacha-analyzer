@@ -8,6 +8,7 @@ import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
 import UnorderedListOutlined from '@ant-design/icons/UnorderedListOutlined';
 import StarOutlined from '@ant-design/icons/StarOutlined';
 import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
+import { FriendLinks } from 'components/FriendLinks';
 
 const { Sider, Header } = Layout;
 
@@ -90,6 +91,7 @@ const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange, activeMen
       }}
     >
       {children}
+      <FriendLinks mode='left' />
     </Sider>
   );
 };
