@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.2",
     "canvas-datagrid": "0.3.1",
+    "core-js": "^3.9.1",
     "echarts": "^5.0.1",
     "file-saver": "^2.0.5",
     "ismobilejs": "^1.1.1",
