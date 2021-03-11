@@ -223,7 +223,7 @@ const renderTextContent = (
     leftCount,
   }: Info,
 ) => {
-  const TEXT_PADDING = 25;
+  const TEXT_PADDING = 15;
   const LINE_SPACE = 4;
   const CONTENT_WIDTH = WIDTH - 2 * TEXT_PADDING;
   const baseTextSet = drawTextByTag(ctx, {
@@ -375,9 +375,15 @@ export function renderToCanvas(
     },
     animation: false,
   });
+  const PADDING = {
+    TOP: 10,
+    LEFT: 10,
+    RIGHT: 10,
+    BOTTOM: 0,
+  };
   const loc = {
-    x: 0,
-    y: 0,
+    x: PADDING.LEFT,
+    y: PADDING.TOP,
   };
   const draws: (() => any)[] = []; // 存储实际进行绘制的函数
   let maxHeight = 0;
@@ -427,15 +433,15 @@ export function renderToCanvas(
     } else loc.x += WIDTH;
   });
   const { height: endLineHeight, draw: drawEndLink } = drawEndLine(ctx);
-  const canvasWidth = isVertical ? WIDTH : loc.x;
-  const canvasHeight = maxHeight + endLineHeight;
+  const canvasWidth = loc.x + PADDING.RIGHT + (isVertical ? WIDTH : 0);
+  const canvasHeight = maxHeight + endLineHeight + PADDING.TOP + PADDING.BOTTOM;
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
   ctx.fillStyle = '#fff'; // #f9f9f9
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
   draws.forEach((draw) => draw());
   const endLineWidth = WIDTH;
-  drawEndLink((canvasWidth - endLineWidth) / 2, maxHeight, endLineWidth);
+  drawEndLink((canvasWidth - endLineWidth) / 2, canvasHeight - endLineHeight, endLineWidth);
   callback(canvas, ctx);
 
   // destroy
