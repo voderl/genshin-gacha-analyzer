@@ -191,11 +191,17 @@ export const achievements: Array<(
     const _day = maxBy(Object.values(day), (today) => today.data.length);
     if (!_day) return false;
     const result = _day.data.filter((item) => item.星级 === 5);
-    if (result.length === 0) return;
-    const resultStr =
-      result.length === 0
-        ? '然而并没有出黄，很痛苦'
-        : `在抽到${formatByName(result).join('、')}时，你有没有很开心呢？`;
+    if (result.length === 0)
+      return {
+        // from nga @carry_tu (https://ngabbs.com/nuke.php?func=ucp&uid=41767591)
+        title: '「最黑暗的一天」', // 最多抽数的一天且并没有出黄
+        info: `在${formatTime(_day.data[0].时间)}这一天，你共抽取了 ${
+          _day.data.length
+        } 次，然而并没有出黄，是抽卡记录中最黑暗的一天`,
+        achievedTime: _day.data[0].时间,
+        value: _day.data.length,
+      };
+    const resultStr = `在抽到${formatByName(result).join('、')}时，你有没有很开心呢？`;
     return {
       title: '「豪掷千金」',
       info: `在${formatTime(_day.data[0].时间)}这一天，你共抽取了 ${
