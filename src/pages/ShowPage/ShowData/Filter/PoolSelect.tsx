@@ -29,7 +29,9 @@ export const PoolSelect: FC<PoolSelectProps> = function ({ pools, value, onChang
   return (
     <Select placeholder='--选择UP池--' onChange={handleChange} allowClear value={realValue}>
       {pools.map((pool, index) => (
-        <Option value={index}>{makeKey(pool)}</Option>
+        <Option value={index} key={pool.from}>
+          {makeKey(pool)}
+        </Option>
       ))}
     </Select>
   );
