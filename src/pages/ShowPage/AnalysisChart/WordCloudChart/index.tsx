@@ -80,7 +80,7 @@ export const WordCloudChart: FC<WordCloudChartProps> = ({ list, filters, formatt
           z-index: 9999;
           background-color: #f0f0f0;
           border-bottom-left-radius: 5px;
-          padding: 5px;
+          padding: 5px 10px;
         `}
       />
       <WordCloud
