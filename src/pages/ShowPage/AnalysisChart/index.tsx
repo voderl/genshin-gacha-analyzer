@@ -137,7 +137,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
         height = selfHeight;
       }
       const canvas = document.createElement('canvas');
-      const scale = 0.5;
+      const scale = 1;
       canvas.width = width * scale;
       canvas.height = height * scale;
       const ctx = canvas.getContext('2d')!;
