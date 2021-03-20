@@ -16,7 +16,6 @@ export interface WordCloudProps {
 }
 
 function defaultFormatter(item: any[]) {
-  console.log(item);
   return `${item[0]} 获取次数 ${item[1]}`;
 }
 export const WordCloud: FC<WordCloudProps> = ({
