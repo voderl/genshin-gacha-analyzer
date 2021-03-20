@@ -4,7 +4,6 @@ import { LoadPage } from './pages/LoadPage';
 import { ShowPage } from './pages/ShowPage';
 
 import './App.css';
-import { WorkBook } from 'xlsx/types';
 
 function App() {
   const { workbook } = useGlobalContext();
