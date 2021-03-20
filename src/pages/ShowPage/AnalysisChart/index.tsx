@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Button, Divider, message } from 'antd';
+import { Button, Divider } from 'antd';
 import { useCacheContext, useCacheMemo } from 'context/CacheContext';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo, useRef } from 'react';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
 import { DataItem } from 'types';
 import { PoolAnalysis } from './PoolAnalysis';
@@ -16,6 +16,7 @@ import { FriendLinks } from 'components/FriendLinks';
 import { ListItem, WordCloudChart } from './WordCloudChart';
 // @ts-ignore
 import randomColor from 'randomcolor';
+import renderPngTip from 'utils/renderPngTip';
 
 interface AnalysisChartProps {
   sheetNames: string[];
@@ -23,8 +24,20 @@ interface AnalysisChartProps {
 }
 
 export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData }) => {
-  const dataArr = useMemo(() => {
-    return sheetNames.map((key) => onGetData(key));
+  const { dataArr, validSheetNames } = useMemo(() => {
+    const dataArr: DataItem[][] = [];
+    const validSheetNames: string[] = [];
+    sheetNames.forEach((key) => {
+      const data = onGetData(key);
+      if (data && data.length !== 0) {
+        dataArr.push(data);
+        validSheetNames.push(key);
+      }
+    });
+    return {
+      dataArr,
+      validSheetNames,
+    };
   }, [sheetNames]);
   const wordCloudData = useCacheMemo(
     () => {
@@ -89,6 +102,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
         filters: [3, 4, 5].map((star) => ({
           text: `${star} 星`,
           filter: (item: ListItem) => item[2].star === star,
+          isSelected: star === 3 ? false : true,
         })),
         color(name: string) {
           if (name in countMap) {
@@ -102,35 +116,70 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
     [],
     'wordCloudData',
   );
+  const wordCloudWrapperRef = useRef<HTMLDivElement>(null);
   const localCache = useCacheContext();
   const { isVertical } = useGlobalContext();
-  const handleRenderPng = useCallback(() => {
-    const key = 'renderChartPng';
-    message.loading({
-      content: '生成图片中...',
-      key,
+  const handleRenderWordCloudPng = useCallback(() => {
+    renderPngTip((resolve, reject) => {
+      if (!wordCloudWrapperRef.current) return reject();
+      const canvasCollection = wordCloudWrapperRef.current.getElementsByTagName(
+        'canvas',
+      ) as HTMLCollectionOf<HTMLCanvasElement>;
+      const canvas1 = canvasCollection[0];
+      const selfWidth = canvas1.width,
+        selfHeight = canvas1.height;
+      let width, height;
+      if (isVertical) {
+        width = selfWidth;
+        height = 2 * selfHeight;
+      } else {
+        width = 2 * selfWidth;
+        height = selfHeight;
+      }
+      const canvas = document.createElement('canvas');
+      const scale = 0.5;
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext('2d')!;
+      const loc = {
+        x: 0,
+        y: 0,
+      };
+      for (let i = 0; i < canvasCollection.length; i++) {
+        const currentCanvas = canvasCollection[i];
+        ctx.drawImage(
+          currentCanvas,
+          0,
+          0,
+          selfWidth,
+          selfHeight,
+          loc.x * scale,
+          loc.y * scale,
+          selfWidth * scale,
+          selfHeight * scale,
+        );
+        if (isVertical) loc.y += selfHeight;
+        else loc.x += selfWidth;
+      }
+      canvas.toBlob(function (blob) {
+        saveAs(blob, 'wordCloud.png');
+        resolve();
+      });
     });
-    renderToCanvas(
-      sheetNames.map((key: string) => localCache[key]),
-      isVertical,
-      (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
-        try {
+  }, [isVertical]);
+  const handleRenderPng = useCallback(() => {
+    renderPngTip((resolve, reject) => {
+      renderToCanvas(
+        validSheetNames.map((key: string) => localCache[key]),
+        isVertical,
+        (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
           canvas.toBlob(function (blob) {
             saveAs(blob, 'charts.png');
-            message.success({
-              content: '生成图片成功',
-              key,
-            });
+            resolve();
           });
-        } catch (e) {
-          message.error({
-            content: '生成图片失败，请重试或更换浏览器',
-            key,
-          });
-          throw new Error(e);
-        }
-      },
-    );
+        },
+      );
+    });
   }, [isVertical]);
   return (
     <div>
@@ -180,11 +229,9 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
           margin: 10px 0;
         `}
       >
-        {sheetNames
+        {validSheetNames
           .map((key, index) => {
-            const data = dataArr[index];
-            if (!data || data.length === 0) return;
-            return <PoolAnalysis key={key} sheetName={key} data={data} />;
+            return <PoolAnalysis key={key} sheetName={key} data={dataArr[index]} />;
           })
           .filter((v) => !!v)}
       </div>
@@ -200,6 +247,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
       </div>
       <Divider>抽取数目展示图</Divider>
       <div
+        ref={wordCloudWrapperRef}
         css={css`
           text-align: center;
           margin: 24px 0;
@@ -215,6 +263,15 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
           filters={wordCloudData.filters}
           color={wordCloudData.color}
         />
+        <br />
+        <Button
+          type='primary'
+          onClick={handleRenderWordCloudPng}
+          icon={<DownloadOutlined />}
+          size='middle'
+        >
+          生成图片
+        </Button>
       </div>
       <FriendLinks mode='bottom' />
     </div>
