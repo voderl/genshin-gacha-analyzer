@@ -17,6 +17,7 @@ import { renderToCanvas } from './renderToCanvas';
 import { saveAs } from 'file-saver';
 import { useCacheMemo } from 'context/CacheContext';
 import { FriendLinks } from 'components/FriendLinks';
+import renderPngTip from 'utils/renderPngTip';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
@@ -172,27 +173,13 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
   const [isEditMode, setEditMode] = useState(false);
   const handleRenderPng = useCallback(() => {
     const data = achievements.filter((item) => item.visible !== false);
-    const key = 'renderPNG';
-    message.loading({
-      content: '生成图片中...',
-      key,
-    });
-    renderToCanvas(data, (canvas, ctx) => {
-      try {
+    renderPngTip((resolve, reject) => {
+      renderToCanvas(data, (canvas, ctx) => {
         canvas.toBlob(function (blob) {
           saveAs(blob, 'achievements.png');
-          message.success({
-            content: '生成图片成功',
-            key,
-          });
+          resolve();
         });
-      } catch (e) {
-        message.error({
-          content: '生成图片失败，请重试或更换浏览器',
-          key,
-        });
-        throw new Error(e);
-      }
+      });
     });
   }, [achievements]);
   const handleEdit = useCallback(() => {

@@ -3,7 +3,7 @@ import { message } from 'antd';
 let id = 0;
 
 export default function renderPngTip(func: (resolve: () => void, reject: () => void) => void) {
-  const key = id++;
+  const key = `${id++}`;
   message.loading({
     content: '生成图片中...',
     key,
