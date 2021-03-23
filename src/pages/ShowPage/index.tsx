@@ -47,6 +47,9 @@ export const ShowPage: FC<ShowPageProps> = function () {
         data.forEach((info: DataItem) => {
           info.pool = key;
           info.date = +new Date(info.时间);
+          (['总次数', '星级', '保底内'] as Array<keyof DataItem>).forEach((key) => {
+            if (typeof info[key] !== 'number') (info as any)[key] = parseInt((info as any)[key]);
+          });
         });
       }
       return (cache.key = data);
