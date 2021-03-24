@@ -4,9 +4,11 @@ import { LoadPage } from './pages/LoadPage';
 import { ShowPage } from './pages/ShowPage';
 
 import './App.css';
+import { DownloadPage } from 'pages/DownloadPage';
 
 function App() {
   const { workbook } = useGlobalContext();
+  if (window.location.pathname === '/download') return <DownloadPage />;
   return workbook === null ? <LoadPage /> : <ShowPage />;
 }
 function WrappedApp() {
