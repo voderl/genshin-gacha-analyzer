@@ -7,8 +7,6 @@ import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
 import { DataItem } from 'types';
 import { PoolAnalysis } from './PoolAnalysis';
 import { renderToCanvas } from './renderToCanvas';
-// @ts-ignore
-import { saveAs } from 'file-saver';
 import { ISMOBILE, SHOW_DATA_ALL_KEY } from 'const';
 import { useGlobalContext } from 'context/GlobalContext';
 import { IconButton } from 'components/IconButton';
@@ -17,6 +15,7 @@ import { ListItem, WordCloudChart } from './WordCloudChart';
 // @ts-ignore
 import randomColor from 'randomcolor';
 import renderPngTip from 'utils/renderPngTip';
+import downloadCanvas from 'utils/downloadCanvas';
 
 interface AnalysisChartProps {
   sheetNames: string[];
@@ -161,10 +160,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
         if (isVertical) loc.y += selfHeight;
         else loc.x += selfWidth;
       }
-      canvas.toBlob(function (blob) {
-        saveAs(blob, 'wordCloud.png');
-        resolve();
-      });
+      downloadCanvas(canvas, 'wordCloud.png', resolve);
     });
   }, [isVertical]);
   const handleRenderPng = useCallback(() => {
@@ -173,10 +169,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
         validSheetNames.map((key: string) => localCache[key]),
         isVertical,
         (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
-          canvas.toBlob(function (blob) {
-            saveAs(blob, 'charts.png');
-            resolve();
-          });
+          downloadCanvas(canvas, 'charts.png', resolve);
         },
       );
     });

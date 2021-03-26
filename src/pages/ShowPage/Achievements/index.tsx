@@ -13,11 +13,10 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Data, DataItem, StarCacheType, GachaCacheType, DayCacheType } from 'types';
 import { achievements as achievementsFunc } from './achievements';
 import { renderToCanvas } from './renderToCanvas';
-//@ts-ignore
-import { saveAs } from 'file-saver';
 import { useCacheMemo } from 'context/CacheContext';
 import { FriendLinks } from 'components/FriendLinks';
 import renderPngTip from 'utils/renderPngTip';
+import downloadCanvas from 'utils/downloadCanvas';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
@@ -175,10 +174,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
     const data = achievements.filter((item) => item.visible !== false);
     renderPngTip((resolve, reject) => {
       renderToCanvas(data, (canvas, ctx) => {
-        canvas.toBlob(function (blob) {
-          saveAs(blob, 'achievements.png');
-          resolve();
-        });
+        downloadCanvas(canvas, 'achievements.png', resolve);
       });
     });
   }, [achievements]);
