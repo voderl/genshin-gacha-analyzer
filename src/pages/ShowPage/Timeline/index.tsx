@@ -195,12 +195,9 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
         },
         toolbox: {
           feature: {
-            dataZoom: {
-              yAxisIndex: 'none',
-            },
-            restore: {},
             saveAsImage: {},
           },
+          right: '10%',
         },
         legend: {
           top: 25,
