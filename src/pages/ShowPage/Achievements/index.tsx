@@ -17,6 +17,7 @@ import { useCacheMemo } from 'context/CacheContext';
 import { FriendLinks } from 'components/FriendLinks';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
+import parseToDate from 'utils/parseToDate';
 
 type AchievementsProps = {
   onGetData: (key: string) => Data;
@@ -148,7 +149,7 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
         pools,
       };
       if (process.env.NODE_ENV === 'development') console.log(info);
-      const isDate = (str: string) => new Date(str).toString() !== 'Invalid Date';
+      const isDate = (str: string) => parseToDate(str).toString() !== 'Invalid Date';
       const result = achievementsFunc
         .map((func) => func(info))
         .reduce((acc: Array<any>, cur: any) => {

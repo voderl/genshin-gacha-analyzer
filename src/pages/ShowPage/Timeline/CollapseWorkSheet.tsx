@@ -6,6 +6,7 @@ import { Collapse } from 'antd';
 import { WorkSheet } from 'components/WorkSheet';
 import { SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
 import { Data } from 'types';
+import parseToDate from 'utils/parseToDate';
 
 const { Panel } = Collapse;
 
@@ -21,7 +22,7 @@ export const CollapseWorkSheet: FC<CollapseWorkSheetProps> = function ({ day, on
   }, []);
   const getData = useCallback((day) => {
     const allData: Data = onGetData(SHOW_DATA_ALL_KEY);
-    const dayStart = +new Date(`${day} 00:00:00`);
+    const dayStart = +parseToDate(`${day} 00:00:00`);
     const dayEnd = dayStart + 3600 * 24 * 1000;
     const startIndex = allData.findIndex((data) => data.date >= dayStart);
     let endIndex;

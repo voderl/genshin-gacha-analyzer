@@ -9,6 +9,7 @@ import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
 import CustomSider from './CustomSider';
 import { CacheContextProvider } from 'context/CacheContext';
+import parseToDate from 'utils/parseToDate';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
@@ -46,7 +47,7 @@ export const ShowPage: FC<ShowPageProps> = function () {
         data = XLSX.utils.sheet_to_json(sheet);
         data.forEach((info: DataItem) => {
           info.pool = key;
-          info.date = +new Date(info.时间);
+          info.date = +parseToDate(info.时间);
           (['总次数', '星级', '保底内'] as Array<keyof DataItem>).forEach((key) => {
             if (typeof info[key] !== 'number') (info as any)[key] = parseInt((info as any)[key]);
           });

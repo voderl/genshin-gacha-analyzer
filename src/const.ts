@@ -1,5 +1,6 @@
 import { PoolType } from 'types';
 import isMobile from 'ismobilejs';
+import parseToDate from 'utils/parseToDate';
 
 export const DEVICE = isMobile(window.navigator);
 
@@ -112,8 +113,8 @@ export const CHARACTER_POOLS: PoolType[] = [
   },
 ].map((v) => {
   const o: PoolType = v as any;
-  o.from = +new Date(v.from);
-  o.to = +new Date(v.to);
+  o.from = +parseToDate(v.from);
+  o.to = +parseToDate(v.to);
   o.type = 'character';
   return o;
 });
@@ -177,8 +178,8 @@ export const WEAPON_POOLS: PoolType[] = [
   },
 ].map((v) => {
   const o: PoolType = v as any;
-  o.from = +new Date(v.from);
-  o.to = +new Date(v.to);
+  o.from = +parseToDate(v.from);
+  o.to = +parseToDate(v.to);
   o.type = 'weapon';
   return o;
 });

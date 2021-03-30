@@ -1,4 +1,6 @@
-export const timeFormatter = (date: number) => new Date(date).toLocaleDateString();
+import parseToDate from 'utils/parseToDate';
+
+export const timeFormatter = (date: number) => parseToDate(date).toLocaleDateString();
 
 export const percent = (num: number, total: number) => {
   return `${Math.round((num / total) * 10000) / 100}%`;
