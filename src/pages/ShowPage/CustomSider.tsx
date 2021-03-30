@@ -19,17 +19,17 @@ interface CustomSiderProps {
 }
 
 const GithubCorner = memo(
-  () => (
+  ({ size }: { size: number }) => (
     <RawGithubCorner
       href='https://github.com/voderl/genshin-gacha-analyzer'
       target='_blank'
       direction='left'
       bannerColor='#70B7FD'
       octoColor='#fff'
-      size={60}
+      size={size}
     />
   ),
-  () => true,
+  (_, props) => _.size === props.size,
 );
 
 const isVerticalMenuStyle = css`
@@ -48,7 +48,7 @@ const notIsVerticalMenuStyle = css`
 `;
 const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange, activeMenu }) => {
   const children = [
-    <GithubCorner />,
+    <GithubCorner size={isVertical ? 30 : 60} />,
     <Menu
       mode={isVertical ? 'horizontal' : 'inline'}
       defaultSelectedKeys={[activeMenu]}
@@ -73,6 +73,7 @@ const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange, activeMen
     return (
       <Header
         css={css`
+          padding-left: 20px;
           padding-right: 0px;
           background: #fff;
           line-height: 56px;
