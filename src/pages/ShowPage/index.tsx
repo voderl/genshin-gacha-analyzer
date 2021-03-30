@@ -56,7 +56,7 @@ export const ShowPage: FC<ShowPageProps> = function () {
     }
     return getJson;
   }, [workbook]);
-  const [activeMenu, setActiveMenu] = useState('rawData');
+  const [activeMenu, setActiveMenu] = useState('analysisChart');
   const handleMenuChange = useCallback(({ key }: any) => {
     setActiveMenu(key);
   }, []);
