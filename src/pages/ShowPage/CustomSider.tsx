@@ -61,11 +61,11 @@ const CustomSider: FC<CustomSiderProps> = ({ isVertical, onMenuChange, activeMen
       <Menu.Item key='analysisChart' icon={<PieChartOutlined />}>
         分析图
       </Menu.Item>
-      <Menu.Item key='rawData' icon={<UnorderedListOutlined />}>
-        原数据
-      </Menu.Item>
       <Menu.Item key='achievements' icon={<StarOutlined />}>
         成就表
+      </Menu.Item>
+      <Menu.Item key='rawData' icon={<UnorderedListOutlined />}>
+        原数据
       </Menu.Item>
     </Menu>,
   ];
