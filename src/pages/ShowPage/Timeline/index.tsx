@@ -9,6 +9,7 @@ import {
   GridComponent,
   LegendComponent,
   DataZoomComponent,
+  MarkPointComponent,
 } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -21,6 +22,9 @@ import { getDateInfo } from './getDateInfo';
 import { CollapseWorkSheet } from './CollapseWorkSheet';
 import { useCacheMemo } from 'context/CacheContext';
 import get from 'lodash/get';
+import maxBy from 'lodash/maxBy';
+import renderPngTip from 'utils/renderPngTip';
+import downloadCanvas from 'utils/downloadCanvas';
 
 echarts.use([
   TitleComponent,
@@ -29,6 +33,7 @@ echarts.use([
   GridComponent,
   LegendComponent,
   DataZoomComponent,
+  MarkPointComponent,
   CanvasRenderer,
   BarChart,
 ]);
@@ -91,6 +96,26 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
   const { getOption, getInfoByDay } = useCacheMemo(
     () => {
       function formatToEchartsOption(dataList: DateInfo[]) {
+        const max = maxBy(dataList, (o) => o.count);
+        let markPoint: any;
+        if (max) {
+          markPoint = {
+            label: {
+              color: '#fff',
+            },
+            itemStyle: {
+              color: COLOR.THREE_STAR,
+            },
+            data: [
+              {
+                name: '抽卡数最多',
+                value: max.count,
+                xAxis: dataList.indexOf(max),
+                yAxis: max.count,
+              },
+            ],
+          };
+        }
         return {
           xAxis: {
             type: 'category',
@@ -101,6 +126,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
               name,
               type: 'bar',
               stack: 'total',
+              markPoint: key === '5' ? markPoint : undefined,
               itemStyle: {
                 color,
               },
@@ -195,7 +221,33 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
         },
         toolbox: {
           feature: {
-            saveAsImage: {},
+            mySaveAsImage: {
+              show: true,
+              icon:
+                'path://M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
+              title: '保存为图片',
+              onclick() {
+                const option = myChart.getOption();
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = Math.max(1200, myChart.getWidth());
+                tempCanvas.height = Math.max(600, myChart.getHeight());
+                const tempChart = echarts.init(tempCanvas);
+                tempChart.setOption({
+                  ...option,
+                  toolbox: {},
+                  animation: false,
+                  backgroundColor: '#fff',
+                });
+                renderPngTip((resolve) => {
+                  downloadCanvas(tempCanvas, (option as any).title.text, () => {
+                    resolve();
+                    tempChart.dispose();
+                    tempCanvas.width = 0;
+                    tempCanvas.height = 0;
+                  });
+                });
+              },
+            },
           },
           right: '10%',
         },
