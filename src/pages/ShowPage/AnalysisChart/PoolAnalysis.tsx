@@ -9,6 +9,8 @@ import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { DataItem } from 'types';
 import { timeFormatter, percent, getColorByPercent } from './utils';
 import { useCacheMemo } from 'context/CacheContext';
+// @ts-ignore
+import LazyLoad from 'react-lazyload';
 
 interface PoolAnalysisProps {
   sheetName: string;
@@ -66,36 +68,28 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
     sheetName,
   );
   const chartRef = useRef<ECharts>();
-  const handlePieChartCreate = useCallback((chart: ECharts) => {
-    chartRef.current = chart;
-    const textStyle = {
-      fontFamily: FONT_FAMILY,
-      fontStyle: 'normal',
-    };
-    chart.setOption({
-      textStyle: {
+  const handlePieChartCreate = useCallback(
+    (chart: ECharts) => {
+      chartRef.current = chart;
+      const textStyle = {
         fontFamily: FONT_FAMILY,
         fontStyle: 'normal',
-      },
-      title: {
-        text: info.name,
-        left: 'center',
-        textStyle,
-      },
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        top: '10%',
-        left: 'center',
-      },
-    });
-  }, []);
-  useEffect(() => {
-    let chart = chartRef.current;
-    if (chart) {
+      };
       chart.setOption({
+        textStyle: {
+          fontFamily: FONT_FAMILY,
+          fontStyle: 'normal',
+        },
+        title: {
+          text: info.name,
+          left: 'center',
+          textStyle,
+        },
+        tooltip: {
+          trigger: 'item',
+        },
         legend: {
+          top: '10%',
           left: 'center',
           selected: info.chartSelected,
         },
@@ -111,8 +105,9 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
           },
         ],
       });
-    }
-  }, [info]);
+    },
+    [info],
+  );
   const getColorByCount = (count: number) => {
     return getColorByPercent(count / info.poolMax);
   };
@@ -162,12 +157,14 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
         vertical-align: top;
       `}
     >
-      <PieChart
-        css={css`
-          height: 300px;
-        `}
-        onCreate={handlePieChartCreate}
-      />
+      <LazyLoad height={500} once scrollContainer={'.ant-layout-content'}>
+        <PieChart
+          css={css`
+            height: 300px;
+          `}
+          onCreate={handlePieChartCreate}
+        />
+      </LazyLoad>
       <div
         css={css`
           padding: 0 50px;
