@@ -14,6 +14,8 @@ import { FriendLinks } from 'components/FriendLinks';
 import WordCloudCharts from './WordCloudCharts';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
+// @ts-ignore
+import LazyLoad from 'react-lazyload';
 
 interface AnalysisChartProps {
   sheetNames: string[];
@@ -99,7 +101,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
       >
         {validSheetNames
           .map((key, index) => {
-            return <PoolAnalysis key={key} sheetName={key} data={dataArr[index]} />;
+            return <PoolAnalysis sheetName={key} data={dataArr[index]} key={key} />;
           })
           .filter((v) => !!v)}
       </div>
@@ -113,7 +115,9 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
           生成图片
         </Button>
       </div>
-      <WordCloudCharts onGetData={onGetData} />
+      <LazyLoad height={500} scrollContainer={'.ant-layout-content'} once>
+        <WordCloudCharts onGetData={onGetData} />
+      </LazyLoad>
       <FriendLinks mode='bottom' />
     </div>
   );
