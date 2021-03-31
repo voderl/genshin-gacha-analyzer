@@ -189,12 +189,8 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
   return (
     <div
       css={css`
+        overflow: auto;
         background: #f0eae2;
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        position: absolute;
         font-family: ${FONT_FAMILY_BOLD}, ${FONT_FAMILY};
       `}
     >
