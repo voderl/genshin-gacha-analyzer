@@ -6,6 +6,7 @@ const InvalidDate = new Date('');
 export default function parseToDate(date: any) {
   if (typeof date !== 'string') return new Date(date);
   const parts = date.match(matchNumber);
+  if (parts === null) return InvalidDate;
   // @ts-ignore
-  return parts === null ? InvalidDate : new Date(...parts);
+  return new Date(parts[0], parts[1] && parseInt(parts[1]) - 1, ...parts.slice(2));
 }
