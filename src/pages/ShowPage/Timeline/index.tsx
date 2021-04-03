@@ -25,6 +25,7 @@ import get from 'lodash/get';
 import maxBy from 'lodash/maxBy';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
+import debounce from 'lodash/debounce';
 
 echarts.use([
   TitleComponent,
@@ -182,10 +183,83 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
     [],
     'timeline',
   );
+
+  const isHideZeroDayRef = useRef(hideZeroDay);
+  const { legendFormatData, getTitle, debouncedFreshChart } = useMemo(() => {
+    const legendFormatData = {
+      current: {
+        5: 0,
+        4: 0,
+        3: 0,
+      },
+    } as any;
+    const debouncedFreshChart = debounce(() => {
+      const myChart = myChartRef.current;
+      if (!myChart) return;
+      myChart.setOption({}, false, true);
+    }, 100);
+    const getTitle = () => {
+      const myChart = myChartRef.current;
+      if (!myChart) return 'chart not exist';
+      const xData = getOption(isHideZeroDayRef.current).xAxis.data;
+      const { startValue, endValue } = get((myChart as any).getModel(), 'option.dataZoom[0]') || {
+        startValue: 0,
+        endValue: xData.length - 1,
+      };
+      const startDay = xData[startValue];
+      const endDay = xData[endValue];
+      const data = xData.slice(startValue, endValue + 1).reduce(
+        (acc, cur: string) => {
+          const info = getInfoByDay(cur);
+          if (info && info.count) {
+            acc.count += info.count;
+            acc['5'] += info['5'];
+            acc['4'] += info['4'];
+            acc['3'] += info['3'];
+          }
+          return acc;
+        },
+        {
+          count: 0,
+          5: 0,
+          4: 0,
+          3: 0,
+        },
+      );
+      legendFormatData.current = {
+        5: data['5'],
+        4: data['4'],
+        3: data['3'],
+      };
+      return `${startDay} - ${endDay} (共${data.count}抽)`;
+    };
+    return {
+      legendFormatData,
+      getTitle,
+      debouncedFreshChart,
+    };
+  }, []);
+  useEffect(() => {
+    isHideZeroDayRef.current = hideZeroDay;
+    if (myChartRef.current) {
+      const option = getOption(hideZeroDay);
+      myChartRef.current.setOption(option);
+      myChartRef.current.setOption(
+        {
+          title: {
+            text: getTitle(),
+          },
+        },
+        false,
+        true,
+      );
+    }
+  }, [hideZeroDay]);
   useEffect(() => {
     let myChart: ECharts;
     if (echartsWrapper.current) {
       myChart = echarts.init(echartsWrapper.current);
+      myChartRef.current = myChart;
       const textStyle = {
         fontFamily: FONT_FAMILY,
         fontWeight: 'normal',
@@ -216,7 +290,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
         },
         title: {
           left: 'center',
-          text: `抽卡数据总览(共${onGetData(SHOW_DATA_ALL_KEY).length}抽)`,
+          text: getTitle(),
           textStyle,
         },
         toolbox: {
@@ -235,11 +309,17 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
                 tempChart.setOption({
                   ...option,
                   toolbox: {},
+                  dataZoom: (option as any).dataZoom[0],
                   animation: false,
                   backgroundColor: '#fff',
+                  grid: {
+                    left: '5%',
+                    right: '5%',
+                    bottom: 45,
+                  },
                 });
                 renderPngTip((resolve) => {
-                  downloadCanvas(tempCanvas, (option as any).title.text, () => {
+                  downloadCanvas(tempCanvas, (option as any).title[0].text, () => {
                     resolve();
                     tempChart.dispose();
                     tempCanvas.width = 0;
@@ -249,15 +329,14 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
               },
             },
           },
-          right: '10%',
+          right: '5%',
         },
         legend: {
           top: 25,
           data: barList.map(([name]) => name),
-        },
-        xAxis: {
-          type: 'value',
-          boundaryGap: false,
+          formatter(name: string) {
+            return `${name}(共${legendFormatData.current[name.charAt(0)]}个)`;
+          },
         },
         yAxis: {
           type: 'value',
@@ -274,6 +353,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
             end: 100,
           },
         ],
+        ...getOption(isHideZeroDayRef.current),
       };
       options && myChart.setOption(options as any);
       myChart.getZr().on('click', function (params) {
@@ -288,18 +368,16 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
           if (day) setCurrentDay(day);
         }
       });
-      myChartRef.current = myChart;
+      myChart.on('datazoom', (e: any) => {
+        const option = (myChart as any).getModel().option;
+        option.title[0].text = getTitle();
+        debouncedFreshChart();
+      });
     }
     return () => {
       myChart && myChart.dispose();
     };
   }, []);
-  useEffect(() => {
-    if (myChartRef.current) {
-      const option = getOption(hideZeroDay);
-      myChartRef.current.setOption(option);
-    }
-  }, [hideZeroDay]);
   const handleChangeSwitch = useCallback((checked: boolean) => {
     setHideZeroDay(!checked);
   }, []);
