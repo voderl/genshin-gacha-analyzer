@@ -13,7 +13,23 @@ export type PoolSelectProps = {
   onChange?: (value: any) => void;
 };
 const { Option } = Select;
-const makeKey = (pool: PoolType) => `${pool.name}(${pool.five.join('、')})`;
+
+function format(date: Date) {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return (
+    date.getFullYear() +
+    '/' +
+    (month >= 10 ? month : '0' + month) +
+    '/' +
+    (day >= 10 ? day : '0' + day)
+  );
+}
+
+const makeKey = (pool: PoolType) => {
+  const date = new Date(pool.from);
+  return `${pool.five.join('、')} (${format(date)})`;
+};
 export const PoolSelect: FC<PoolSelectProps> = function ({ pools, value, onChange }) {
   const handleChange = useCallback(
     (index) => {

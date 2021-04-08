@@ -6,11 +6,14 @@ import { CHARACTER_POOLS, WEAPON_POOLS, COLOR } from 'const';
 import React, { FC, useCallback, useState, useMemo, useEffect } from 'react';
 import FilterOutlined from '@ant-design/icons/FilterOutlined';
 import { PoolSelect } from './PoolSelect';
-import { DataItem } from 'types';
+import { DataItem, PoolType } from 'types';
+import findIndex from 'lodash/findIndex';
+import { useCacheMemo } from 'context/CacheContext';
 
 type FilterProps = {
   activeKey?: string;
   onChange?: (values: any) => any;
+  data: DataItem[];
   [key: string]: any;
 };
 // 根据值数组 做一个filter
@@ -80,7 +83,7 @@ function countObjectProperty(object: any): number {
     return true;
   }).length;
 }
-export const Filter: FC<FilterProps> = function ({ activeKey, onChange, ...props }) {
+export const Filter: FC<FilterProps> = function ({ activeKey, onChange, data, ...props }) {
   const [visible, setVisible] = useState(false);
   const [count, setCount] = useState(0);
   const [form] = Form.useForm();
@@ -111,6 +114,40 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange, ...props
         return [];
     }
   }, [activeKey]);
+  const filteredPools = useCacheMemo(
+    () => {
+      // 只显示有抽卡记录的池子
+      if (pools.length === 0) return pools;
+      let filteredPools = [] as PoolType[];
+      let hitPoolIndex = 0;
+      let dataIndex = 0;
+      try {
+        while (true) {
+          if (dataIndex >= data.length - 1) break;
+          const item = data[dataIndex];
+          const pool = pools[hitPoolIndex];
+          if (item.date > pool.to) {
+            hitPoolIndex += 1;
+            if (hitPoolIndex >= pools.length - 1) throw new Error('wrong data');
+          } else if (item.date >= pool.from) {
+            const idx = findIndex(data, (o) => o.date > pool.to, dataIndex + 1);
+            filteredPools.push(pool);
+            if (idx === -1) {
+              break;
+            }
+            dataIndex = idx;
+          } else {
+            throw new Error('impossible data');
+          }
+        }
+      } catch (e) {
+        filteredPools = pools;
+      }
+      return filteredPools.reverse();
+    },
+    [pools, data],
+    `filter-${activeKey}`,
+  );
   const handleFinish = useCallback((values: any) => {
     handleFormChange(values);
     handleVisibleChange(false);
@@ -151,8 +188,8 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange, ...props
           </ButtonSelect.Item>
         </ButtonSelect>
       </Form.Item>
-      <Form.Item name='pool' hidden={pools.length === 0}>
-        <PoolSelect pools={pools} />
+      <Form.Item name='pool' hidden={filteredPools.length === 0}>
+        <PoolSelect pools={filteredPools} />
       </Form.Item>
       <Form.Item
         css={css`

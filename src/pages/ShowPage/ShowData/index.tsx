@@ -88,6 +88,7 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
         <TabPane tab={SHOW_DATA_ALL_KEY} key={SHOW_DATA_ALL_KEY} />
       </Tabs>
       <Filter
+        data={data}
         css={css`
           position: absolute;
           top: ${ISMOBILE ? 56 : 68}px;
