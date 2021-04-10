@@ -7,6 +7,7 @@ import { RcFile } from 'antd/lib/upload';
 import { useGlobalContext } from 'context/GlobalContext';
 import XLSXNameSpace from 'xlsx/types';
 import { FriendLinks } from 'components/FriendLinks';
+import parseExcel from 'utils/parseExcel';
 
 const { Dragger } = Upload;
 type LoadPageProps = {
@@ -20,7 +21,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [loading, setLoading] = useState<Boolean>(false);
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
   const [loadingTip, setLoadingTip] = useState('加载中...');
-  const { updateWorkbook } = useGlobalContext();
+  const { updateParsedData } = useGlobalContext();
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
       setErrorMessage('文件类型错误，请上传xlsx文件');
@@ -33,11 +34,14 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       // @ts-ignore
       import('xlsx/dist/xlsx.mini.min.js')
         .then((module) => {
-          (window as any).XLSX = module;
-          const XLSX: typeof XLSXNameSpace = module;
-          const data = new Uint8Array((e.target as FileReader).result as any);
-          const workbook = XLSX.read(data, { type: 'array' });
-          updateWorkbook(workbook);
+          try {
+            const XLSX: typeof XLSXNameSpace = module;
+            const data = new Uint8Array((e.target as FileReader).result as any);
+            const workbook = XLSX.read(data, { type: 'array' });
+            updateParsedData(parseExcel(XLSX, workbook));
+          } catch (e) {
+            setErrorMessage(e.message);
+          }
         })
         .catch(() => {
           setErrorMessage('XLSX解析文件加载失败，请重新上传');

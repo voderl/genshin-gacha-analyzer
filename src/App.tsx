@@ -6,8 +6,8 @@ import { ShowPage } from './pages/ShowPage';
 import './App.css';
 
 function App() {
-  const { workbook } = useGlobalContext();
-  return workbook === null ? <LoadPage /> : <ShowPage />;
+  const { parsedData } = useGlobalContext();
+  return parsedData === null ? <LoadPage /> : <ShowPage />;
 }
 function WrappedApp() {
   return (

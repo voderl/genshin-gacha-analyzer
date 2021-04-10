@@ -2,14 +2,12 @@
 import { css } from '@emotion/react';
 import { FC, useCallback, useMemo, useState, Suspense, lazy, memo } from 'react';
 import { Layout, Spin } from 'antd';
-import XLSXType, { WorkSheet as WorkSheetType } from 'xlsx/types';
 import { useGlobalContext } from 'context/GlobalContext';
-import { SHOW_DATA_ALL_KEY } from 'const';
+import { POOL_NAME_TO_TYPE, SHOW_DATA_ALL_KEY } from 'const';
 import { Data, DataItem } from 'types';
 import { Achievements } from './Achievements';
 import CustomSider from './CustomSider';
 import { CacheContextProvider } from 'context/CacheContext';
-import parseToDate from 'utils/parseToDate';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
@@ -31,32 +29,24 @@ type ShowPageProps = {};
 const { Content } = Layout;
 
 export const ShowPage: FC<ShowPageProps> = function () {
-  const { workbook, isVertical } = useGlobalContext();
-  const sheetNames = (workbook as any).SheetNames;
+  const { parsedData, isVertical } = useGlobalContext();
+  const sheetNames = Object.keys(POOL_NAME_TO_TYPE);
   const getJson = useMemo(() => {
     const cache = Object.create(null);
     function getJson(key: string) {
-      const XLSX: typeof XLSXType = (window as any).XLSX;
       if (key in cache) return cache[key];
       let data: Data;
       if (key === SHOW_DATA_ALL_KEY) {
         data = sheetNames.reduce((acc: Array<any>, cur: string) => acc.concat(getJson(cur)), []);
         data.sort((a, b) => (a.date === b.date ? a.总次数 - b.总次数 : a.date - b.date));
       } else {
-        const sheet = (workbook as any).Sheets[key] as WorkSheetType;
-        data = XLSX.utils.sheet_to_json(sheet);
-        data.forEach((info: DataItem) => {
-          info.pool = key;
-          info.date = +parseToDate(info.时间);
-          (['总次数', '星级', '保底内'] as Array<keyof DataItem>).forEach((key) => {
-            if (typeof info[key] !== 'number') (info as any)[key] = parseInt((info as any)[key]);
-          });
-        });
+        const type = (POOL_NAME_TO_TYPE as any)[key];
+        data = (parsedData as any)[type];
       }
       return (cache.key = data);
     }
     return getJson;
-  }, [workbook]);
+  }, [parsedData]);
   const [activeMenu, setActiveMenu] = useState('analysisChart');
   const handleMenuChange = useCallback(({ key }: any) => {
     setActiveMenu(key);

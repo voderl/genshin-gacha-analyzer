@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState, FC, useContext } from 'react';
+import { ExcelParsedObject } from 'utils/parseExcel';
 import { WorkBook } from 'xlsx/types';
 
 type GlobalContextType = {
-  workbook: WorkBook | null;
+  parsedData: ExcelParsedObject | null;
   isVertical: boolean;
-  updateWorkbook: (workbook: WorkBook) => void;
+  updateParsedData: (parsedData: ExcelParsedObject) => void;
 };
 
 export const GlobalContext = React.createContext<GlobalContextType>({
-  workbook: null,
+  parsedData: null,
   isVertical: false,
-  updateWorkbook: (() => {}) as any,
+  updateParsedData: (() => {}) as any,
 });
 
 // 获取尺寸信息
@@ -28,7 +29,7 @@ export const useGlobalContext = function () {
 };
 
 export const GlobalContextProvider: FC<{}> = function ({ children }) {
-  const [workbook, setWorkbook] = useState<WorkBook | null>(null);
+  const [parsedData, updateParsedData] = useState<ExcelParsedObject | null>(null);
   const initInfo = useMemo(() => getInfo(), []);
   const [isVertical, setVertical] = useState(initInfo.isVertical);
   const isVerticalRef = useRef<boolean>(isVertical);
@@ -47,10 +48,10 @@ export const GlobalContextProvider: FC<{}> = function ({ children }) {
   }, []);
   const value = useMemo(() => {
     return {
-      workbook: workbook,
-      updateWorkbook: setWorkbook,
+      parsedData,
+      updateParsedData,
       isVertical,
     };
-  }, [isVertical, workbook]);
+  }, [isVertical, parsedData]);
   return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
 };

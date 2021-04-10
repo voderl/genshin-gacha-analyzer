@@ -1,6 +1,7 @@
 import { PoolType } from 'types';
 import isMobile from 'ismobilejs';
 import parseToDate from 'utils/parseToDate';
+import invert from 'lodash/invert';
 
 export const DEVICE = isMobile(window.navigator);
 
@@ -197,3 +198,11 @@ export const WEAPON_POOLS: PoolType[] = [
   o.type = 'weapon';
   return o;
 });
+
+export const POOL_NAME_TO_TYPE = {
+  角色活动祈愿: 'character',
+  武器活动祈愿: 'weapon',
+  新手祈愿: 'novice',
+  常驻祈愿: 'permanent',
+};
+export const POOL_TYPE_TO_NAME = invert(POOL_NAME_TO_TYPE);
