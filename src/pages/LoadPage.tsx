@@ -21,7 +21,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [loading, setLoading] = useState<Boolean>(false);
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
   const [loadingTip, setLoadingTip] = useState('加载中...');
-  const { updateParsedData } = useGlobalContext();
+  const { updateParsedData, updatePage } = useGlobalContext();
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
       setErrorMessage('文件类型错误，请上传xlsx文件');
@@ -54,6 +54,9 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
     reader.readAsArrayBuffer(file);
     return false;
   }, []);
+  const handleGoToMergePage = useCallback(() => {
+    updatePage('merge');
+  }, []);
   return (
     <div
       css={css`
@@ -70,19 +73,27 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
           margin: 20px 0;
         `}
       >
-        <a href='https://ngabbs.com/read.php?tid=25657464' target='_blank'>
-          <Alert
-            message={
+        <Alert
+          message={
+            <>
               <div>
                 不知道如何获取抽卡记录导出文件？
-                <Button type='link'>请点击这里</Button>
+                <a href='https://ngabbs.com/read.php?tid=25657464' target='_blank'>
+                  <Button type='link'>请点击这里</Button>
+                </a>
               </div>
-            }
-            type='info'
-            showIcon
-            banner
-          />
-        </a>
+              <div>
+                合并多个抽卡记录文件
+                <Button type='link' onClick={handleGoToMergePage}>
+                  请点击这里
+                </Button>
+              </div>
+            </>
+          }
+          type='info'
+          showIcon={false}
+          banner
+        />
       </div>
       <Dragger
         name='file'
