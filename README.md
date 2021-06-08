@@ -13,7 +13,9 @@ github链接：https://github.com/biuuu/genshin-wish-export
 
 ## 网址
 以下网址文件均为此项目代码自动打包部署
-### vercel静态网页托管(推荐)
+### genshin.voderl.cn(推荐)
+https://genshin.voderl.cn
+### vercel静态网页托管
 https://genshin-gacha-analyzer.vercel.app/
 ### github pages
 https://voderl.github.io/genshin-gacha-analyzer/

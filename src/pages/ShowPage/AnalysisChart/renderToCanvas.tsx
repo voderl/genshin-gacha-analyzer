@@ -240,23 +240,28 @@ const renderTextContent = (
   const colorCount = (count: number) => colorText(count, getColorByCount(count));
   resetCanvas();
   let height = 0;
-  const { width: dateWidth, height: dateHeight, draw: drawDate } = baseTextSet`${colorText(
-    `${timeFormatter(fromTime)} - ${timeFormatter(toTime)}`,
-    '#808080',
-  )}`;
+  const {
+    width: dateWidth,
+    height: dateHeight,
+    draw: drawDate,
+  } = baseTextSet`${colorText(`${timeFormatter(fromTime)} - ${timeFormatter(toTime)}`, '#808080')}`;
   height += dateHeight + LINE_SPACE;
-  const { width: infoWidth, height: infoHeight, draw: drawInfo } = baseTextSet`一共${colorText(
-    totalCount,
-    '#1890ff',
-  )}抽，已累计${colorCount(leftCount)}抽未出5星`;
+  const {
+    width: infoWidth,
+    height: infoHeight,
+    draw: drawInfo,
+  } = baseTextSet`一共${colorText(totalCount, '#1890ff')}抽，已累计${colorCount(
+    leftCount,
+  )}抽未出5星`;
   height += infoHeight + LINE_SPACE;
-  const { width: starWidth, height: starHeight, draw: drawStarCount } = baseTextSet`${colorText(
-    `5星：${fiveStarCount}`,
-    COLOR.FIVE_STAR,
-  )}\n${colorText(`4星：${fourStarCount}`, COLOR.FOUR_STAR)}\n${colorText(
-    `3星：${threeStarCount}`,
-    COLOR.THREE_STAR,
-  )}`;
+  const {
+    width: starWidth,
+    height: starHeight,
+    draw: drawStarCount,
+  } = baseTextSet`${colorText(`5星：${fiveStarCount}`, COLOR.FIVE_STAR)}\n${colorText(
+    `4星：${fourStarCount}`,
+    COLOR.FOUR_STAR,
+  )}\n${colorText(`3星：${threeStarCount}`, COLOR.THREE_STAR)}`;
   height += starHeight + LINE_SPACE;
   const { draw: drawPercent } = baseTextSet`${colorText(
     `[${percent(fiveStarCount, totalCount)}]`,
@@ -306,8 +311,12 @@ const renderTextContent = (
 // 绘制尾部链接
 function drawEndLine(ctx: CanvasRenderingContext2D) {
   const LINE_PADDING = 20;
-  const { width: fontWidth, height, draw: drawLink } = drawText(ctx, {
-    text: 'https://genshin-gacha-analyzer.vercel.app/',
+  const {
+    width: fontWidth,
+    height,
+    draw: drawLink,
+  } = drawText(ctx, {
+    text: 'https://genshin.voderl.cn/',
     letterSpace: 1,
     setup(ctx) {
       ctx.font = getFont(13);

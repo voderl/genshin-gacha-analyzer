@@ -40,7 +40,8 @@
     "build:local": "set \"PUBLIC_URL=./\" && set \"GENERATE_SOURCEMAP=false\" && node scripts/compressFont.js && react-scripts build",
     "compressFont": "node scripts/compressFont.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "yarn build && cd build && coscmd -b genshin-1258302093 -r ap-hongkong upload -rs ./ / --ignore *.map"
   },
   "eslintConfig": {
     "extends": [
