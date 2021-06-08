@@ -5,9 +5,9 @@
     "static/js/2.9191b73a.chunk.js": "./static/js/2.9191b73a.chunk.js",
     "static/js/3.31d123d9.chunk.js": "./static/js/3.31d123d9.chunk.js",
     "static/js/4.8ba28844.chunk.js": "./static/js/4.8ba28844.chunk.js",
-    "main.css": "./static/css/main.4836a18c.chunk.css",
-    "main.js": "./static/js/main.d0f1ff82.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.45628ed4.js",
+    "main.css": "./static/css/main.564ddad1.chunk.css",
+    "main.js": "./static/js/main.a92560dc.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.9060b730.js",
     "static/css/7.613b5f81.chunk.css": "./static/css/7.613b5f81.chunk.css",
     "static/js/7.d7a57710.chunk.js": "./static/js/7.d7a57710.chunk.js",
     "static/js/8.3eb9e560.chunk.js": "./static/js/8.3eb9e560.chunk.js",
@@ -16,7 +16,7 @@
     "static/js/11.3de820c2.chunk.js": "./static/js/11.3de820c2.chunk.js",
     "static/js/12.15206918.chunk.js": "./static/js/12.15206918.chunk.js",
     "static/js/13.1ba0186a.chunk.js": "./static/js/13.1ba0186a.chunk.js",
-    "static/js/14.e27e7e8a.chunk.js": "./static/js/14.e27e7e8a.chunk.js",
+    "static/js/14.90c80ce7.chunk.js": "./static/js/14.90c80ce7.chunk.js",
     "static/js/15.8e74d10a.chunk.js": "./static/js/15.8e74d10a.chunk.js",
     "index.html": "./index.html",
     "static/js/0.c8c5ea7b.chunk.js.LICENSE.txt": "./static/js/0.c8c5ea7b.chunk.js.LICENSE.txt",
@@ -24,15 +24,15 @@
     "static/js/2.9191b73a.chunk.js.LICENSE.txt": "./static/js/2.9191b73a.chunk.js.LICENSE.txt",
     "static/js/4.8ba28844.chunk.js.LICENSE.txt": "./static/js/4.8ba28844.chunk.js.LICENSE.txt",
     "static/js/7.d7a57710.chunk.js.LICENSE.txt": "./static/js/7.d7a57710.chunk.js.LICENSE.txt",
-    "static/media/App.css": "./static/media/HYWenHei-85W.e7af8184.svg",
+    "static/media/App.css": "./static/media/HYWenHei-85W.e49f08c5.ttf",
     "static/media/achievement_achieved.49d0cc2e.png": "./static/media/achievement_achieved.49d0cc2e.png",
     "static/media/achievement_show.b270d366.png": "./static/media/achievement_show.b270d366.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.45628ed4.js",
+    "static/js/runtime-main.9060b730.js",
     "static/css/7.613b5f81.chunk.css",
     "static/js/7.d7a57710.chunk.js",
-    "static/css/main.4836a18c.chunk.css",
-    "static/js/main.d0f1ff82.chunk.js"
+    "static/css/main.564ddad1.chunk.css",
+    "static/js/main.a92560dc.chunk.js"
   ]
 }
