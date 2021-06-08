@@ -133,6 +133,13 @@ export const CHARACTER_POOLS: PoolType[] = [
     four: ['辛焱', '行秋', '北斗'],
     name: '浪沫的旋舞',
   },
+  {
+    from: '2021-06-09 06:00:00',
+    to: '2021-06-29 17:59:59',
+    five: ['可莉'],
+    four: ['芭芭拉', '砂糖', '菲谢尔'],
+    name: '逃跑的太阳',
+  },
 ].map((v) => {
   const o: PoolType = v as any;
   o.from = +parseToDate(v.from);
@@ -217,6 +224,13 @@ export const WEAPON_POOLS: PoolType[] = [
     to: '2021-06-08 14:59:59',
     five: ['松籁响起之时', '风鹰剑'],
     four: ['祭礼剑', '雨裁', '匣里灭辰', '祭礼残章', '弓藏'],
+    name: '神铸赋形',
+  },
+  {
+    from: '2021-06-09 06:00:00',
+    to: '2021-06-29 17:59:59',
+    five: ['天空之傲', '四风原典'],
+    four: ['匣里龙吟', '钟剑', '西风长枪', '流浪乐章', '幽夜华尔兹'],
     name: '神铸赋形',
   },
 ].map((v) => {
