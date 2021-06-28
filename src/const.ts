@@ -3,6 +3,8 @@ import isMobile from 'ismobilejs';
 import parseToDate from 'utils/parseToDate';
 import invert from 'lodash/invert';
 
+(window as any).version = 1;
+
 export const DEVICE = isMobile(window.navigator);
 
 export const ISMOBILE = DEVICE.any;
@@ -140,6 +142,13 @@ export const CHARACTER_POOLS: PoolType[] = [
     four: ['芭芭拉', '砂糖', '菲谢尔'],
     name: '逃跑的太阳',
   },
+  {
+    from: '2021-06-29 18:00:00',
+    to: '2021-07-20 14:59:59',
+    five: ['枫原万叶'],
+    four: ['罗莎莉亚', '班尼特', '雷泽'],
+    name: '红叶逐荒波',
+  },
 ].map((v) => {
   const o: PoolType = v as any;
   o.from = +parseToDate(v.from);
@@ -231,6 +240,13 @@ export const WEAPON_POOLS: PoolType[] = [
     to: '2021-06-29 17:59:59',
     five: ['天空之傲', '四风原典'],
     four: ['匣里龙吟', '钟剑', '西风长枪', '流浪乐章', '幽夜华尔兹'],
+    name: '神铸赋形',
+  },
+  {
+    from: '2021-06-29 18:00:00',
+    to: '2021-07-20 14:59:59',
+    five: ['苍古自由之翼', '天空之卷'],
+    four: ['暗巷闪光', '西风大剑', '匣里灭辰', '暗巷的酒与诗', '暗巷猎手'],
     name: '神铸赋形',
   },
 ].map((v) => {
