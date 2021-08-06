@@ -1,14 +1,14 @@
 import { DataItem } from 'types';
 import { ExcelParsedObject } from 'utils/parseExcel';
 import unionWith from 'lodash/unionWith';
-import { POOL_NAME_TO_TYPE } from 'const';
+import { POOL_TYPE_TO_NAME } from 'const';
 
 // 同一文件内部不merge
 function isSame(a: DataItem, b: DataItem) {
   return a.date === b.date && a.名称 === b.名称 && (a as any).own !== (b as any).own;
 }
 export default function mergeData(data: ExcelParsedObject[]) {
-  const keys = Object.values(POOL_NAME_TO_TYPE);
+  const keys = Object.keys(POOL_TYPE_TO_NAME);
   const result = {} as any;
   keys.forEach((key) => {
     const list = unionWith<DataItem>(
