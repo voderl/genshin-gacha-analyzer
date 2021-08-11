@@ -285,14 +285,89 @@ export const WEAPON_POOLS: PoolType[] = [
   return o;
 });
 
-export const BASE_POOL_NAME_TO_TYPE = {
-  角色活动祈愿: 'character',
-  武器活动祈愿: 'weapon',
-  新手祈愿: 'novice',
-  常驻祈愿: 'permanent',
+export const LANGS = ['zh-cn', 'en', 'ja', 'ru', 'de', 'es', 'fr', 'id', 'ko', 'pt', 'th', 'vi'];
+export const BASE_POOL_NAME_TO_TYPE_WITH_LANG :{[key: string]: any} = {
+	'zh-cn': {
+		'常驻祈愿': 'permanent',
+		'新手祈愿': 'novice',
+		'角色活动祈愿': 'character',
+		'武器活动祈愿': 'weapon'
+	},
+	'en': {
+		'Permanent Wish': 'permanent',
+		'Novice Wishes': 'novice',
+		'Character Event Wish': 'character',
+		'Weapon Event Wish': 'weapon'
+	},
+	'ja': {
+		'通常祈願': 'permanent',
+		'初心者向け祈願': 'novice',
+		'イベント祈願・キャラクター': 'character',
+		'イベント祈願・武器': 'weapon'
+	},
+	'ru': {
+		'Стандартная молитва': 'permanent',
+		'Молитва новичка': 'novice',
+		'Молитва события персонажа': 'character',
+		'Молитва события оружия': 'weapon'
+	},
+	'de': {
+		'Standardgebet': 'permanent',
+		'Neulingsgebete': 'novice',
+		'Figurenaktionsgebet': 'character',
+		'Waffenaktionsgebet': 'weapon'
+	},
+	'es': {
+		'Gachapón permanente': 'permanent',
+		'Gachapón de principiante': 'novice',
+		'Gachapón promocional de personaje': 'character',
+		'Gachapón promocional de arma': 'weapon'
+	},
+	'fr': {
+		'Vœux permanents': 'permanent',
+		'Vœux des débutants': 'novice',
+		'Vœux événements de personnage': 'character',
+		"Vœux événements d'arme": 'weapon'
+	},
+	'id': {
+		'Standard Wish': 'permanent',
+		'Permohonan Pemula': 'novice',
+		'Event Permohonan Karakter': 'character',
+		'Event Permohonan Senjata': 'weapon'
+	},
+	'ko': {
+		'상주 기원': 'permanent',
+		'초심자 기원': 'novice',
+		'캐릭터 이벤트 기원': 'character',
+		'무기 이벤트 기원': 'weapon'
+	},
+	'pt': {
+		'Desejo Comum': 'permanent',
+		'Desejos de Novato': 'novice',
+		'Oração do Evento do Personagem': 'character',
+		'Oração do Evento de Arma': 'weapon'
+	},
+	'th': {
+		'อธิษฐานถาวร': 'permanent',
+		'ผู้เริ่มอธิษฐาน': 'novice',
+		'กิจกรรมอธิษฐานตัวละคร': 'character',
+		'กิจกรรมอธิษฐานอาวุธ': 'weapon'
+	},
+	'vi': {
+		'Cầu Nguyện Thường': 'permanent',
+		'Cầu Nguyện Tân Thủ': 'novice',
+		'Cầu Nguyện Nhân Vật': 'character',
+		'Cầu Nguyện Vũ Khí': 'weapon'
+	}
 };
-export const POOL_TYPE_TO_NAME = invert(BASE_POOL_NAME_TO_TYPE);
 
+const types = {};
+for (let lang in BASE_POOL_NAME_TO_TYPE_WITH_LANG) {
+  const type = BASE_POOL_NAME_TO_TYPE_WITH_LANG[lang];
+  Object.assign(types, type);
+};
+export const BASE_POOL_NAME_TO_TYPE = types;
+export const POOL_TYPE_TO_NAME = invert(BASE_POOL_NAME_TO_TYPE_WITH_LANG['zh-cn']);
 export const POOL_NAME_TO_TYPE = {
   ...BASE_POOL_NAME_TO_TYPE,
   301: 'character',
