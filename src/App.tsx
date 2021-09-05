@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { lazy, Suspense, useEffect } from 'react';
-import { message, Spin } from 'antd';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { message, Spin, Alert } from 'antd';
 import { GlobalContextProvider, useGlobalContext } from './context/GlobalContext';
 import { LoadPage } from './pages/LoadPage';
 import { ShowPage } from './pages/ShowPage';
@@ -17,6 +17,7 @@ const MergePage = lazy(() =>
 
 function App() {
   const { parsedData, page, updateParsedData } = useGlobalContext();
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!parsedData) {
@@ -24,9 +25,12 @@ function App() {
         let data = decompressFromHash();
         if (data) {
           updateParsedData(data);
+          setError('');
         }
       } catch (error) {
-        message.error('解析过程中出现错误，请加群 853150041 反馈', 5);
+        const info = '解析过程中出现错误，请检查链接是否完全复制，如需反馈请加群 853150041 ';
+        setError(info);
+        message.error(info);
       }
     }
   }, [window.location.hash]);
@@ -48,7 +52,14 @@ function App() {
         <MergePage />
       </Suspense>
     );
-  return parsedData === null ? <LoadPage /> : <ShowPage />;
+  return parsedData === null ? (
+    <>
+      {error && <Alert type='error' message={error} banner />}
+      <LoadPage />
+    </>
+  ) : (
+    <ShowPage />
+  );
 }
 function WrappedApp() {
   return (
