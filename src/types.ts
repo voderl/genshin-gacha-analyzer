@@ -1,3 +1,7 @@
+export type Ref<T> = {
+  current: T;
+};
+
 export type DataItem = {
   时间: string;
   编号: number;
@@ -7,6 +11,7 @@ export type DataItem = {
   总次数: number;
   保底内: number;
   pool: string;
+  poolType: string;
   date: number;
 };
 

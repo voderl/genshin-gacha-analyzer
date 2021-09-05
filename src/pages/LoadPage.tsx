@@ -8,6 +8,7 @@ import { useGlobalContext } from 'context/GlobalContext';
 import XLSXNameSpace from 'xlsx/types';
 import { FriendLinks } from 'components/FriendLinks';
 import parseExcel from 'utils/parseExcel';
+import { compressToHash } from 'utils/compress';
 
 const { Dragger } = Upload;
 type LoadPageProps = {
@@ -38,8 +39,10 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
             const XLSX: typeof XLSXNameSpace = module;
             const data = new Uint8Array((e.target as FileReader).result as any);
             const workbook = XLSX.read(data, { type: 'array' });
-            updateParsedData(parseExcel(XLSX, workbook));
-          } catch (e) {
+            const parsedData = parseExcel(XLSX, workbook);
+            compressToHash(parsedData);
+            updateParsedData(parsedData);
+          } catch (e: any) {
             setErrorMessage(e.message);
           }
         })

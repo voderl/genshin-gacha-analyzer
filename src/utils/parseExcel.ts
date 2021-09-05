@@ -49,6 +49,7 @@ export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBoo
         const formatter = makeFormatter(data[0]);
         data.forEach((info, index) => {
           info.pool = (POOL_TYPE_TO_NAME as any)[type];
+          info.poolType = type;
           info.date = +parseToDate(info.时间);
           info.总次数 = index + 1;
           formatter(info, index);
