@@ -3,6 +3,8 @@
  */
 import { Data, DataItem } from 'types';
 import XLSXNameSpace, { WorkBook } from 'xlsx/types';
+import flatten from 'lodash/flatten';
+import sortBy from 'lodash/sortBy';
 import parseToDate from './parseToDate';
 import { POOL_NAME_TO_TYPE, POOL_TYPE_TO_NAME } from 'const';
 
@@ -47,11 +49,15 @@ export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBoo
       const data = XLSX.utils.sheet_to_json(sheet) as DataItem[];
       if (data.length !== 0) {
         const formatter = makeFormatter(data[0]);
+        if (!('总次数' in data[0])) {
+          sortBy(flatten(Object.values(data)), (item) => item.date).forEach((item, index) => {
+            item.总次数 = index + 1;
+          });
+        }
         data.forEach((info, index) => {
           info.pool = (POOL_TYPE_TO_NAME as any)[type];
           info.poolType = type;
           info.date = +parseToDate(info.时间);
-          info.总次数 = index + 1;
           formatter(info, index);
         });
       }
