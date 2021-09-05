@@ -46,6 +46,9 @@ const createCacheContext = function () {
       return (cache[key] = func());
     }, deps);
   };
+  const clearGlobalCache = () => {
+    for (let key in GlobalCache) delete GlobalCache[key];
+  };
   const CacheContextProvider: FC<{
     path: string;
     initValue?: any;
@@ -65,7 +68,16 @@ const createCacheContext = function () {
     useCacheContext,
     useCacheMemo,
     useCacheState,
+    clearGlobalCache,
   };
 };
-const { CacheContextProvider, useCacheContext, useCacheMemo, useCacheState } = createCacheContext();
-export { CacheContextProvider, useCacheContext, useCacheMemo, createCacheContext, useCacheState };
+const { CacheContextProvider, useCacheContext, useCacheMemo, useCacheState, clearGlobalCache } =
+  createCacheContext();
+export {
+  CacheContextProvider,
+  useCacheContext,
+  useCacheMemo,
+  createCacheContext,
+  useCacheState,
+  clearGlobalCache,
+};
