@@ -13,7 +13,7 @@ export function compressToHash(data: ExcelParsedObject) {
     const hash = encode(data);
     const location = window.location;
     const newurl = `${location.protocol}//${location.host}${location.pathname}#${hash}`;
-    window.history.pushState(
+    window.history.replaceState(
       {
         path: newurl,
       },
@@ -22,6 +22,7 @@ export function compressToHash(data: ExcelParsedObject) {
     );
   } catch (e) {
     console.error(e);
+    window.location.hash = '';
   }
 }
 

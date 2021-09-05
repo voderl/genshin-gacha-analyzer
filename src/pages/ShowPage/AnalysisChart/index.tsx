@@ -16,6 +16,7 @@ import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
 // @ts-ignore
 import LazyLoad from 'react-lazyload';
+import { BackAndCopy } from 'components/BackAndCopy';
 
 interface AnalysisChartProps {
   sheetNames: string[];
@@ -53,6 +54,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({ sheetNames, onGetData })
   }, [isVertical]);
   return (
     <div>
+      <BackAndCopy />
       <Divider>
         <span>
           此页面参考自：
