@@ -40,7 +40,7 @@ export default function downloadExcel(data: ExcelParsedObject): Promise<any> {
         ];
         const logs = data[type as keyof ExcelParsedObject].map((item, index) => {
           // const match = data.find((v) => v.item_id === item.item_id);
-          return [item.时间, item.名称, item.类别, item.星级, index + 1, item.保底内];
+          return [item.时间, item.名称, item.类别, item.星级, item.总次数, item.保底内];
         });
         sheet.addRows(logs);
         // set xlsx hearer style

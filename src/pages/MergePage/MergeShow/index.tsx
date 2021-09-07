@@ -10,6 +10,7 @@ import { UploadItem, UploadItemProps } from '../UploadItem';
 import mergeData from './mergeData';
 import downloadExcel from './downloadExcel';
 import { useGlobalContext } from 'context/GlobalContext';
+import { compressToHash } from 'utils/compress';
 
 type MergeShowProps = {
   values: ExcelParsedObject[];
@@ -55,6 +56,7 @@ const MergeShow: FC<MergeShowProps> = function ({ values }) {
   const handleGoToAnalyzer = useCallback(() => {
     if (!successData) return;
     updateParsedData(successData.data);
+    compressToHash(successData.data);
     updatePage('');
   }, [successData]);
   if (values.length === 0) return <></>;
