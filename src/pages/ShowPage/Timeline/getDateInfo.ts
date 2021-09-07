@@ -10,10 +10,10 @@ export function getDateInfo(begin: string, end: string) {
   var str_e = end.split('-');
   var date_b = new Date();
   // @ts-ignore
-  date_b.setUTCFullYear(str_b[0], str_b[1] - 1, str_b[2]);
+  date_b.setFullYear(str_b[0], str_b[1] - 1, str_b[2]);
   var date_e = new Date();
   // @ts-ignore
-  date_e.setUTCFullYear(str_e[0], str_e[1] - 1, str_e[2]);
+  date_e.setFullYear(str_e[0], str_e[1] - 1, str_e[2]);
   var unixDb = date_b.getTime();
   var unixDe = date_e.getTime();
   for (var j = unixDb; j <= unixDe; ) {
