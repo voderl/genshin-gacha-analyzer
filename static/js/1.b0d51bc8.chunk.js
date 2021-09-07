@@ -1,1 +1,0 @@
-(this["webpackJsonpgenshin-gacha-analyzer"]=this["webpackJsonpgenshin-gacha-analyzer"]||[]).push([[1],{493:function(a,n){}}]);
