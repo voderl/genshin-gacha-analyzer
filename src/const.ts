@@ -316,8 +316,8 @@ export const WEAPON_POOLS: PoolType[] = [
 export const BASE_POOL_NAME_TO_TYPE = {
   角色活动祈愿: 'character',
   武器活动祈愿: 'weapon',
-  新手祈愿: 'novice',
   常驻祈愿: 'permanent',
+  新手祈愿: 'novice',
 };
 export const POOL_TYPE_TO_NAME = invert(BASE_POOL_NAME_TO_TYPE);
 
