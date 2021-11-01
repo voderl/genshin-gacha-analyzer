@@ -33,6 +33,22 @@ function makeFormatter(template: DataItem) {
   };
 }
 
+/**
+ * 是否逆序
+ */
+function isDescendingOrder(data: DataItem[]) {
+  if (data.length === 0) return false;
+  const diffData = data.slice(1).map((item, index) => item.date - data[index].date);
+  let isDescending = false;
+  // 如果只有十连且时间一样，则判定为 不是逆序
+  for (let i = 0; i < diffData.length; i++) {
+    const date = diffData[i];
+    if (date < 0) isDescending = true;
+    if (date > 0) return false;
+  }
+  return isDescending;
+}
+
 export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBook) {
   const sheetsName = workbook.SheetNames;
   const sheets = workbook.Sheets;
@@ -50,6 +66,8 @@ export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBoo
           info.poolType = type;
           info.date = +parseToDate(info.时间);
         });
+
+        if (isDescendingOrder(data)) data.reverse();
         data = sortBy(data, (item) => item.date);
         data.forEach(formatter);
       }
