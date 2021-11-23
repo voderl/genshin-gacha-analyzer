@@ -44,10 +44,12 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
             updateParsedData(parsedData);
           } catch (e: any) {
             setErrorMessage(e.message);
+            setLoading(false);
           }
         })
         .catch(() => {
           setErrorMessage('XLSX解析文件加载失败，请重新上传');
+          setLoading(false);
         });
     };
     reader.onerror = function (e: ProgressEvent<FileReader>) {

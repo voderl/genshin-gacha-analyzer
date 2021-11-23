@@ -49,15 +49,47 @@ function isDescendingOrder(data: DataItem[]) {
   return isDescending;
 }
 
+/**
+ * 判断一个池子是否为 子池子，比如 "角色活动祈愿-2" 是 "角色活动祈愿" 的子池子
+ */
+function isChildSheet(parentSheetName: string, sheetName: string) {
+  return sheetName != parentSheetName && sheetName.startsWith(parentSheetName);
+}
+
 export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBook) {
   const sheetsName = workbook.SheetNames;
   const sheets = workbook.Sheets;
   const result = {} as ExcelParsedObject;
+
+  let parseAble = false;
   sheetsName.forEach((sheetName: string) => {
     if (sheetName in POOL_NAME_TO_TYPE) {
+      parseAble = true;
       const type = (POOL_NAME_TO_TYPE as any)[sheetName];
       const sheet = sheets[sheetName];
       let data = XLSX.utils.sheet_to_json(sheet) as DataItem[];
+
+      // 适配 "角色活动祈愿-2"，临时处理方案，此池子信息合并到 "角色活动祈愿" 池子
+      const childSheetNames = sheetsName.filter((name) => isChildSheet(sheetName, name));
+
+      let allChildData: DataItem[] = [];
+      if (childSheetNames.length !== 0) {
+        allChildData = flatten(
+          childSheetNames.map((childSheetName) => {
+            const childData = XLSX.utils.sheet_to_json(sheets[childSheetName]) as DataItem[];
+            if (childData.length === 0) return childData;
+            childData.forEach((info) => {
+              info.pool = childSheetName;
+              info.poolType = type;
+              info.date = +parseToDate(info.时间);
+              if (typeof info.星级 !== 'number') info.星级 = parseInt(info.星级);
+            });
+            if (isDescendingOrder(childData)) childData.reverse();
+            return childData;
+          }),
+        );
+      }
+
       // 只信任 抽卡数据里的 名称，日期，星级，其他数据按照时间顺序重新生成
       if (data.length !== 0) {
         const formatter = makeFormatter(data[0]);
@@ -68,12 +100,18 @@ export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBoo
         });
 
         if (isDescendingOrder(data)) data.reverse();
+
+        if (allChildData.length !== 0) data = data.concat(allChildData);
+
         data = sortBy(data, (item) => item.date);
         data.forEach(formatter);
       }
       (result as any)[type] = data;
-    } else throw new Error(`cannot parse sheetName ${sheetName}`);
+    }
   });
+
+  if (!parseAble) throw new Error('未在此文件中找到可被解析的数据');
+
   // 不信任"总次数"数据，重新生成
   sortBy(flatten(Object.values(result)), (item) => item.date).forEach((item, index) => {
     item.总次数 = index + 1;
