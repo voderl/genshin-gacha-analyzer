@@ -5,8 +5,8 @@
     "static/js/2.2d1f689a.chunk.js": "./static/js/2.2d1f689a.chunk.js",
     "static/js/3.bd205b89.chunk.js": "./static/js/3.bd205b89.chunk.js",
     "static/js/4.59a11182.chunk.js": "./static/js/4.59a11182.chunk.js",
-    "main.css": "./static/css/main.5b0de86f.chunk.css",
-    "main.js": "./static/js/main.9d0f3f8a.chunk.js",
+    "main.css": "./static/css/main.8de16390.chunk.css",
+    "main.js": "./static/js/main.552dac48.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.7c5f9356.js",
     "static/css/7.613b5f81.chunk.css": "./static/css/7.613b5f81.chunk.css",
     "static/js/7.bddfb31a.chunk.js": "./static/js/7.bddfb31a.chunk.js",
@@ -24,7 +24,7 @@
     "static/js/4.59a11182.chunk.js.LICENSE.txt": "./static/js/4.59a11182.chunk.js.LICENSE.txt",
     "static/js/7.bddfb31a.chunk.js.LICENSE.txt": "./static/js/7.bddfb31a.chunk.js.LICENSE.txt",
     "static/js/8.3c365c8f.chunk.js.LICENSE.txt": "./static/js/8.3c365c8f.chunk.js.LICENSE.txt",
-    "static/media/App.css": "./static/media/HYWenHei-85W.e758754b.svg",
+    "static/media/App.css": "./static/media/HYWenHei-85W.d1ff513f.svg",
     "static/media/achievement_achieved.49d0cc2e.png": "./static/media/achievement_achieved.49d0cc2e.png",
     "static/media/achievement_show.b270d366.png": "./static/media/achievement_show.b270d366.png"
   },
@@ -32,7 +32,7 @@
     "static/js/runtime-main.7c5f9356.js",
     "static/css/7.613b5f81.chunk.css",
     "static/js/7.bddfb31a.chunk.js",
-    "static/css/main.5b0de86f.chunk.css",
-    "static/js/main.9d0f3f8a.chunk.js"
+    "static/css/main.8de16390.chunk.css",
+    "static/js/main.552dac48.chunk.js"
   ]
 }
