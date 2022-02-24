@@ -42,7 +42,7 @@
     "compressFont": "node scripts/compressFont.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && cd build && coscmd -b genshin-1258302093 -r ap-hongkong upload -rs ./ / --ignore *.map"
+    "deploy": "yarn build && cd build && coscmd -b cn-genshin-1258302093 -r ap-shanghai upload -rs ./ / --ignore *.map"
   },
   "eslintConfig": {
     "extends": [
