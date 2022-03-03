@@ -114,6 +114,8 @@ export default function parseExcel(XLSX: typeof XLSXNameSpace, workbook: WorkBoo
 
   // 不信任"总次数"数据，重新生成
   sortBy(flatten(Object.values(result)), (item) => item.date).forEach((item, index) => {
+    // 兼容 "物品类型" 到 "类别"
+    if ('物品类型' in item) (item as any).类别 = (item as any)['物品类型'];
     item.总次数 = index + 1;
   });
   return result;
