@@ -83,7 +83,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
             <>
               <div>
                 不知道如何获取抽卡记录导出文件？
-                <a href='https://ngabbs.com/read.php?tid=25657464' target='_blank'>
+                <a href='https://voderl.cn/js/genshin/' target='_blank'>
                   <Button type='link'>请点击这里</Button>
                 </a>
               </div>
