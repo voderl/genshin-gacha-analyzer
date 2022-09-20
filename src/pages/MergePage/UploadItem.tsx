@@ -4,13 +4,14 @@ import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { Alert, AlertProps } from 'antd';
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
 import { RcFile } from 'antd/lib/upload';
-import { ExcelParsedObject } from 'utils/parseExcel';
+import { TParsedData } from 'types';
+import { POOL_TYPES } from 'const';
 
 export type UploadItemProps = {
   title: string;
   message: ReactNode;
   type: AlertProps['type'];
-  data: ExcelParsedObject;
+  data: TParsedData;
   file?: RcFile;
   onClose?: (file: RcFile) => void;
   closable?: boolean;
@@ -38,7 +39,7 @@ export const UploadItem: FC<UploadItemProps> = function ({
   }, [file, onClose]);
   const description = useMemo(() => {
     if (!data) return message;
-    const { from, to, count } = Object.values(data).reduce(
+    const { from, to, count } = POOL_TYPES.map((v) => data[v] || []).reduce(
       (acc, cur) => {
         acc.count += cur.length;
         if (cur.length === 0) return acc;

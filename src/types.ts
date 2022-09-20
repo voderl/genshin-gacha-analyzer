@@ -1,19 +1,14 @@
+import { TParsedData, TParsedItem } from 'parser/type';
+
+export * from 'parser/type';
+
+export type TPoolType = keyof Omit<TParsedData, 'all'>;
+
 export type Ref<T> = {
   current: T;
 };
 
-export type DataItem = {
-  时间: string;
-  编号: number;
-  名称: string;
-  类别: string;
-  星级: number;
-  总次数: number;
-  保底内: number;
-  pool: string;
-  poolType: string;
-  date: number;
-};
+export type DataItem = TParsedItem;
 
 export type Data = Array<DataItem>;
 

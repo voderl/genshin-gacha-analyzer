@@ -18,11 +18,9 @@ import { FriendLinks } from 'components/FriendLinks';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
 import parseToDate from 'utils/parseToDate';
+import { useGlobalContext } from 'context/GlobalContext';
 
-type AchievementsProps = {
-  onGetData: (key: string) => Data;
-  sheetNames: string[];
-};
+type AchievementsProps = {};
 
 export const POOLS = {
   CHARACTER: 0,
@@ -41,6 +39,7 @@ function getSheetKey(key: any, sheetNames: string[]) {
   const isChinese = CN_SHEETS.indexOf(sheetNames[0]) !== -1;
   return isChinese ? CN_SHEETS[key] : sheetNames[key];
 }
+
 const iconCss = css`
   position: absolute;
   left: 0;
@@ -74,10 +73,10 @@ const WrappedAchievementCard: FC<{
     </div>
   );
 };
-export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetNames }) {
+export const Achievements: FC<AchievementsProps> = function () {
+  const { parsedData } = useGlobalContext();
   const allAchievements = useCacheMemo(
     () => {
-      const allData = onGetData(SHOW_DATA_ALL_KEY);
       // 将数据分散到表里面，做一个缓存处理，方便对数据进行筛选
       const character: StarCacheType = {
         '5': {},
@@ -98,31 +97,26 @@ export const Achievements: FC<AchievementsProps> = function ({ onGetData, sheetN
         10: [],
         1: [],
       };
-      const pools = {
-        character: onGetData(getSheetKey(POOLS.CHARACTER, sheetNames)),
-        weapon: onGetData(getSheetKey(POOLS.WEAPON, sheetNames)),
-        novice: onGetData(getSheetKey(POOLS.NOVICE, sheetNames)),
-        permanent: onGetData(getSheetKey(POOLS.PERMANENT, sheetNames)),
-      };
+      const { all: allData, ...pools } = parsedData;
       const walk = (item: DataItem) => {
-        let cache = item.类别 === '角色' ? character : weapon;
-        if (item.名称 in all[item.星级]) all[item.星级][item.名称].data.push(item);
+        let cache = item.type === 'character' ? character : weapon;
+        if (item.name in all[item.rarity]) all[item.rarity][item.name].data.push(item);
         else {
-          all[item.星级][item.名称] = {
+          all[item.rarity][item.name] = {
             data: [item],
           };
         }
-        const currentDay = item.时间.slice(0, 10);
+        const currentDay = item.time.slice(0, 10);
         if (currentDay in day) {
           day[currentDay].data.push(item);
         } else {
           day[currentDay] = { data: [item] };
         }
-        if (!(item.名称 in cache[item.星级])) {
-          cache[item.星级][item.名称] = {
+        if (!(item.name in cache[item.rarity])) {
+          cache[item.rarity][item.name] = {
             data: [item],
           };
-        } else cache[item.星级][item.名称].data.push(item);
+        } else cache[item.rarity][item.name].data.push(item);
       };
       for (let i = 0, len = allData.length; i < len; ) {
         const current = allData[i];

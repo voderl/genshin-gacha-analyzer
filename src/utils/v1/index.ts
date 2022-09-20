@@ -1,7 +1,7 @@
 import flatten from 'lodash/flatten';
 import sortBy from 'lodash/sortBy';
+import { TParsedData } from 'parser/type';
 import { DataItem } from 'types';
-import { ExcelParsedObject } from 'utils/parseExcel';
 import { decodeDataItem, encodeDataItem } from './compressDataItem';
 import { decodeDate, encodeDate } from './compressDate';
 import { createHuffmanUtils } from './huffman';
@@ -44,10 +44,12 @@ function encodeChangePool(poolType: string) {
   );
 }
 
-export function encode(data: ExcelParsedObject) {
+export function encode(data: Omit<TParsedData, 'all'>) {
   console.log('encode');
-
-  const allDataItem = sortBy(flatten(Object.values(data)), (item) => item.date);
+  const allDataItem = sortBy(
+    flatten([data.character, data.weapon, data.novice, data.permanent]),
+    (item) => item.date,
+  );
 
   const dates = [];
   const dataStrArr = [];
@@ -84,7 +86,7 @@ export function encode(data: ExcelParsedObject) {
   );
 }
 
-export function decode(str: string): ExcelParsedObject {
+export function decode(str: string): Omit<TParsedData, 'all'> {
   console.log('decode');
 
   const splitSegs = str.split(SEPARATOR);

@@ -4,23 +4,25 @@ import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Tabs } from 'antd';
 import UpOutlined from '@ant-design/icons/UpOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
-import { ISMOBILE, SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
+import { ISMOBILE, POOL_TYPES, SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
 import { WorkSheet } from 'components/WorkSheet';
 import { Filter } from './Filter';
 import { IconButton } from 'components/IconButton';
-import { useCacheState } from 'context/CacheContext';
+import { TPoolType } from 'types';
+import { useGlobalContext } from 'context/GlobalContext';
+import { getPoolName } from 'utils';
+import { i18n } from 'utils/i18n';
 
-type ShowDataProps = {
-  onGetData: (key: string) => any;
-  tabs: Array<string>;
-};
+type ShowDataProps = {};
 const { TabPane } = Tabs;
 
-export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
-  const [activeKey, setActiveKey] = useCacheState(tabs[0], 'activeKey');
+export const ShowData: FC<ShowDataProps> = function () {
+  const [activeKey, setActiveKey] = useState<TPoolType | 'all'>(POOL_TYPES[0]);
+
   const handleChange = useCallback((key) => {
     setActiveKey(key);
   }, []);
+
   // filter为函数，因此不能直接使用useState，为了页面能更新，不使用ref
   const [filter, setFilter] = useState<{
     current: any;
@@ -32,11 +34,14 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
       current: filter,
     });
   }, []);
+  const { parsedData } = useGlobalContext();
+
   const data = useMemo(() => {
-    const data = onGetData(activeKey);
+    const data = parsedData[activeKey];
     if (!filter.current) return data;
     return data.filter(filter.current);
-  }, [filter.current, activeKey]);
+  }, [filter.current, activeKey, parsedData]);
+
   const canvasDataRef = useRef();
   const handleCreateWorkSheet = useCallback((node) => {
     canvasDataRef.current = node;
@@ -82,10 +87,10 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
               `
         }
       >
-        {tabs.map((name: string) => (
-          <TabPane tab={name} key={name} />
+        {POOL_TYPES.map((name) => (
+          <TabPane tab={getPoolName(name)} key={name} />
         ))}
-        <TabPane tab={SHOW_DATA_ALL_KEY} key={SHOW_DATA_ALL_KEY} />
+        <TabPane tab={i18n`总览`} key='all' />
       </Tabs>
       <Filter
         data={data}
@@ -123,7 +128,7 @@ export const ShowData: FC<ShowDataProps> = function ({ onGetData, tabs }) {
       )}
       <WorkSheet
         data={data}
-        schema={activeKey === SHOW_DATA_ALL_KEY ? SCHEMA_ALL : SCHEMA}
+        schema={activeKey === 'all' ? SCHEMA_ALL : SCHEMA}
         onCreate={handleCreateWorkSheet}
       />
     </div>

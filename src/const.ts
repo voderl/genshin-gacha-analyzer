@@ -1,7 +1,6 @@
-import { PoolType } from 'types';
+import { PoolType, TLocales, TItemKeys, TPoolType } from 'types';
 import isMobile from 'ismobilejs';
-import parseToDate from 'utils/parseToDate';
-import invert from 'lodash/invert';
+import dayjs from 'dayjs';
 
 (window as any).version = '1.0.9';
 
@@ -26,50 +25,61 @@ const numberFilter = function (value: number, filterFor: string | undefined) {
   }
   return value.toString() === filterFor;
 };
+
 export const SCHEMA = [
-  { name: '时间', type: 'string', width: 200 },
-  { name: '编号', type: 'number', hidden: true, width: 120, filter: numberFilter },
-  { name: '名称', type: 'string', width: 130 },
-  { name: '类别', type: 'string', width: 50 },
-  { name: '星级', type: 'number', width: 50, filter: numberFilter },
-  { name: '总次数', type: 'number', hidden: true, width: 100, filter: numberFilter },
-  { name: '保底内', type: 'number', width: 80, filter: numberFilter },
+  { title: '时间', name: 'time', type: 'string', width: 200 },
+  { title: '名称', name: 'name', type: 'string', width: 180 },
+  {
+    title: '类别',
+    name: 'type',
+    type: 'custom_item_type',
+    width: 80,
+  },
+  { title: '星级', name: 'rarity', type: 'number', width: 50, filter: numberFilter },
+  {
+    title: '总次数',
+    name: 'total',
+    type: 'number',
+    hidden: true,
+    width: 100,
+    filter: numberFilter,
+  },
+  { title: '保底内', name: 'pity', type: 'number', width: 80, filter: numberFilter },
 ];
 
 export const SCHEMA_ALL = (SCHEMA as any).concat({
-  name: 'pool',
   title: '池子名称',
-  type: 'string',
+  name: 'poolType',
+  type: 'custom_pool_type',
   width: 120,
 });
 
 export const CHARACTER_POOLS: PoolType[] = ((window as any).CHARACTER_POOLS || []).map((v: any) => {
   const o: PoolType = v as any;
-  o.from = +parseToDate(v.from);
-  o.to = +parseToDate(v.to);
+  o.from = +dayjs(v.from);
+  o.to = +dayjs(v.to);
   o.type = 'character';
   return o;
 });
 export const WEAPON_POOLS: PoolType[] = ((window as any).WEAPON_POOLS || []).map((v: any) => {
   const o: PoolType = v as any;
-  o.from = +parseToDate(v.from);
-  o.to = +parseToDate(v.to);
+  o.from = +dayjs(v.from);
+  o.to = +dayjs(v.to);
   o.type = 'weapon';
   return o;
 });
 
-export const BASE_POOL_NAME_TO_TYPE = {
-  角色活动祈愿: 'character',
-  武器活动祈愿: 'weapon',
-  常驻祈愿: 'permanent',
-  新手祈愿: 'novice',
+export const LOCALES_DATA = (window as any).LOCALES_DATA as {
+  [key in TLocales]: {
+    [key in TItemKeys]: string;
+  };
 };
-export const POOL_TYPE_TO_NAME = invert(BASE_POOL_NAME_TO_TYPE);
 
-export const POOL_NAME_TO_TYPE = {
-  ...BASE_POOL_NAME_TO_TYPE,
-  301: 'character',
-  302: 'weapon',
-  200: 'permanent',
-  100: 'novice',
+export const DATA_INFO = (window as any).DATA_INFO as {
+  [key in TItemKeys]: {
+    type: 'weapon' | 'character';
+    rarity: number;
+  };
 };
+
+export const POOL_TYPES: Array<TPoolType> = ['character', 'weapon', 'permanent', 'novice'];

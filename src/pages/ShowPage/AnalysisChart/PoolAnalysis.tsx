@@ -5,35 +5,35 @@ import { COLOR, FONT_FAMILY } from 'const';
 import { ECharts } from 'echarts/core';
 import takeRight from 'lodash/takeRight';
 import meanBy from 'lodash/meanBy';
-import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { DataItem } from 'types';
+import { FC, useCallback, useRef } from 'react';
+import { DataItem, TPoolType } from 'types';
 import { timeFormatter, percent, getColorByPercent } from './utils';
 import { useCacheMemo } from 'context/CacheContext';
 // @ts-ignore
 import LazyLoad from 'react-lazyload';
+import { getPoolName, isWeapon } from 'utils';
+import { i18n } from 'utils/i18n';
 
 interface PoolAnalysisProps {
-  sheetName: string;
+  poolType: TPoolType;
   data: DataItem[];
 }
 
-export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
+export const PoolAnalysis: FC<PoolAnalysisProps> = ({ poolType, data }) => {
   const info = useCacheMemo(
     () => {
       // 解析数据
-      const isWeaponPool = (sheetName: string) => sheetName.indexOf('武器') !== -1;
-      const poolMax = isWeaponPool(sheetName) ? 80 : 90;
-      const isWeapon = (item: DataItem) => item.类别 === '武器';
+      const poolMax = poolType === 'weapon' ? 80 : 90;
       const keys = ['character5', 'weapon5', 'character4', 'weapon4', 'weapon3'];
-      const langs = ['5星角色', '5星武器', '4星角色', '4星武器', '3星武器'];
+      const langs = [i18n`5星角色`, i18n`5星武器`, i18n`4星角色`, i18n`4星武器`, i18n`3星武器`];
       const colors = ['#fac858', '#ee6666', '#5470c6', '#91cc75', '#73c0de'];
       const colorByKey = Object.fromEntries(keys.map((key, index) => [key, colors[index]]));
       const countByKey = Object.fromEntries(keys.map((key) => [key, 0]));
       const langByKey = Object.fromEntries(keys.map((key, index) => [key, langs[index]]));
       const fiveStarHistory: DataItem[] = [];
       data.forEach((item) => {
-        if (item.星级 === 5) fiveStarHistory.push(item);
-        countByKey[`${isWeapon(item) ? 'weapon' : 'character'}${item.星级}`] += 1;
+        if (item.rarity === 5) fiveStarHistory.push(item);
+        countByKey[`${isWeapon(item) ? 'weapon' : 'character'}${item.rarity}`] += 1;
       });
       const lastFiveStar = fiveStarHistory.length === 0 ? null : takeRight(fiveStarHistory)[0];
       const leftCount = lastFiveStar
@@ -46,7 +46,7 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
       }));
       const chartColors = chartDataList.map((key) => colorByKey[key]);
       return {
-        name: sheetName,
+        name: getPoolName(poolType),
         chartSelected: {
           [langByKey['weapon3']]: data.length > 20 ? false : true,
         },
@@ -61,11 +61,11 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
         fourStarCount: countByKey['weapon4'] + countByKey['character4'],
         threeStarCount: countByKey['weapon3'],
         fiveStarHistory,
-        fiveStarAverage: meanBy(fiveStarHistory, (o) => o.保底内),
+        fiveStarAverage: meanBy(fiveStarHistory, (o) => o.pity),
       };
     },
     [data],
-    sheetName,
+    poolType,
   );
   const chartRef = useRef<ECharts>();
   const handlePieChartCreate = useCallback(
@@ -135,15 +135,15 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ sheetName, data }) => {
   function renderItem(item: DataItem) {
     return (
       <span
-        key={item.总次数}
+        key={item.total}
         style={{
-          color: getColorByCount(item.保底内),
+          color: getColorByCount(item.pity),
         }}
         css={css`
           margin: 4px;
         `}
       >
-        {item.名称}[{item.保底内}]
+        {item.name}[{item.pity}]
       </span>
     );
   }

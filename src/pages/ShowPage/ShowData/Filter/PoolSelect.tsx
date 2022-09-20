@@ -6,6 +6,7 @@ import { css } from '@emotion/react';
 import { Select } from 'antd';
 import React, { FC, useCallback, useMemo } from 'react';
 import { PoolType } from 'types';
+import { getItemNameByKey } from 'utils';
 
 export type PoolSelectProps = {
   pools: PoolType[];
@@ -28,7 +29,7 @@ function format(date: Date) {
 
 const makeKey = (pool: PoolType) => {
   const date = new Date(pool.from);
-  return `${pool.five.join('、')} (${format(date)})`;
+  return `${pool.five.map((key) => getItemNameByKey(key)).join('、')} (${format(date)})`;
 };
 export const PoolSelect: FC<PoolSelectProps> = function ({ pools, value, onChange }) {
   const handleChange = useCallback(

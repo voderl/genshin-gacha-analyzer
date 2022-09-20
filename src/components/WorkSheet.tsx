@@ -2,6 +2,8 @@
 import { css } from '@emotion/react';
 import { COLOR, FONT_FAMILY, ISMOBILE } from 'const';
 import React, { FC, useCallback } from 'react';
+import { getPoolName, isWeapon } from 'utils';
+import { i18n } from 'utils/i18n';
 import { CanvasDataGrid } from './CanvasDataGrid';
 
 type WorkSheetProps = {
@@ -25,19 +27,25 @@ const attributes = {
   editable: false,
   allowColumnResize: false,
   allowRowResize: false,
-  orderBy: '时间',
+  orderBy: 'time',
   touchZoomMin: 0.5,
   touchZoomMax: 1.5,
 };
 export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate }) {
   const handleCreate = useCallback((node: any) => {
     if (process.env.NODE_ENV === 'development') (window as any).node = node;
+    node.formatters.custom_item_type = function (e: any) {
+      return isWeapon(e.row) ? i18n`武器` : i18n`角色`;
+    };
+    node.formatters.custom_pool_type = function (e: any) {
+      return getPoolName(e.row && e.row.poolType);
+    };
     const oldStringSorter = node.sorters.string;
     // sortBy 时间
     node.sorters.string = function (columnName: string, direction: string) {
-      if (columnName === '时间') {
+      if (columnName === 'time') {
         const sortTime = oldStringSorter(columnName, direction);
-        const sortCount = node.sorters.number('总次数', direction);
+        const sortCount = node.sorters.number('total', direction);
         return (l: any, r: any) => {
           const info = sortTime(l, r);
           return info === 0 ? sortCount(l, r) : info;
@@ -46,7 +54,7 @@ export const WorkSheet: FC<WorkSheetProps> = function ({ data, schema, onCreate 
     };
     // render color:
     node.addEventListener('rendertext', function (e: any) {
-      const star = e.row['星级'];
+      const star = e.row['rarity'];
       if (star === 4) {
         e.ctx.fillStyle = COLOR.FOUR_STAR;
       } else if (star === 5) {

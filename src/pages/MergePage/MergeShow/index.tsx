@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { FC, useCallback, useState } from 'react';
-import { Button, message, Tooltip } from 'antd';
-import { ExcelParsedObject } from 'utils/parseExcel';
+import { Button, message } from 'antd';
 import UploadOutlined from '@ant-design/icons/UploadOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
 import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
@@ -11,9 +10,11 @@ import mergeData from './mergeData';
 import downloadExcel from './downloadExcel';
 import { useGlobalContext } from 'context/GlobalContext';
 import { compressToHash } from 'utils/compress';
+import { TParsedData } from 'types';
+import { clearGlobalCache } from 'context/CacheContext';
 
 type MergeShowProps = {
-  values: ExcelParsedObject[];
+  values: TParsedData[];
 };
 
 const ButtonWrapperStyle = css`
@@ -36,9 +37,12 @@ const MergeShow: FC<MergeShowProps> = function ({ values }) {
     } as UploadItemProps;
     try {
       info.data = mergeData(values);
-    } catch (e) {
+    } catch (e: any) {
       info.type = 'error';
-      info.message = e.message;
+      console.error(e);
+      if (typeof e === 'string') info.message = e;
+      else if (typeof e === 'object' && 'message' in e) info.message = e.message;
+      else info.message = 'unknown error';
     }
     setSuccessData(info);
   }, [values]);
@@ -49,24 +53,24 @@ const MergeShow: FC<MergeShowProps> = function ({ values }) {
       () => setDownloading(false),
       (e) => {
         message.error(e.message);
+        console.error(e);
         setDownloading(false);
       },
     );
   }, [successData]);
   const handleGoToAnalyzer = useCallback(() => {
     if (!successData) return;
+    clearGlobalCache();
     updateParsedData(successData.data);
     compressToHash(successData.data);
-    updatePage('');
+    updatePage('show');
   }, [successData]);
   if (values.length === 0) return <></>;
   return (
     <>
-      <Tooltip title={values.length <= 1 ? '请导入至少两个Excel文件' : ''} placement='bottom'>
-        <Button icon={<UploadOutlined />} onClick={handleMerge} disabled={values.length <= 1}>
-          合并生成新文件
-        </Button>
-      </Tooltip>
+      <Button icon={<UploadOutlined />} onClick={handleMerge} disabled={false}>
+        合并生成新文件
+      </Button>
       {successData && (
         <>
           <UploadItem {...successData} />

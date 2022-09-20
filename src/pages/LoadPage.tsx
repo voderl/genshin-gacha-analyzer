@@ -5,58 +5,50 @@ import { Button, Upload, Alert, Spin } from 'antd';
 import InboxOutlined from '@ant-design/icons/InboxOutlined';
 import { RcFile } from 'antd/lib/upload';
 import { useGlobalContext } from 'context/GlobalContext';
-import XLSXNameSpace from 'xlsx/types';
 import { FriendLinks } from 'components/FriendLinks';
-import parseExcel from 'utils/parseExcel';
+import { parseExcel } from 'parser/index';
 import { compressToHash } from 'utils/compress';
+import { i18n } from 'utils/i18n';
+import { clearGlobalCache } from 'context/CacheContext';
 
 const { Dragger } = Upload;
 type LoadPageProps = {
   onLoad?: () => void;
 };
-// 预加载
-// @ts-ignore
-import('xlsx/dist/xlsx.mini.min.js');
 
 export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [loading, setLoading] = useState<Boolean>(false);
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
-  const [loadingTip, setLoadingTip] = useState('加载中...');
   const { updateParsedData, updatePage } = useGlobalContext();
   const handleUpload = useCallback((file: RcFile) => {
     if (!file.name.endsWith('.xlsx')) {
       setErrorMessage('文件类型错误，请上传xlsx文件');
       return false;
     }
-    setLoading(true);
-    const reader = new FileReader();
-    reader.onload = function (e: ProgressEvent<FileReader>) {
-      setLoadingTip('xlsx解析文件加载中...');
-      // @ts-ignore
-      import('xlsx/dist/xlsx.mini.min.js')
-        .then((module) => {
-          try {
-            const XLSX: typeof XLSXNameSpace = module;
-            const data = new Uint8Array((e.target as FileReader).result as any);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const parsedData = parseExcel(XLSX, workbook);
-            compressToHash(parsedData);
-            updateParsedData(parsedData);
-          } catch (e: any) {
-            setErrorMessage(e.message);
-            setLoading(false);
-          }
-        })
-        .catch(() => {
-          setErrorMessage('XLSX解析文件加载失败，请重新上传');
-          setLoading(false);
-        });
-    };
-    reader.onerror = function (e: ProgressEvent<FileReader>) {
-      setErrorMessage('解析文件失败, 请重新上传');
+
+    const handleError = (error: any) => {
       setLoading(false);
+      if (typeof error === 'string') return setErrorMessage(error);
+      if (typeof error === 'object' && 'message' in error) {
+        return setErrorMessage(error.message);
+      }
     };
-    reader.readAsArrayBuffer(file);
+
+    setLoading(true);
+    file
+      .arrayBuffer()
+      .then((arrayBuffer) => {
+        parseExcel(arrayBuffer)
+          .then((parsedData) => {
+            clearGlobalCache();
+            updateParsedData(parsedData);
+            compressToHash(parsedData);
+            updatePage('show');
+          })
+          .catch(handleError);
+      })
+      .catch(handleError);
+
     return false;
   }, []);
   const handleGoToMergePage = useCallback(() => {
@@ -115,7 +107,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       >
         {errorMessage && <Alert message={errorMessage} type='error' />}
         <p className='ant-upload-drag-icon'>
-          {loading ? <Spin tip={loadingTip} /> : <InboxOutlined />}
+          {loading ? <Spin tip={i18n`数据正在解析中...`} /> : <InboxOutlined />}
         </p>
         <p className='ant-upload-text'>点击选择抽卡记录导出文件或将文件拖拽到此区域</p>
         <p className='ant-upload-text'>( 注：文件的后缀应为.xlsx )</p>

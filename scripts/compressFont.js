@@ -7,7 +7,7 @@ const fs = require('fs');
 const Fontmin = require('fontmin');
 const path = require('path');
 
-const searchPattern = 'src/**/*.@(ts|tsx)'; //搜索文件 glob语法
+const searchPattern = '@(public|src)/**/*.@(ts|tsx|js)'; //搜索文件 glob语法
 const outputDir = 'src/font'; // 输出文件位置
 const fontData = [
   {
@@ -22,8 +22,10 @@ const fontData = [
 const defaultText =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,./;\'[]\\`-=<>?:"{}|~!@#$%^&*()_+';
 
-const matchChinese = /[\u4e00-\u9fa5\u3000-\u301e\ufe10-\ufe19\ufe30-\ufe44\ufe50-\ufe6b\uff01-\uffee]/gmu;
-const matchChineseChar = /[\u4e00-\u9fa5\u3000-\u301e\ufe10-\ufe19\ufe30-\ufe44\ufe50-\ufe6b\uff01-\uffee]/;
+const matchChinese =
+  /[\u4e00-\u9fa5\u3000-\u301e\ufe10-\ufe19\ufe30-\ufe44\ufe50-\ufe6b\uff01-\uffee]/gmu;
+const matchChineseChar =
+  /[\u4e00-\u9fa5\u3000-\u301e\ufe10-\ufe19\ufe30-\ufe44\ufe50-\ufe6b\uff01-\uffee]/;
 const matchUnicode = /\\u[0-9A-Fa-f]{4}/gmu;
 function unicodeToChar(text) {
   return text.replace(/\\u[\dA-F]{4}/gi, function (match) {

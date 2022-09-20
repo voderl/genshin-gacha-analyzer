@@ -57,10 +57,10 @@ const copyIconMap = {
 };
 
 export const BackAndCopy: FC<BackAndCopyProps> = function () {
-  const { updateParsedData, isVertical } = useGlobalContext();
+  const { isVertical, updatePage } = useGlobalContext();
   const [copyStatus, updateCopyStatus] = useState(ECopyStatus.Pending);
   const handleBackToLoadPage = useCallback(() => {
-    updateParsedData(null as any);
+    updatePage('');
   }, []);
   const handleCopy = useCallback(() => {
     try {
