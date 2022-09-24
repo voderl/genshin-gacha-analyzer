@@ -12,7 +12,6 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.2",
-    "canvas-datagrid": "0.3.1",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.9.1",
     "dayjs": "^1.11.5",
@@ -34,7 +33,6 @@
     "xlsx": "^0.16.9"
   },
   "scripts": {
-    "postinstall": "patch-package",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node scripts/compressFont.js && react-scripts start",
     "build": "node scripts/compressFont.js && react-scripts build",
@@ -69,7 +67,6 @@
     "fontmin": "^0.9.8",
     "genshin-db": "^4.3.0",
     "glob": "^7.1.6",
-    "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "source-map-explorer": "^2.5.2"
   }

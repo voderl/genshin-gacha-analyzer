@@ -30,7 +30,7 @@ export type TParsedItem = {
   time: string;
   name: string;
   type: 'weapon' | 'character';
-  poolType: keyof TParsedData;
+  poolType: 'character' | 'weapon' | 'permanent' | 'novice';
   rarity: number;
   total: number;
   pity: number;

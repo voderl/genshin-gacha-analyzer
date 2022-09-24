@@ -1,23 +1,43 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { Tabs } from 'antd';
-import UpOutlined from '@ant-design/icons/UpOutlined';
-import DownOutlined from '@ant-design/icons/DownOutlined';
-import { ISMOBILE, POOL_TYPES, SCHEMA, SCHEMA_ALL, SHOW_DATA_ALL_KEY } from 'const';
-import { WorkSheet } from 'components/WorkSheet';
-import { Filter } from './Filter';
-import { IconButton } from 'components/IconButton';
-import { TPoolType } from 'types';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { Select, Tabs } from 'antd';
+import ItemList, { useIsClientWidthMoreThan } from 'components/ItemList';
 import { useGlobalContext } from 'context/GlobalContext';
+import { Filter } from './Filter';
+import { ISMOBILE, POOL_TYPES } from 'const';
+import { TPoolType } from 'types';
 import { getPoolName } from 'utils';
 import { i18n } from 'utils/i18n';
 
 type ShowDataProps = {};
 const { TabPane } = Tabs;
 
+const tabsCss = css`
+  .ant-tabs-nav {
+    height: 64px;
+    margin-bottom: 0px;
+  }
+`;
+
+const selectCss = css`
+  width: 200px;
+  padding: 16px 0px;
+  margin: 0 20px;
+`;
+
+const tabOptions = POOL_TYPES.map((value) => ({
+  label: getPoolName(value),
+  value,
+})).concat({
+  label: i18n`全部`,
+  value: 'all',
+} as any);
+
 export const ShowData: FC<ShowDataProps> = function () {
   const [activeKey, setActiveKey] = useState<TPoolType | 'all'>(POOL_TYPES[0]);
+
+  const isWidthEnough = useIsClientWidthMoreThan(600);
 
   const handleChange = useCallback((key) => {
     setActiveKey(key);
@@ -42,95 +62,64 @@ export const ShowData: FC<ShowDataProps> = function () {
     return data.filter(filter.current);
   }, [filter.current, activeKey, parsedData]);
 
-  const canvasDataRef = useRef();
-  const handleCreateWorkSheet = useCallback((node) => {
-    canvasDataRef.current = node;
-  }, []);
-  const handleGoTop = useCallback(() => {
-    if (canvasDataRef.current) (canvasDataRef.current as any).scrollTop = 0;
-  }, []);
-  const handleGoBottom = useCallback(() => {
-    const node: any = canvasDataRef.current;
-    if (node) node.scrollTop = node.scrollHeight;
-  }, []);
   return (
-    <div
-      css={css`
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        padding-bottom: ${ISMOBILE ? 0 : 20}px;
-      `}
-    >
-      <Tabs
-        activeKey={activeKey}
-        onChange={handleChange}
-        size={ISMOBILE ? 'middle' : 'large'}
-        centered
-        css={
-          ISMOBILE
-            ? css`
-                background: #fff;
-                padding: 0 10px;
-                .ant-tabs-nav {
-                  background: #fff;
-                  height: 48px;
-                }
-              `
-            : css`
-                .ant-tabs-nav {
-                  background: #fff;
-                  height: 64px;
-                }
-              `
-        }
-      >
-        {POOL_TYPES.map((name) => (
-          <TabPane tab={getPoolName(name)} key={name} />
-        ))}
-        <TabPane tab={i18n`总览`} key='all' />
-      </Tabs>
-      <Filter
-        data={data}
-        css={css`
-          position: absolute;
-          top: ${ISMOBILE ? 56 : 68}px;
-          z-index: 999;
-        `}
-        onChange={handleFilterChange}
-        activeKey={activeKey}
-      />
-      {!ISMOBILE && (
-        <div
-          css={css`
-            position: absolute;
-            right: 10%;
-            z-index: 999;
-            top: 72px;
-          `}
+    <div>
+      {isWidthEnough ? (
+        <Tabs
+          className='affix'
+          tabBarExtraContent={
+            <Filter
+              data={data}
+              style={{
+                width: 100,
+              }}
+              onChange={handleFilterChange}
+              activeKey={activeKey}
+            />
+          }
+          style={{
+            top: 0,
+            maxWidth: 800,
+            margin: 'auto',
+          }}
+          activeKey={activeKey}
+          onChange={handleChange}
+          size={ISMOBILE ? 'middle' : 'large'}
+          centered
+          css={tabsCss}
         >
-          <IconButton
-            placement='right'
-            tip='前往顶部'
-            icon={<UpOutlined />}
-            onClick={handleGoTop}
+          {tabOptions.map(({ label, value }) => (
+            <TabPane tab={label} key={value} />
+          ))}
+        </Tabs>
+      ) : (
+        <div
+          className='affix'
+          style={{
+            top: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}
+        >
+          <Select
+            options={tabOptions}
+            onChange={handleChange}
+            value={activeKey}
+            onSelect={handleChange}
+            css={selectCss}
           />
-          <br />
-          <IconButton
-            placement='right'
-            tip='前往底部'
-            icon={<DownOutlined />}
-            onClick={handleGoBottom}
+          <Filter
+            data={data}
+            style={{
+              width: 100,
+            }}
+            onChange={handleFilterChange}
+            activeKey={activeKey}
           />
         </div>
       )}
-      <WorkSheet
-        data={data}
-        schema={activeKey === 'all' ? SCHEMA_ALL : SCHEMA}
-        onCreate={handleCreateWorkSheet}
-      />
+      <ItemList dataSource={data} isShowPoolType={activeKey === 'all'} headerStickyTop={64} />
     </div>
   );
 };

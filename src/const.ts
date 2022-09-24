@@ -18,41 +18,6 @@ export const COLOR = {
   FIVE_STAR: '#C0713D',
   THREE_STAR: '#4D8DF7',
 };
-// fix: canvas-datagrid have error when filter number
-const numberFilter = function (value: number, filterFor: string | undefined) {
-  if (!filterFor) {
-    return true;
-  }
-  return value.toString() === filterFor;
-};
-
-export const SCHEMA = [
-  { title: '时间', name: 'time', type: 'string', width: 200 },
-  { title: '名称', name: 'name', type: 'string', width: 180 },
-  {
-    title: '类别',
-    name: 'type',
-    type: 'custom_item_type',
-    width: 80,
-  },
-  { title: '星级', name: 'rarity', type: 'number', width: 50, filter: numberFilter },
-  {
-    title: '总次数',
-    name: 'total',
-    type: 'number',
-    hidden: true,
-    width: 100,
-    filter: numberFilter,
-  },
-  { title: '保底内', name: 'pity', type: 'number', width: 80, filter: numberFilter },
-];
-
-export const SCHEMA_ALL = (SCHEMA as any).concat({
-  title: '池子名称',
-  name: 'poolType',
-  type: 'custom_pool_type',
-  width: 120,
-});
 
 export const CHARACTER_POOLS: PoolType[] = ((window as any).CHARACTER_POOLS || []).map((v: any) => {
   const o: PoolType = v as any;

@@ -19,7 +19,7 @@ import { COLOR, FONT_FAMILY, SHOW_DATA_ALL_KEY } from 'const';
 import { Alert, Switch } from 'antd';
 import memoize from 'lodash/memoize';
 import { getDateInfo } from './getDateInfo';
-import { CollapseWorkSheet } from './CollapseWorkSheet';
+import { DayItemList } from './DayItemList';
 import { useCacheMemo } from 'context/CacheContext';
 import get from 'lodash/get';
 import maxBy from 'lodash/maxBy';
@@ -381,15 +381,7 @@ export const Timeline: FC<TimelineProps> = function () {
     setHideZeroDay(!checked);
   }, []);
   return (
-    <div
-      css={css`
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        position: absolute;
-      `}
-    >
+    <div>
       <div
         css={css`
           width: 100%;
@@ -419,7 +411,7 @@ export const Timeline: FC<TimelineProps> = function () {
           height: 500px;
         `}
       ></div>
-      {currentday && <CollapseWorkSheet day={currentday} />}
+      {currentday && <DayItemList day={currentday} />}
     </div>
   );
 };

@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useCallback, useMemo, useState, Suspense, lazy, memo } from 'react';
+import { FC, useCallback, useState, Suspense, lazy } from 'react';
 import { Layout, Spin } from 'antd';
 import { useGlobalContext } from 'context/GlobalContext';
+import { CacheContextProvider } from 'context/CacheContext';
 import { Achievements } from './Achievements';
 import CustomSider from './CustomSider';
-import { CacheContextProvider, clearGlobalCache } from 'context/CacheContext';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
@@ -57,6 +57,7 @@ export const ShowPage: FC<ShowPageProps> = function () {
         activeMenu={activeMenu}
       />
       <Content
+        id='main-container'
         css={css`
           margin: 0;
           position: relative;
