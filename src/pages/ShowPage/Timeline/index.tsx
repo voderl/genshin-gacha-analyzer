@@ -19,13 +19,14 @@ import { COLOR, FONT_FAMILY, SHOW_DATA_ALL_KEY } from 'const';
 import { Alert, Switch } from 'antd';
 import memoize from 'lodash/memoize';
 import { getDateInfo } from './getDateInfo';
-import { CollapseWorkSheet } from './CollapseWorkSheet';
+import { DayItemList } from './DayItemList';
 import { useCacheMemo } from 'context/CacheContext';
 import get from 'lodash/get';
 import maxBy from 'lodash/maxBy';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
 import debounce from 'lodash/debounce';
+import { useGlobalContext } from 'context/GlobalContext';
 
 echarts.use([
   TitleComponent,
@@ -38,9 +39,7 @@ echarts.use([
   CanvasRenderer,
   BarChart,
 ]);
-type TimelineProps = {
-  onGetData: (key: string) => Data;
-};
+type TimelineProps = {};
 type DateInfo = {
   count: number;
   '5': number;
@@ -53,7 +52,7 @@ function calculateData(data: Data) {
   function addToList(current: DateInfo) {
     countByDay.push(current);
   }
-  const format = (index: number) => data[index].时间.slice(0, 10);
+  const format = (index: number) => data[index].time.slice(0, 10);
   const initCurrent = () => ({
     count: 0,
     '5': 0,
@@ -64,7 +63,7 @@ function calculateData(data: Data) {
   let current = initCurrent();
   const walk = (item: DataItem) => {
     current.count += 1;
-    (current as any)[item.星级] += 1;
+    (current as any)[item.rarity] += 1;
   };
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i];
@@ -87,12 +86,13 @@ const barList = [
   ['5 星', '5', '#FAC858'],
 ];
 
-export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
+export const Timeline: FC<TimelineProps> = function () {
   const echartsWrapper = useRef<HTMLDivElement>(null);
   const myChartRef = useRef<ECharts>();
   const [hideZeroDay, setHideZeroDay] = useState(true);
   const [currentday, setCurrentDay] = useState<string>();
 
+  const { parsedData } = useGlobalContext();
   // 获取数据，并写入缓存。
   const { getOption, getInfoByDay } = useCacheMemo(
     () => {
@@ -163,7 +163,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
           }
           return dateList;
         }
-        return calculateData(onGetData(SHOW_DATA_ALL_KEY));
+        return calculateData(parsedData.all);
       }
       const getOption = function (isHideZeroDay: boolean) {
         return formatToEchartsOption(getData(isHideZeroDay));
@@ -180,7 +180,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
         getInfoByDay,
       };
     },
-    [],
+    [parsedData],
     'timeline',
   );
 
@@ -297,8 +297,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
           feature: {
             mySaveAsImage: {
               show: true,
-              icon:
-                'path://M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
+              icon: 'path://M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
               title: '保存为图片',
               onclick() {
                 const option = myChart.getOption();
@@ -382,15 +381,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
     setHideZeroDay(!checked);
   }, []);
   return (
-    <div
-      css={css`
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        position: absolute;
-      `}
-    >
+    <div>
       <div
         css={css`
           width: 100%;
@@ -420,7 +411,7 @@ export const Timeline: FC<TimelineProps> = function ({ onGetData }) {
           height: 500px;
         `}
       ></div>
-      {currentday && <CollapseWorkSheet onGetData={onGetData} day={currentday} />}
+      {currentday && <DayItemList day={currentday} />}
     </div>
   );
 };

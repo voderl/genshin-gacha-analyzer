@@ -31,13 +31,9 @@ const Item: FC<ButtonSelectItemProps> = function ({ children, onClick, enable })
       style={
         enable
           ? {
-              borderColor: '#1890ff',
-              borderWidth: '2px',
-              background: '#f0f0f0',
+              backgroundColor: 'rgba(24, 144, 255, 0.2)',
             }
           : {
-              borderColor: 'transparent',
-              borderWidth: '2px',
               background: '#f5f5f5',
             }
       }

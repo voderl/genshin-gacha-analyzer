@@ -1,7 +1,9 @@
-import { POOL_TYPE_TO_NAME } from 'const';
-import { ExcelParsedObject } from 'utils/parseExcel';
+import { POOL_TYPES } from 'const';
 // @ts-ignore
 import * as download from 'downloadjs';
+import { TParsedData } from 'types';
+import { getItemNameByKey, getPoolName } from 'utils';
+import { i18n } from 'utils/i18n';
 
 // 预加载
 import('exceljs');
@@ -20,14 +22,13 @@ function getTimeString() {
   return `${YYYY}${MM}${DD}_${HH}${mm}${ss}`;
 }
 
-export default function downloadExcel(data: ExcelParsedObject): Promise<any> {
+export default function downloadExcel(data: TParsedData): Promise<any> {
   return new Promise((resolve, reject) => {
     import('exceljs').then((module) => {
       const ExcelJS = module;
       const workbook = new ExcelJS.Workbook();
-      const types = Object.keys(POOL_TYPE_TO_NAME);
-      types.forEach((type) => {
-        const sheet = workbook.addWorksheet(POOL_TYPE_TO_NAME[type], {
+      POOL_TYPES.forEach((type) => {
+        const sheet = workbook.addWorksheet(getPoolName(type), {
           views: [{ state: 'frozen', ySplit: 1 }],
         });
         sheet.columns = [
@@ -38,9 +39,16 @@ export default function downloadExcel(data: ExcelParsedObject): Promise<any> {
           { header: '总次数', key: 'idx', width: 8 },
           { header: '保底内', key: 'pdx', width: 8 },
         ];
-        const logs = data[type as keyof ExcelParsedObject].map((item, index) => {
+        const logs = data[type as keyof TParsedData].map((item, index) => {
           // const match = data.find((v) => v.item_id === item.item_id);
-          return [item.时间, item.名称, item.类别, item.星级, item.总次数, item.保底内];
+          return [
+            item.time,
+            getItemNameByKey(item.key),
+            item.type === 'weapon' ? i18n`武器` : i18n`角色`,
+            item.rarity,
+            item.total,
+            item.pity,
+          ];
         });
         sheet.addRows(logs);
         // set xlsx hearer style

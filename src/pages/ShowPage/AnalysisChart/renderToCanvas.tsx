@@ -275,7 +275,7 @@ const renderTextContent = (
     const { height: fiveStarHistoryHeight, draw: drawHistory } = baseTextSet(
       ['5星历史记录：'],
       fiveStarHistory.map((item) =>
-        colorText(`${item.名称}[${item.保底内}]`, getColorByCount(item.保底内)),
+        colorText(`${item.name}[${item.pity}]`, getColorByCount(item.pity)),
       ),
     );
     height += fiveStarHistoryHeight + LINE_SPACE;

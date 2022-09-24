@@ -6,6 +6,25 @@ body {
     Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
 }
+
 .ant-layout {
-  background-color: #f9f9f9;
+  background-color: #fdfdfd;
+}
+
+.affix {
+  position: sticky;
+  z-index: 1;
+  background: #fdfdfd;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+.normal-text {
+  font-family: HYWenHei-65W;
+}
+
+.bold-text {
+  font-family: HYWenHei-85W;
 }

@@ -5,7 +5,6 @@ import { useCacheMemo } from 'context/CacheContext';
 import { FC, useCallback, useRef } from 'react';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
 import { DataItem } from 'types';
-import { SHOW_DATA_ALL_KEY } from 'const';
 import { useGlobalContext } from 'context/GlobalContext';
 import { ListItem, WordCloudChart } from './WordCloudChart';
 // @ts-ignore
@@ -13,16 +12,14 @@ import randomColor from 'randomcolor';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
 
-interface WordCloudChartsProps {
-  onGetData: (key: string) => DataItem[];
-}
+interface WordCloudChartsProps {}
 
-const WordCloudCharts: FC<WordCloudChartsProps> = ({ onGetData }) => {
+const WordCloudCharts: FC<WordCloudChartsProps> = () => {
   const wordCloudWrapperRef = useRef<HTMLDivElement>(null);
-  const { isVertical } = useGlobalContext();
+  const { isVertical, parsedData } = useGlobalContext();
   const wordCloudData = useCacheMemo(
     () => {
-      const data = onGetData(SHOW_DATA_ALL_KEY);
+      const data = parsedData.all;
       type Info = {
         count: number;
         data: DataItem[];
@@ -35,20 +32,20 @@ const WordCloudCharts: FC<WordCloudChartsProps> = ({ onGetData }) => {
         [key: string]: Info;
       } = {};
       data.forEach((item) => {
-        if (item.名称 in countMap) {
-          const info = countMap[item.名称];
+        if (item.name in countMap) {
+          const info = countMap[item.name];
           info.count += 1;
           info.data.push(item);
         } else
-          countMap[item.名称] = {
+          countMap[item.name] = {
             count: 1,
             data: [item],
-            name: item.名称,
-            star: item.星级,
+            name: item.name,
+            star: item.rarity,
             color: randomColor({
               luminosity: 'dark',
             }),
-            isCharacter: item.类别 === '角色',
+            isCharacter: item.type === 'character',
           };
       });
       const weapons: Info[] = [],

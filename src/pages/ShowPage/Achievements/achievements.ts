@@ -60,8 +60,8 @@ const defaultFormatter = (name: string, count: number) =>
 function formatByName(data: Data, format = defaultFormatter) {
   const cache: any = {};
   data.forEach((item) => {
-    if (item.名称 in cache) cache[item.名称] += 1;
-    else cache[item.名称] = 1;
+    if (item.name in cache) cache[item.name] += 1;
+    else cache[item.name] = 1;
   });
   return Object.keys(cache).map((key) => format(key, cache[key]));
 }
@@ -71,46 +71,46 @@ const calculateTime = (t: number) => {
   var h = Math.floor((t / 1000 / 60 / 60) % 24);
   return d + ' 天' + h + ' 时';
 };
-export const achievements: Array<(
-  data: Source,
-) => AchievementCardProps | AchievementCardProps[] | false | void> = [
+export const achievements: Array<
+  (data: Source) => AchievementCardProps | AchievementCardProps[] | false | void
+> = [
   function maxGacha({ all }: Source) {
     const name = maxBy(Object.keys(all[5]), (cur) => {
       const items = all[5][cur].data;
-      return (maxBy(items, (item) => item.保底内) as DataItem).保底内;
+      return (maxBy(items, (item) => item.pity) as DataItem).pity;
     });
     if (!name) return false;
-    const item = maxBy(all[5][name].data, (item) => item.保底内);
+    const item = maxBy(all[5][name].data, (item) => item.pity);
     if (!item) return false;
-    if (item.保底内 < 80) return;
+    if (item.pity < 80) return;
     let info = '';
-    if (item.保底内 >= 84) {
-      info = ', 你竟是' + ['百', '千', '万', '十万', '百万'][item.保底内 - 84] + '里挑一的非酋!';
+    if (item.pity >= 84) {
+      info = ', 你竟是' + ['百', '千', '万', '十万', '百万'][item.pity - 84] + '里挑一的非酋!';
     }
     return {
       title: '「原来非酋竟是我自己」',
-      info: `抽了 ${item.保底内} 次才最终抽到了「${item.名称}」${info}`,
-      achievedTime: item.时间,
-      value: item.保底内,
+      info: `抽了 ${item.pity} 次才最终抽到了「${item.name}」${info}`,
+      achievedTime: item.time,
+      value: item.pity,
     };
   },
   function minGacha({ all }: Source) {
     const name = minBy(Object.keys(all[5]), (cur) => {
       const items = all[5][cur].data;
-      return (minBy(items, (item) => item.保底内) as DataItem).保底内;
+      return (minBy(items, (item) => item.pity) as DataItem).pity;
     });
     if (!name) return false;
-    const item = minBy(all[5][name].data, (item) => item.保底内);
+    const item = minBy(all[5][name].data, (item) => item.pity);
     if (!item) return false;
-    const count = item.保底内;
+    const count = item.pity;
     if (count > 30) return;
     let info = '';
     if (count <= 5) info = `, 你的欧气无人能敌!`;
     return {
       title: '「欧皇时刻」',
-      info: `只抽了 ${item.保底内} 次就抽到了「${item.名称}」${info}`,
-      achievedTime: item.时间,
-      value: item.保底内,
+      info: `只抽了 ${item.pity} 次就抽到了「${item.name}」${info}`,
+      achievedTime: item.time,
+      value: item.pity,
     };
   },
   // 不碰某些池子
@@ -140,14 +140,14 @@ export const achievements: Array<(
   },
   // 人物Up池歪的比例
   function upWrong({ pools }) {
-    const data = pools.character.filter((data) => data.星级 === 5);
+    const data = pools.character.filter((data) => data.rarity === 5);
     if (data.length === 0) return;
     // 是否是Up角色
     function isHitUp(item: DataItem) {
       const date = item.date;
       const pool = CHARACTER_POOLS.find((pool) => date >= pool.from && date <= pool.to);
       if (!pool) return false;
-      return pool.five.includes(item.名称);
+      return pool.five.includes(item.key);
     }
     let notHitCount = 0,
       hitCount = 0;
@@ -190,24 +190,24 @@ export const achievements: Array<(
   function maxGachaDay({ day, data }) {
     const _day = maxBy(Object.values(day), (today) => today.data.length);
     if (!_day) return false;
-    const result = _day.data.filter((item) => item.星级 === 5);
+    const result = _day.data.filter((item) => item.rarity === 5);
     if (result.length === 0)
       return {
         // from nga @carry_tu (https://ngabbs.com/nuke.php?func=ucp&uid=41767591)
         title: '「最黑暗的一天」', // 最多抽数的一天且并没有出黄
-        info: `在${formatTime(_day.data[0].时间)}这一天，你共抽取了 ${
+        info: `在${formatTime(_day.data[0].time)}这一天，你共抽取了 ${
           _day.data.length
         } 次，然而并没有出黄，是抽卡记录中最黑暗的一天`,
-        achievedTime: _day.data[0].时间,
+        achievedTime: _day.data[0].time,
         value: _day.data.length,
       };
     const resultStr = `在抽到${formatByName(result).join('、')}时，你有没有很开心呢？`;
     return {
       title: '「豪掷千金」',
-      info: `在${formatTime(_day.data[0].时间)}这一天，你共抽取了 ${
+      info: `在${formatTime(_day.data[0].time)}这一天，你共抽取了 ${
         _day.data.length
       } 次。${resultStr}`,
-      achievedTime: _day.data[0].时间,
+      achievedTime: _day.data[0].time,
       value: _day.data.length,
     };
   },
@@ -215,14 +215,14 @@ export const achievements: Array<(
     const { character, weapon } = pools;
     const data = character
       .concat(weapon)
-      .sort((a, b) => (a.date === b.date ? a.总次数 - b.总次数 : a.date - b.date));
+      .sort((a, b) => (a.date === b.date ? a.total - b.total : a.date - b.date));
     const waitTime = data.slice(1).map((v, index) => v.date - data[index].date);
     if (waitTime.length === 0) return;
     const maxWaitTime = max(waitTime as Array<number>);
     if (!maxWaitTime) return;
     const index = waitTime.indexOf(maxWaitTime);
-    const fromTime = data[index].时间,
-      endTime = data[index + 1].时间;
+    const fromTime = data[index].time,
+      endTime = data[index + 1].time;
     const waitDay = maxWaitTime / 3600 / 24 / 1000;
     let level, info;
     if (waitDay <= 15) {
@@ -250,8 +250,8 @@ export const achievements: Array<(
   function oneGachaGetFiveStar({ gacha }) {
     const countLimit = 40; // 限制抽数，避免你看要保底了就单抽，而导致假的单抽出奇迹
     const percentLimit = 0.3;
-    const starFilter = (item: DataItem) => item.星级 === 5;
-    const limitFilter = (item: DataItem) => item.保底内 <= countLimit;
+    const starFilter = (item: DataItem) => item.rarity === 5;
+    const limitFilter = (item: DataItem) => item.pity <= countLimit;
     const gacha1Data = gacha[1].filter(limitFilter); // 所有满足条件的单抽
     const gacha10Data = gacha[10].reduce((acc, cur) => {
       return acc.concat(cur.data.filter(limitFilter));
@@ -286,7 +286,7 @@ export const achievements: Array<(
   },
   function gacha10Data({ gacha }) {
     const gachaFiveStarCountArr = gacha[10].map(
-      (item) => item.data.filter((v) => v.星级 === 5).length,
+      (item) => item.data.filter((v) => v.rarity === 5).length,
     );
     if (gachaFiveStarCountArr.length === 0) return;
     gachaFiveStarCountArr.sort((a, b) => b - a);
@@ -306,7 +306,7 @@ export const achievements: Array<(
   function gacha10getMoreThanFive({ gacha }) {
     // github issue #5  @zhsitao (https://github.com/zhsitao)
     if (gacha[10].length === 0) return;
-    const isFit = (item: DataItem) => item.星级 >= 4;
+    const isFit = (item: DataItem) => item.rarity >= 4;
     function getFourFiveStarCount(data: DataItem[]) {
       let count = 0;
       for (let i = 0; i < data.length; i++) {
@@ -358,7 +358,7 @@ export const achievements: Array<(
       title: '「这才是角色池！」',
       info: `在一次十连中，抽出的角色不少于武器`,
       value: `角色：${maxCount}`,
-      achievedTime: `${maxData.data[0].时间}`,
+      achievedTime: `${maxData.data[0].time}`,
     };
   },
   function maxFiveStarCharacter({ character }) {
@@ -369,7 +369,7 @@ export const achievements: Array<(
     const endIndex = sortedData.findIndex((v) => v.data.length !== maxNum);
     const names = sortedData
       .slice(0, endIndex)
-      .map((item) => defaultFormatter(item.data[0].名称, item.data.length));
+      .map((item) => defaultFormatter(item.data[0].name, item.data.length));
     return {
       title: '「情有独钟(五星角色)」',
       info: `你共抽取了 ${names.join('、')}，这是上天对你的眷顾还是你对${
@@ -385,7 +385,7 @@ export const achievements: Array<(
     const endIndex = sortedData.findIndex((v) => v.data.length !== maxNum);
     const names = sortedData
       .slice(0, endIndex)
-      .map((item) => defaultFormatter(item.data[0].名称, item.data.length));
+      .map((item) => defaultFormatter(item.data[0].name, item.data.length));
     return {
       title: '「情有独钟(四星角色)」',
       info: `你共抽取了 ${names.join('、')}，这是上天对你的眷顾还是你对${

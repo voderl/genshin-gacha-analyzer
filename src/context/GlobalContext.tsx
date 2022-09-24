@@ -1,17 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState, FC, useContext } from 'react';
-import { ExcelParsedObject } from 'utils/parseExcel';
-import { WorkBook } from 'xlsx/types';
+import { TParsedData } from 'types';
 
 type GlobalContextType = {
   page: string;
-  parsedData: ExcelParsedObject | null;
+  parsedData: TParsedData;
   isVertical: boolean;
   updatePage: (page: string) => void;
-  updateParsedData: (parsedData: ExcelParsedObject) => void;
+  updateParsedData: (parsedData: TParsedData) => void;
 };
 
 export const GlobalContext = React.createContext<GlobalContextType>({
-  parsedData: null,
+  parsedData: undefined as any,
   page: '',
   isVertical: false,
   updateParsedData: (() => {}) as any,
@@ -28,12 +27,13 @@ function getInfo() {
     isVertical: clientHeight > clientWidth,
   };
 }
+
 export const useGlobalContext = function () {
   return useContext(GlobalContext);
 };
 
 export const GlobalContextProvider: FC<{}> = function ({ children }) {
-  const [parsedData, updateParsedData] = useState<ExcelParsedObject | null>(null);
+  const [parsedData, updateParsedData] = useState<TParsedData>();
   const [page, updatePage] = useState<string>('');
   const initInfo = useMemo(() => getInfo(), []);
   const [isVertical, setVertical] = useState(initInfo.isVertical);
@@ -53,7 +53,7 @@ export const GlobalContextProvider: FC<{}> = function ({ children }) {
   }, []);
   const value = useMemo(() => {
     return {
-      parsedData,
+      parsedData: parsedData!,
       updateParsedData,
       page,
       updatePage,

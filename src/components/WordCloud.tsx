@@ -75,7 +75,7 @@ export const WordCloud: FC<WordCloudProps> = ({
         list: list,
         fontFamily: FONT_FAMILY,
         color: color || 'random-dark',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#fdfdfd',
         rotateRatio: 0,
         hover,
         drawOutOfBound: false,

@@ -1,13 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useCallback, useMemo, useState, Suspense, lazy, memo } from 'react';
+import { FC, useCallback, useState, Suspense, lazy } from 'react';
 import { Layout, Spin } from 'antd';
 import { useGlobalContext } from 'context/GlobalContext';
-import { POOL_NAME_TO_TYPE, POOL_TYPE_TO_NAME, SHOW_DATA_ALL_KEY } from 'const';
-import { Data, DataItem } from 'types';
+import { CacheContextProvider } from 'context/CacheContext';
 import { Achievements } from './Achievements';
 import CustomSider from './CustomSider';
-import { CacheContextProvider, clearGlobalCache } from 'context/CacheContext';
 
 const ShowData = lazy(() =>
   import(/* webpackPrefetch: true */ './ShowData').then((module) => ({
@@ -29,36 +27,16 @@ type ShowPageProps = {};
 const { Content } = Layout;
 
 export const ShowPage: FC<ShowPageProps> = function () {
-  const { parsedData, isVertical } = useGlobalContext();
-  const sheetNames = Object.values(POOL_TYPE_TO_NAME);
-  const getJson = useMemo(() => {
-    clearGlobalCache();
-    const cache = Object.create(null);
-    function getJson(key: string) {
-      if (key in cache) return cache[key];
-      let data: Data;
-      if (key === SHOW_DATA_ALL_KEY) {
-        data = sheetNames.reduce((acc: Array<any>, cur: string) => acc.concat(getJson(cur)), []);
-        data.sort((a, b) => (a.date === b.date ? a.总次数 - b.总次数 : a.date - b.date));
-      } else {
-        const type = (POOL_NAME_TO_TYPE as any)[key];
-        data = (parsedData as any)[type];
-      }
-      return (cache.key = data);
-    }
-    return getJson;
-  }, [parsedData]);
+  const { isVertical } = useGlobalContext();
   const [activeMenu, setActiveMenu] = useState('analysisChart');
   const handleMenuChange = useCallback(({ key }: any) => {
     setActiveMenu(key);
   }, []);
   const renderContent = useCallback((key) => {
-    if (key === 'rawData') return <ShowData onGetData={getJson} tabs={sheetNames} />;
-    else if (key === 'analysisChart')
-      return <AnalysisChart sheetNames={sheetNames} onGetData={getJson} />;
-    else if (key === 'timeline') return <Timeline onGetData={getJson} />;
-    else if (key === 'achievements')
-      return <Achievements onGetData={getJson} sheetNames={sheetNames} />;
+    if (key === 'rawData') return <ShowData />;
+    else if (key === 'analysisChart') return <AnalysisChart />;
+    else if (key === 'timeline') return <Timeline />;
+    else if (key === 'achievements') return <Achievements />;
     else return <div>暂无</div>;
   }, []);
   return (
@@ -79,6 +57,7 @@ export const ShowPage: FC<ShowPageProps> = function () {
         activeMenu={activeMenu}
       />
       <Content
+        id='main-container'
         css={css`
           margin: 0;
           position: relative;

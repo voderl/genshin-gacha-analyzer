@@ -23,8 +23,8 @@ function buildHuffmanTree(data: string[], bit = 4) {
   return createHuffmanUtils(map);
 }
 
-export const CHARACTER = '角色';
-export const WEAPON = '武器';
+export const CHARACTER = 'character';
+export const WEAPON = 'weapon';
 
 enum ItemType {
   Weapon3, // 13
@@ -52,19 +52,19 @@ export const treeData = {
       type: WEAPON,
     },
     tree: buildHuffmanTree([
-      '翡玉法球',
-      '以理服人',
-      '鸦羽弓',
-      '飞天御剑',
-      '沐浴龙血的剑',
-      '黑缨枪',
-      '魔导绪论',
-      '神射手之誓',
-      '弹弓',
-      '铁影阔剑',
-      '黎明神剑',
-      '冷刃',
-      '讨龙英杰谭',
+      'emeraldorb',
+      'debateclub',
+      'ravenbow',
+      'skyridersword',
+      'bloodtaintedgreatsword',
+      'blacktassel',
+      'magicguide',
+      'sharpshootersoath',
+      'slingshot',
+      'ferrousshadow',
+      'harbingerofdawn',
+      'coolsteel',
+      'thrillingtalesofdragonslayers',
     ]),
   },
   [ItemType.Weapon4]: {
@@ -92,7 +92,7 @@ export const treeData = {
     },
     tree: buildHuffmanTree(
       uniq(
-        ['丽莎', '凯亚', '安柏'].concat(
+        ['lisa', 'kaeya', 'amber'].concat(
           CHARACTER_POOLS.reduce((acc, cur) => acc.push(...cur.four) && acc, [] as any),
         ),
       ),
@@ -105,7 +105,7 @@ export const treeData = {
     },
     tree: buildHuffmanTree(
       uniq(
-        ['迪卢克', '莫娜', '刻晴', '琴', '七七'].concat(
+        ['diluc', 'mona', 'keqing', 'jean', 'qiqi'].concat(
           CHARACTER_POOLS.reduce((acc, cur) => acc.push(...cur.five) && acc, [] as any),
         ),
       ),
@@ -126,28 +126,28 @@ const mapping = {
 } as any;
 
 function formatToItemType(data: DataItem) {
-  const star = data.星级;
-  const type = data.类别;
+  const star = data.rarity;
+  const type = data.type;
   return mapping[type][star] as ItemType;
 }
 function parseFromItemType(itemType: ItemType) {
   const { star, type } = treeData[itemType].extra;
   return {
-    星级: star,
-    类别: type,
+    rarity: star,
+    type: type,
   };
 }
 export function encodeDataItem(data: DataItem) {
   const itemType = formatToItemType(data);
   const { encodeOnce } = treeData[itemType].tree;
-  return ItemTypeMap[itemType] + encodeOnce(data.名称);
+  return ItemTypeMap[itemType] + encodeOnce(data.key);
 }
 
 export function decodeDataItem(str: string, indexRef: IndexRefType): Partial<DataItem> {
   const itemType: ItemType = itemTypeHuffmanUtils.decodeOnce(str, indexRef);
-  const name = treeData[itemType].tree.decodeOnce(str, indexRef);
+  const key = treeData[itemType].tree.decodeOnce(str, indexRef);
   return {
-    名称: name,
+    key,
     ...parseFromItemType(itemType),
   };
 }

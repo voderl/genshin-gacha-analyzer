@@ -56,19 +56,19 @@ function makeFilterByForm(values: {
   const { type = [], star = [], search, pool } = values;
   if (type.length !== 0) {
     const mapping = {
-      weapon: '武器',
-      character: '角色',
+      weapon: 'weapon',
+      character: 'character',
     };
     const compare = makeFilterByArray(type, (key: keyof typeof mapping) => mapping[key]);
-    matchs.push((data: DataItem) => compare(data.类别));
+    matchs.push((data: DataItem) => compare(data.type));
   }
   if (star.length !== 0) {
     const compare = makeFilterByArray(star, (key: string) => parseInt(key));
-    matchs.push((data: DataItem) => compare(data.星级));
+    matchs.push((data: DataItem) => compare(data.rarity));
   }
   if (pool) matchs.push((data: DataItem) => data.date >= pool.from && data.date <= pool.to);
 
-  if (search) matchs.push((data: DataItem) => filterString(data.名称, search));
+  if (search) matchs.push((data: DataItem) => filterString(data.name, search));
 
   return matchs.length === 0
     ? undefined
@@ -104,11 +104,9 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange, data, ..
     ]);
     handleFormChange();
     switch (activeKey) {
-      case '角色活动祈愿':
-      case 'Character Event Wish':
+      case 'character':
         return CHARACTER_POOLS;
-      case '武器活动祈愿':
-      case 'Weapon Event Wish':
+      case 'weapon':
         return WEAPON_POOLS;
       default:
         return [];
@@ -116,7 +114,6 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange, data, ..
   }, [activeKey]);
   const filteredPools = useCacheMemo(
     () => {
-      // 只显示有抽卡记录的池子
       if (pools.length === 0) return pools;
       let filteredPools = [] as PoolType[];
       let hitPoolIndex = 0;

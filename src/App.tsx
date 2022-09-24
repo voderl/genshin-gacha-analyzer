@@ -16,7 +16,7 @@ const MergePage = lazy(() =>
 );
 
 function App() {
-  const { parsedData, page, updateParsedData } = useGlobalContext();
+  const { parsedData, page, updateParsedData, updatePage } = useGlobalContext();
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -25,6 +25,7 @@ function App() {
         let data = decompressFromHash();
         if (data) {
           updateParsedData(data);
+          updatePage('show');
           setError('');
         }
       } catch (error) {
@@ -52,7 +53,7 @@ function App() {
         <MergePage />
       </Suspense>
     );
-  return parsedData === null ? (
+  return page === '' ? (
     <>
       {error && <Alert type='error' message={error} banner />}
       <LoadPage />

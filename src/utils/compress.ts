@@ -1,14 +1,13 @@
 /**
  * 进行压缩
  */
-import { POOL_TYPE_TO_NAME } from 'const';
-import flatten from 'lodash/flatten';
-import sortBy from 'lodash/sortBy';
-import { ExcelParsedObject } from './parseExcel';
+import { formatParsedData } from 'parser/parse';
+import { TParsedData } from 'parser/type';
+import { getItemNameByKey } from 'parser/utils';
 import { decode, encode } from './v1';
 import { padStart } from './v1/utils';
 
-export function compressToHash(data: ExcelParsedObject) {
+export function compressToHash(data: TParsedData) {
   try {
     const hash = encode(data);
     const location = window.location;
@@ -40,21 +39,14 @@ export function decompressFromHash() {
     if (location.hash) {
       const hash = location.hash.slice(1);
       const data = decode(hash);
+      const parsedData = formatParsedData(data);
 
-      sortBy(flatten(Object.values(data)), (item) => item.date).forEach(
-        (item, index) => (item.总次数 = index + 1),
-      );
-
-      Object.keys(data).forEach((poolType: string) => {
-        let count = 1;
-        data[poolType as keyof ExcelParsedObject].forEach((item) => {
-          item.时间 = formatToDate(item.date);
-          item.pool = (POOL_TYPE_TO_NAME as any)[poolType];
-          item.保底内 = count++;
-          if (item.星级 === 5) count = 1;
-        });
+      parsedData.all.forEach((item) => {
+        item.name = getItemNameByKey(item.key);
+        item.time = formatToDate(item.date);
       });
-      return data;
+
+      return parsedData;
     }
   } catch (e) {
     console.error(e);
