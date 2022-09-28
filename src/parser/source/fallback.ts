@@ -4,14 +4,21 @@ import { getItemKeyFromName } from 'parser/utils';
 import dayjs from 'dayjs';
 
 const characterPoolNames = [
+  '301',
   '角色活动祈愿',
   '角色活動祈願',
   'Character Event Wish',
   'イベント祈願・キャラクター',
 ];
-const weaponPoolNames = ['武器活动祈愿', '武器活動祈願', 'Weapon Event Wish', 'イベント祈願・武器'];
-const permanentPoolNames = ['常驻祈愿', '常駐祈願', 'Permanent Wish', '通常祈願'];
-const novicePoolNames = ['新手祈愿', '新手祈願', 'Novice Wishes', '初心者向け祈願'];
+const weaponPoolNames = [
+  '302',
+  '武器活动祈愿',
+  '武器活動祈願',
+  'Weapon Event Wish',
+  'イベント祈願・武器',
+];
+const permanentPoolNames = ['200', '常驻祈愿', '常駐祈願', 'Permanent Wish', '通常祈願'];
+const novicePoolNames = ['100', '新手祈愿', '新手祈願', 'Novice Wishes', '初心者向け祈願'];
 
 export default <TSourceConfig>{
   name: 'fallback',
