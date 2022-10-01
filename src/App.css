@@ -28,3 +28,30 @@ body {
 .bold-text {
   font-family: HYWenHei-85W;
 }
+
+.rarity-3 {
+  border-radius: 4px;
+  border-bottom-right-radius: 8px;
+  overflow: hidden;
+  background: #6faaca;
+  background: linear-gradient(0deg, #6faaca 0%, #697b9b 100%);
+  background: url('./resource/rarity_3_background.png') no-repeat left top/cover;
+}
+
+.rarity-4 {
+  border-radius: 4px;
+  border-bottom-right-radius: 8px;
+  overflow: hidden;
+  background: #917ab1;
+  background: linear-gradient(0deg, #917ab1 0%, #6c6192 100%);
+  background: url('./resource/rarity_4_background.png') no-repeat left top/cover;
+}
+
+.rarity-5 {
+  border-radius: 4px;
+  border-bottom-right-radius: 8px;
+  overflow: hidden;
+  background: #9a6d43;
+  background: linear-gradient(0deg, #de9552 0%, #9a6d43 100%);
+  background: url('./resource/rarity_5_background.png') no-repeat left top/cover;
+}
