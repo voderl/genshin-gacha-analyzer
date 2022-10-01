@@ -9,11 +9,13 @@ import { COLOR } from 'const';
 import { TParsedItem } from 'types';
 import { getPoolName } from 'utils';
 import { i18n } from 'utils/i18n';
+import ItemImage from 'components/ItemImage';
 
 const indexLabelCss = css`
   font-size: 12px;
   position: relative;
-  top: -16px;
+  top: -20px;
+  opacity: 0.5;
 `;
 
 const scrollTopDownCss = css`
@@ -24,13 +26,17 @@ const scrollTopDownCss = css`
   top: -12px;
 `;
 
+const nameCss = css`
+  margin: 0 8px;
+`;
+
 const columns: TListTableColumns<TParsedItem> = [
   {
     title: '',
     dataIndex: 'lineNum',
     width: 40,
     maxWidth: 40,
-    minWidth: 20,
+    minWidth: 0,
     render(value, item, index) {
       return <span css={indexLabelCss}>{index + 1}.</span>;
     },
@@ -39,13 +45,26 @@ const columns: TListTableColumns<TParsedItem> = [
     title: '时间',
     dataIndex: 'time',
     width: 200,
-    minWidth: 160,
+    minWidth: 150,
   },
   {
     title: '名称',
+    dataIndex: 'image',
+    width: 48,
+    maxWidth: 48,
+    minWidth: 48,
+    render(value, item) {
+      return <ItemImage item={item} />;
+    },
+  },
+  {
+    title: '',
     dataIndex: 'name',
-    width: 200,
-    minWidth: 120,
+    width: 160,
+    minWidth: 110,
+    render(value) {
+      return <div css={nameCss}>{value}</div>;
+    },
   },
   {
     title: '类别',
@@ -73,7 +92,7 @@ const columns: TListTableColumns<TParsedItem> = [
 ];
 
 const shortColumns: TListTableColumns<TParsedItem> = columns.filter((column) =>
-  ['lineNum', 'time', 'name', 'pity'].includes(column.dataIndex),
+  ['lineNum', 'time', 'image', 'name', 'pity'].includes(column.dataIndex),
 );
 
 const allColumns = [...columns].concat({
@@ -199,7 +218,7 @@ const ItemList: FC<IItemListProps> = function ({
       }}
       virtualProps={{
         overscan: 10,
-        itemHeight: 45,
+        itemHeight: 60,
         listRef: listRef as any,
         getContainer: () => document.getElementById('main-container')!,
       }}
