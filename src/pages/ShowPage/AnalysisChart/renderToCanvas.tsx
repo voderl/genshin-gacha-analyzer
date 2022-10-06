@@ -309,7 +309,7 @@ const renderTextContent = (
   };
 };
 // 绘制尾部链接
-function drawEndLine(ctx: CanvasRenderingContext2D) {
+export function drawEndLine(ctx: CanvasRenderingContext2D) {
   const LINE_PADDING = 20;
   const {
     width: fontWidth,
