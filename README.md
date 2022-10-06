@@ -7,7 +7,7 @@
 
 ![charts](./docs/charts.png)
 
-![wordcloud](./docs/charts.png) 
+![wordcloud](./docs/wordcloud.png) 
 
 ![achievements](./docs/achievements.png)  
 
