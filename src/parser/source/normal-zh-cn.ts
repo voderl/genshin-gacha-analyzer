@@ -3,6 +3,7 @@ import { TSourceConfig } from '../type';
 import { getItemKeyFromName } from 'parser/utils';
 
 export default <TSourceConfig>{
+  type: 'xlsx',
   name: 'normal',
   isCurrentSource(sheets) {
     const sheetNames = sheets.map((sheet) => sheet.name);

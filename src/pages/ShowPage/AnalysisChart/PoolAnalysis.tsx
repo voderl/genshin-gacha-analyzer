@@ -157,7 +157,7 @@ export const PoolAnalysis: FC<PoolAnalysisProps> = ({ poolType, data }) => {
         vertical-align: top;
       `}
     >
-      <LazyLoad height={500} once scrollContainer={'.ant-layout-content'}>
+      <LazyLoad height={300} once scrollContainer={'.ant-layout-content'}>
         <PieChart
           css={css`
             height: 300px;

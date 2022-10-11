@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Button, Divider } from 'antd';
+// @ts-ignore
+import LazyLoad from 'react-lazyload';
 import { useCacheMemo } from 'context/CacheContext';
 import { FC, useCallback, useRef } from 'react';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
@@ -36,8 +38,8 @@ const WordCloudCharts: FC<WordCloudChartsProps> = () => {
             key: item.key,
             rarity: item.rarity,
             type: item.type,
-            count: 1
-          }
+            count: 1,
+          };
       });
       const weapons: Info[] = [],
         characters: Info[] = [];
@@ -122,14 +124,10 @@ const WordCloudCharts: FC<WordCloudChartsProps> = () => {
       `}
     >
       <Divider>抽取数目展示图</Divider>
-      <WordCloudChart
-        type='character'
-        dataSource={wordCloudData.characterList}
-      />
-      <WordCloudChart
-        type="weapon"
-        dataSource={wordCloudData.weaponList}
-      />
+      <LazyLoad height={450} scrollContainer={'.ant-layout-content'} overflow={true}>
+        <WordCloudChart type='character' dataSource={wordCloudData.characterList} />
+        <WordCloudChart type='weapon' dataSource={wordCloudData.weaponList} />
+      </LazyLoad>
       <br />
       <Button
         type='primary'

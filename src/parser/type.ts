@@ -56,7 +56,20 @@ export type TSheets = Array<{
   >;
 }>;
 
-export type TSourceConfig = {
+export type TJsonSourceConfig<T = unknown> = {
+  type: 'json';
+  name: string;
+  isCurrentSource: (data: unknown) => boolean;
+  parseData: (data: T) => {
+    character: TItem[];
+    weapon: TItem[];
+    permanent: TItem[];
+    novice: TItem[];
+  };
+};
+
+export type TXlsxSourceConfig = {
+  type: 'xlsx';
   name: string;
   /**
    * is use current parser to parse data
@@ -86,3 +99,5 @@ export type TSourceConfig = {
     currentSheet: TSheets[number],
   ) => TItem | false;
 };
+
+export type TSourceConfig = TXlsxSourceConfig | TJsonSourceConfig<any>;

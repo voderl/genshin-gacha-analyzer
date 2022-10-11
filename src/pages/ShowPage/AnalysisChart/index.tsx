@@ -14,8 +14,6 @@ import { FriendLinks } from 'components/FriendLinks';
 import WordCloudCharts from './WordCloudCharts';
 import renderPngTip from 'utils/renderPngTip';
 import downloadCanvas from 'utils/downloadCanvas';
-// @ts-ignore
-import LazyLoad from 'react-lazyload';
 import { BackAndCopy } from 'components/BackAndCopy';
 
 interface AnalysisChartProps {}
@@ -104,9 +102,7 @@ export const AnalysisChart: FC<AnalysisChartProps> = ({}) => {
           生成图片
         </Button>
       </div>
-      <LazyLoad height={500} scrollContainer={'.ant-layout-content'} once>
-        <WordCloudCharts />
-      </LazyLoad>
+      <WordCloudCharts />
       <FriendLinks mode='bottom' />
     </div>
   );
