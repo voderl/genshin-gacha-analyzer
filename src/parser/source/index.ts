@@ -1,6 +1,13 @@
 import normalZhCnSource from './normal-zh-cn';
 import paimonMoeSource from './paimon-moe';
 import fallbackSource from './fallback';
-import { TSourceConfig } from '../type';
+import uigfJsonSource from './uigf-json';
+import { TJsonSourceConfig, TXlsxSourceConfig } from '../type';
 
-export const sourceList: TSourceConfig[] = [normalZhCnSource, paimonMoeSource, fallbackSource];
+export const xlsxSourceList = [
+  normalZhCnSource,
+  paimonMoeSource,
+  fallbackSource,
+] as TXlsxSourceConfig[];
+
+export const jsonSourceList = [uigfJsonSource] as TJsonSourceConfig<any>[];

@@ -5,9 +5,9 @@ import { Button, Upload, Alert } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import UploadOutlined from '@ant-design/icons/UploadOutlined';
 import { FriendLinks } from 'components/FriendLinks';
+import { parseExcel, parseJson } from 'parser';
 import { UploadItem, UploadItemProps } from './UploadItem';
 import MergeShow from './MergeShow';
-import { parseExcel } from 'parser';
 
 type MergePageProps = {};
 
@@ -34,24 +34,49 @@ export const MergePage: FC<MergePageProps> = function ({}) {
     const addToList = (item: any) => {
       setDataList((v) => v.concat(item));
     };
-    if (!file.name.endsWith('.xlsx')) {
-      data.message = '文件类型错误，请上传xlsx文件';
+    const isXlsx = file.name.endsWith('.xlsx');
+    const isJson = file.name.endsWith('.json');
+
+    const getErrorMessage = (e: any) => {
+      if (typeof e === 'string') return e;
+      if (typeof e === 'object' && 'message' in e) return e.message;
+      return '未知错误';
+    };
+
+    if (!isXlsx && !isJson) {
+      data.message = '文件类型错误，请上传 xlsx 文件或 json 文件';
       addToList(data);
     } else {
-      file
-        .arrayBuffer()
-        .then((arrayBuffer) => {
-          return parseExcel(arrayBuffer);
-        })
-        .then((values) => {
-          data.data = values;
-          data.type = 'success';
-          addToList(data);
-        })
-        .catch((e) => {
-          data.message = e;
-          addToList(data);
-        });
+      if (isXlsx) {
+        file
+          .arrayBuffer()
+          .then((arrayBuffer) => {
+            return parseExcel(arrayBuffer);
+          })
+          .then((values) => {
+            data.data = values;
+            data.type = 'success';
+            addToList(data);
+          })
+          .catch((e) => {
+            data.message = getErrorMessage(e);
+            addToList(data);
+          });
+      } else if (isJson) {
+        file
+          .text()
+          .then((str) => {
+            const json = JSON.parse(str);
+            const parsedData = parseJson(json);
+            data.data = parsedData;
+            data.type = 'success';
+            addToList(data);
+          })
+          .catch((e) => {
+            data.message = getErrorMessage(e);
+            addToList(data);
+          });
+      }
     }
     return false;
   }, []);
@@ -92,13 +117,13 @@ export const MergePage: FC<MergePageProps> = function ({}) {
       <div css={WrapperStyle}>
         <Upload
           name='file'
-          accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xlsx'
+          accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xlsx, .json'
           multiple={true}
           beforeUpload={handleBeforeUpload}
           showUploadList={false}
         >
           <Button icon={<UploadOutlined />} type='primary'>
-            导入Excel文件
+            导入 xlsx 文件或 json 文件
           </Button>
         </Upload>
         {dataList.map((item) => (

@@ -1,5 +1,5 @@
-import { sourceList } from './source';
-import { parseSheets } from './parse';
+import { xlsxSourceList, jsonSourceList } from './source';
+import { baseParseJson, parseSheets } from './parse';
 import { zipObject } from 'lodash';
 import { TSheets } from './type';
 import type XLSXNameSpace from 'xlsx/types';
@@ -30,20 +30,30 @@ export function parseExcel(arrayBuffer: any) {
         });
         return {
           name: sheetName,
-          headers: arrayData[0],
+          headers: arrayData[0] || [],
           data,
         };
       }) as TSheets;
 
-      const parsedData = parseSheets(sheets, sourceList);
+      const parsedData = parseSheets(sheets, xlsxSourceList);
 
       if (typeof parsedData === 'string') return Promise.reject(parsedData);
 
-      console.log('parsedData', parsedData);
       return parsedData;
     } catch (e: any) {
       console.error(e);
       return Promise.reject(e.message);
     }
   });
+}
+
+export function parseJson(data: any) {
+  try {
+    const parsedData = baseParseJson(data, jsonSourceList);
+    if (typeof parsedData === 'string') throw new Error(parsedData);
+    return parsedData;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }

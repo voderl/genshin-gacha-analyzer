@@ -28,6 +28,9 @@ github链接：https://github.com/biuuu/genshin-wish-export
 其他导出途径的文件可能暂不支持解析，可以添加对应 xlsx 格式的解析方法。  
 示例：[paimon.moe excel 文件解析](./src/parser/source/paimon-moe.ts)
 
+目前已支持 [uigf 规范](https://github.com/DGP-Studio/Snap.Genshin/wiki/StandardFormat) 的 json 文件导入   
+示例：[uigf json 文件解析](./src/parser//source/uigf-json.ts)
+
 ## 网址
 以下网址文件均为此项目代码自动打包部署
 ### genshin.voderl.cn(推荐)

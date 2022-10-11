@@ -2,11 +2,18 @@ import { flatten, sortBy, mapValues, toPairs } from 'lodash';
 import dayjs from 'dayjs';
 import { DATA_INFO, POOL_TYPES } from 'const';
 import { i18n } from 'utils/i18n';
-import { TParsedItem, TSourceConfig, TSheets, TParsedData } from './type';
+import {
+  TParsedItem,
+  TXlsxSourceConfig,
+  TSheets,
+  TParsedData,
+  TJsonSourceConfig,
+  TItem,
+} from './type';
 
 function parseItem(
   item: any,
-  parser: TSourceConfig,
+  parser: TXlsxSourceConfig,
   currentSheet: TSheets[number],
 ): TParsedItem | false {
   if (typeof item !== 'object') return false;
@@ -53,7 +60,7 @@ export function formatParsedData(parsedData: Omit<TParsedData, 'all'>): TParsedD
   };
 }
 
-export function parseSheets(rawSheets: TSheets, parsers: TSourceConfig[]) {
+export function parseSheets(rawSheets: TSheets, parsers: TXlsxSourceConfig[]) {
   const currentParser = parsers.find((parser) => parser.isCurrentSource(rawSheets));
 
   if (!currentParser) return i18n`没有在该文件中发现可以解析的内容`;
@@ -75,6 +82,38 @@ export function parseSheets(rawSheets: TSheets, parsers: TSourceConfig[]) {
     const data = Array.isArray(sheets) ? flatten(sheets.map(parseSheet)) : parseSheet(sheets);
 
     return sortBy(data.filter((item) => !!item) as TParsedItem[], 'date');
+  });
+
+  return formatParsedData(parsedData);
+}
+
+function baseParseItem(item: TItem) {
+  const { key, name, time } = item;
+  if (!(key in DATA_INFO)) {
+    throw new Error(`cannot parse item ${name}, key ${key}`);
+  }
+  const info = DATA_INFO[key];
+  return {
+    key,
+    name,
+    time,
+    date: +dayjs(item.time),
+    rarity: info.rarity,
+    type: info.type,
+  } as TParsedItem;
+}
+
+export function baseParseJson(data: any, parsers: TJsonSourceConfig<any>[]) {
+  const currentParser = parsers.find((parser) => parser.isCurrentSource(data));
+
+  if (!currentParser) return i18n`没有在该文件中发现可以解析的内容`;
+  console.log('current parser: ', currentParser.name);
+
+  const parsedData = mapValues(currentParser.parseData(data), (list) => {
+    return sortBy(
+      list.map((item) => baseParseItem(item)),
+      'date',
+    );
   });
 
   return formatParsedData(parsedData);

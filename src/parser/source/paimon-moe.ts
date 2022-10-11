@@ -3,6 +3,7 @@ import { getItemKeyFromName, getItemNameByKey } from 'utils';
 import { TSourceConfig } from '../type';
 
 export default <TSourceConfig>{
+  type: 'xlsx',
   name: 'paimon-moe',
   isCurrentSource(sheets) {
     const characterSheet = sheets.find((sheet) => sheet.name === 'Character Event');

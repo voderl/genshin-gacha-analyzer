@@ -21,6 +21,7 @@ const permanentPoolNames = ['200', '常驻祈愿', '常駐祈願', 'Permanent Wi
 const novicePoolNames = ['100', '新手祈愿', '新手祈願', 'Novice Wishes', '初心者向け祈願'];
 
 export default <TSourceConfig>{
+  type: 'xlsx',
   name: 'fallback',
   isCurrentSource(sheets) {
     return !!sheets.find((currentSheet) => {

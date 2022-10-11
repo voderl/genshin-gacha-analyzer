@@ -6,7 +6,7 @@ import InboxOutlined from '@ant-design/icons/InboxOutlined';
 import { RcFile } from 'antd/lib/upload';
 import { useGlobalContext } from 'context/GlobalContext';
 import { FriendLinks } from 'components/FriendLinks';
-import { parseExcel } from 'parser/index';
+import { parseExcel, parseJson } from 'parser/index';
 import { compressToHash } from 'utils/compress';
 import { i18n } from 'utils/i18n';
 import { clearGlobalCache } from 'context/CacheContext';
@@ -21,8 +21,10 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
   const { updateParsedData, updatePage } = useGlobalContext();
   const handleUpload = useCallback((file: RcFile) => {
-    if (!file.name.endsWith('.xlsx')) {
-      setErrorMessage('文件类型错误，请上传xlsx文件');
+    const isXlsx = file.name.endsWith('.xlsx');
+    const isJson = file.name.endsWith('.json');
+    if (!isXlsx && !isJson) {
+      setErrorMessage('文件类型错误，请上传 xlsx 文件或 json 文件');
       return false;
     }
 
@@ -35,19 +37,34 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
     };
 
     setLoading(true);
-    file
-      .arrayBuffer()
-      .then((arrayBuffer) => {
-        parseExcel(arrayBuffer)
-          .then((parsedData) => {
-            clearGlobalCache();
-            updateParsedData(parsedData);
-            compressToHash(parsedData);
-            updatePage('show');
-          })
-          .catch(handleError);
-      })
-      .catch(handleError);
+
+    if (isJson) {
+      file
+        .text()
+        .then((str) => {
+          const data = JSON.parse(str);
+          const parsedData = parseJson(data);
+          clearGlobalCache();
+          updateParsedData(parsedData);
+          compressToHash(parsedData);
+          updatePage('show');
+        })
+        .catch(handleError);
+    } else if (isXlsx) {
+      file
+        .arrayBuffer()
+        .then((arrayBuffer) => {
+          parseExcel(arrayBuffer)
+            .then((parsedData) => {
+              clearGlobalCache();
+              updateParsedData(parsedData);
+              compressToHash(parsedData);
+              updatePage('show');
+            })
+            .catch(handleError);
+        })
+        .catch(handleError);
+    }
 
     return false;
   }, []);
@@ -94,7 +111,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
       </div>
       <Dragger
         name='file'
-        accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xlsx'
+        accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xlsx, .json'
         multiple={false}
         beforeUpload={handleUpload}
         showUploadList={false}
@@ -110,7 +127,7 @@ export const LoadPage: FC<LoadPageProps> = function ({ onLoad }) {
           {loading ? <Spin tip={i18n`数据正在解析中...`} /> : <InboxOutlined />}
         </p>
         <p className='ant-upload-text'>点击选择抽卡记录导出文件或将文件拖拽到此区域</p>
-        <p className='ant-upload-text'>( 注：文件的后缀应为.xlsx )</p>
+        <p className='ant-upload-text'>( 注：文件的后缀应为 .xlsx 或 .json )</p>
       </Dragger>
       <Alert
         css={css`
