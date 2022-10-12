@@ -216,6 +216,12 @@ window.CHARACTER_POOLS = [
     five: ['cyno', 'venti'],
     four: ['candace', 'kukishinobu', 'sayu'],
   },
+  {
+    from: '2022-10-14 18:00:00',
+    to: '2022-11-01 14:59:59',
+    five: ['nilou', 'albedo'],
+    four: ['beidou', 'barbara', 'xiangling'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -422,6 +428,12 @@ window.WEAPON_POOLS = [
     to: '2022-10-14 17:59:59',
     five: ['staffofthescarletsands', 'elegyfortheend'],
     four: ['lionsroar', 'makhairaaquamarine', 'favoniuslance', 'sacrificialfragments', 'favoniuswarbow'],
+  },
+  {
+    from: '2022-10-14 18:00:00',
+    to: '2022-11-01 14:59:59',
+    five: ['keyofkhajnisut', 'primordialjadecutter'],
+    four: ['xiphosmoonlight', 'rainslasher', 'dragonsbane', 'wanderingevenstar', 'sacrificialbow'],
   },
 ];
 
