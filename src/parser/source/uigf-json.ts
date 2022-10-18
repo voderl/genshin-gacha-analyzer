@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import _ from 'lodash';
 import { getItemKeyFromName } from 'utils';
 import { TJsonSourceConfig } from '../type';
@@ -39,7 +40,15 @@ export default <
     return false;
   },
   parseData(data) {
-    const list = data.list;
+    const rawlist = data.list;
+
+    // const list = _.sortBy(rawlist, (item) => BigInt(item.id));
+    const list = _.sortBy(rawlist, [
+      (item) => +dayjs(item.time),
+      (item) => ('id' in item ? item.id.length : 0),
+      (item) => ('id' in item ? item.id : ''),
+    ]);
+
     const formatItem = (item: typeof data.list[number]) => {
       const key = getItemKeyFromName(item.name);
       if (key) {
