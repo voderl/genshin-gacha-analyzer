@@ -85,7 +85,10 @@ export const achievements: Array<
     if (item.pity < 80) return;
     let info = '';
     if (item.pity >= 84) {
-      info = ', 你竟是' + ['百', '千', '万', '十万', '百万'][item.pity - 84] + '里挑一的非酋!';
+      info =
+        ', 你竟是' +
+        (['百', '千', '万', '十万', '百万'][item.pity - 84] || '无穷') +
+        '里挑一的非酋!';
     }
     return {
       title: '「原来非酋竟是我自己」',
