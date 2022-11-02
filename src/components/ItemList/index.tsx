@@ -46,6 +46,8 @@ const columns: TListTableColumns<TParsedItem> = [
     dataIndex: 'time',
     width: 200,
     minWidth: 150,
+    sorter: (item) => item.date,
+    sorterList: ['desc', 'asc'],
   },
   {
     title: '名称',
@@ -81,6 +83,8 @@ const columns: TListTableColumns<TParsedItem> = [
     width: 80,
     maxWidth: 120,
     minWidth: 40,
+    sorter: (item) => item.rarity,
+    sorterList: ['', 'desc', 'asc'],
   },
   {
     title: '保底内',
@@ -91,9 +95,17 @@ const columns: TListTableColumns<TParsedItem> = [
   },
 ];
 
-const shortColumns: TListTableColumns<TParsedItem> = columns.filter((column) =>
-  ['lineNum', 'time', 'image', 'name', 'pity'].includes(column.dataIndex),
-);
+const shortColumns: TListTableColumns<TParsedItem> = columns
+  .filter((column) => ['lineNum', 'time', 'image', 'name', 'pity'].includes(column.dataIndex))
+  .map((item) => {
+    if (item.dataIndex === 'image')
+      return {
+        ...item,
+        sorter: (item) => item.rarity,
+        sorterList: ['', 'desc', 'asc'],
+      };
+    return item;
+  });
 
 const allColumns = [...columns].concat({
   title: '来源',

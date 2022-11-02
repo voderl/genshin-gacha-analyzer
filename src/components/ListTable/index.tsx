@@ -1,8 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { FC, isValidElement, memo, ReactNode, useCallback } from 'react';
+import React, { FC, isValidElement, memo, ReactNode, useCallback, useMemo, useState } from 'react';
 import { List, ListProps } from 'antd';
+import CaretDownOutlined from '@ant-design/icons/CaretDownOutlined';
+import CaretUpOutlined from '@ant-design/icons/CaretUpOutlined';
 import VirtualList, { IVirtualListProps } from 'components/VirtualList';
+import _ from 'lodash';
+import cls from 'classnames';
 
 export interface IListTableProps<T> extends Omit<ListProps<T>, 'renderItem'> {
   columns: TListTableColumns<T>;
@@ -20,6 +24,8 @@ export type TListTableColumns<T = any> = Array<{
   maxWidth?: number;
   minWidth?: number;
   render?: (value: any, item: T, index: number) => ReactNode;
+  sorter?: (item: T) => any;
+  sorterList?: ('asc' | 'desc' | '')[];
 }>;
 
 const ListTableRowItem: FC<{
@@ -50,16 +56,104 @@ const ListTableRowItemRender: FC<{
   return typeof render === 'function' ? render(item[dataIndex], item, index) : item[dataIndex];
 });
 
+type TSorterProps = {
+  value: 'asc' | 'desc' | '';
+  list?: TSorterProps['value'][];
+  onChange: (sorter: TSorterProps['value']) => void;
+};
+
+const defaultSorterList = ['', 'asc', 'desc'] as const;
+
+const sorterHeaderStyle = css`
+  cursor: pointer;
+  display: inline-flex;
+  white-space: nowrap;
+
+  padding: 4px 12px;
+  margin-left: -12px;
+
+  .ant-table-column-sorter-inner {
+    margin-left: 8px;
+    color: #bfbfbf;
+    transition: color 0.3s;
+  }
+
+  .sorter-icon {
+    font-size: 12px;
+  }
+`;
+
+const SorterComponent: FC<TSorterProps> = ({
+  value,
+  list = defaultSorterList,
+  onChange,
+  children,
+}) => {
+  return (
+    <span
+      css={sorterHeaderStyle}
+      onClick={() => {
+        const idx = list.indexOf(value);
+        if (idx === -1) onChange(list[0]);
+        else if (idx + 1 >= list.length) onChange(list[0]);
+        else onChange(list[idx + 1]);
+      }}
+    >
+      {children}
+      <span className='ant-table-column-sorter-inner'>
+        <CaretUpOutlined
+          className={cls(`ant-table-column-sorter-up sorter-icon`, {
+            active: value === 'asc',
+          })}
+          role='presentation'
+        />
+        <CaretDownOutlined
+          className={cls(`ant-table-column-sorter-down sorter-icon`, {
+            active: value === 'desc',
+          })}
+          role='presentation'
+        />
+      </span>
+    </span>
+  );
+};
+
+type TTableSorter = {
+  direction: TSorterProps['value'];
+  dataIndex: string;
+};
+
 const ListTableHeader: FC<{
   columns: TListTableColumns;
-}> = memo(({ columns }) => {
+  sorter: TTableSorter;
+  onSorterChange: (v: TTableSorter) => void;
+}> = memo(({ columns, sorter, onSorterChange }) => {
   return (
     <div className='list-table-row list-table-header'>
-      {columns.map((column) => (
-        <ListTableRowItem key={column.dataIndex} column={column}>
-          {typeof column.title === 'function' ? column.title() : column.title}
-        </ListTableRowItem>
-      ))}
+      {columns.map((column) => {
+        const direction = column.dataIndex === sorter.dataIndex ? sorter.direction : '';
+        const title = typeof column.title === 'function' ? column.title() : column.title;
+        return (
+          <ListTableRowItem key={column.dataIndex} column={column}>
+            {column.sorter ? (
+              <SorterComponent
+                value={direction}
+                list={column.sorterList}
+                onChange={(v) => {
+                  onSorterChange({
+                    direction: v,
+                    dataIndex: column.dataIndex,
+                  });
+                }}
+              >
+                {title}
+              </SorterComponent>
+            ) : (
+              title
+            )}
+          </ListTableRowItem>
+        );
+      })}
     </div>
   );
 });
@@ -101,6 +195,8 @@ const listTableCss = css`
 
   .ant-list-header {
     border-bottom: 1px solid rgb(229, 230, 235);
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
   .ant-list-item:last-child {
@@ -143,15 +239,25 @@ const ListTable: <T = any>(props: IListTableProps<T>) => JSX.Element = function 
     [columns, itemKey, virtualProps.itemHeight],
   );
 
+  const [sorterStatus, setSorterStatus] = useState<TTableSorter>({
+    direction: '',
+    dataIndex: '',
+  });
+
+  const sortedData = useMemo(() => {
+    if (!sorterStatus.direction) return dataSource;
+    const currentColumn = columns.find((item) => item.dataIndex === sorterStatus.dataIndex);
+    if (!currentColumn || !currentColumn.sorter) return dataSource;
+
+    return _.orderBy(dataSource, currentColumn.sorter, sorterStatus.direction);
+  }, [columns, dataSource, sorterStatus]);
+
+  const headerContent = (
+    <ListTableHeader columns={columns} sorter={sorterStatus} onSorterChange={setSorterStatus} />
+  );
   return (
     <List
-      header={
-        typeof header === 'function' ? (
-          header(<ListTableHeader columns={columns} />)
-        ) : (
-          <ListTableHeader columns={columns} />
-        )
-      }
+      header={typeof header === 'function' ? header(headerContent) : headerContent}
       className={className}
       css={listTableCss}
       {...props}
@@ -161,7 +267,7 @@ const ListTable: <T = any>(props: IListTableProps<T>) => JSX.Element = function 
         listRef={virtualProps.listRef}
         itemHeight={virtualProps.itemHeight}
         getContainer={virtualProps.getContainer}
-        dataSource={dataSource}
+        dataSource={sortedData}
         renderItem={wrappedRenderItem}
       />
     </List>

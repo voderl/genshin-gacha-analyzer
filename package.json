@@ -12,6 +12,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.2",
+    "classnames": "^2.3.2",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.9.1",
     "dayjs": "^1.11.5",
@@ -64,7 +65,7 @@
     "@types/echarts": "^4.9.3",
     "@types/lodash": "^4.14.168",
     "fontmin": "^0.9.8",
-    "genshin-db": "^4.3.1",
+    "genshin-db": "^4.3.2",
     "glob": "^7.1.6",
     "postinstall-postinstall": "^2.1.0",
     "source-map-explorer": "^2.5.2"
