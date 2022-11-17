@@ -228,6 +228,12 @@ window.CHARACTER_POOLS = [
     five: ['nahida', 'yoimiya'],
     four: ['razor', 'noelle', 'bennett'],
   },
+  {
+    from: '2022-11-18 18:00:00',
+    to: '2022-12-06 14:59:59',
+    five: ['yaemiko', 'tartaglia'],
+    four: ['layla', 'thoma', 'shikanoinheizou'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -446,6 +452,12 @@ window.WEAPON_POOLS = [
     to: '2022-11-18 17:59:59',
     five: ['athousandfloatingdreams', 'thunderingpulse'],
     four: ['theflute', 'sacrificialgreatsword', 'favoniuslance', 'thewidsith', 'rust'],
+  },
+  {
+    from: '2022-11-18 18:00:00',
+    to: '2022-12-06 14:59:59',
+    five: ['kagurasverity', 'polarstar'],
+    four: ['favoniussword', 'thebell', 'dragonsbane', 'favoniuscodex', 'thestringless'],
   },
 ];
 
