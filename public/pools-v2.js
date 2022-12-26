@@ -240,6 +240,12 @@ window.CHARACTER_POOLS = [
     five: ['wanderer', 'aratakiitto'],
     four: ['faruzan', 'gorou', 'yanfei'],
   },
+  {
+    from: '2022-12-27 18:00:00',
+    to: '2023-01-17 14:59:59',
+    five: ['raidenshogun', 'kamisatoayato'],
+    four: ['rosaria', 'sayu', 'kujousara'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -470,6 +476,12 @@ window.WEAPON_POOLS = [
     to: '2022-12-27 17:59:59',
     five: ['tulaytullahsremembrance', 'redhornstonethresher'],
     four: ['sacrificialsword', 'favoniusgreatsword', 'wavebreakersfin', 'eyeofperception', 'favoniuswarbow'],
+  },
+  {
+    from: '2022-12-27 18:00:00',
+    to: '2023-01-17 14:59:59',
+    five: ['engulfinglightning', 'harangeppakufutsu'],
+    four: ['lionsroar', 'akuoumaru', 'favoniuslance', 'sacrificialfragments', 'mouunsmoon'],
   },
 ];
 
