@@ -18,7 +18,7 @@ export function getPoolName(poolType: TPoolType) {
 
 export function getItemImageSrc(key: string) {
   // return `./images/${key}.png`;
-  return `https://genshin.voderl.cn/images/${key}.png`;
+  return `https://genshin.voderl.cn/images256/${key}.png`;
 }
 
 function drawRoundRectPath(
