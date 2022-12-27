@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { FC, useEffect, useMemo, useRef } from 'react';
-import { FONT_FAMILY } from 'const';
+import { FONT_FAMILY, ISMOBILE } from 'const';
 import { TParsedItem } from 'types';
 import { createRectCloud, TRectCloudInstance, TRectItem } from './rect-cloud';
 import { loader } from './loader';
@@ -43,7 +43,7 @@ export const ItemCloud: FC<IItemCloudProps> = ({ width = 800, height = 600, data
     }
   > | null>(null);
 
-  const pixel = window.devicePixelRatio || 1;
+  const pixel = ISMOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
   const tooltipRef = useRef<HTMLDivElement>(null);
 

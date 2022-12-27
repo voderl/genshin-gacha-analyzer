@@ -265,14 +265,14 @@ export function createRectCloud<T extends TRectItem>(
     if (!bound && hoverBoundRef.current) {
       animates.hoverLeave(hoverBoundRef.current, boundContainer);
     } else if (bound && !hoverBoundRef.current) {
-      animates.hoverEnter(bound, globalScale, boundContainer);
+      animates.hoverEnter(bound, globalScale * 1.1, boundContainer);
       moveToLast(bound, renderBounds);
     } else if (
       bound &&
       hoverBoundRef.current &&
       bound !== hoverBoundRef.current
     ) {
-      animates.hoverEnter(bound, globalScale, boundContainer);
+      animates.hoverEnter(bound, globalScale * 1.1, boundContainer);
       moveToLast(bound, renderBounds);
       animates.hoverLeave(hoverBoundRef.current, boundContainer);
     }

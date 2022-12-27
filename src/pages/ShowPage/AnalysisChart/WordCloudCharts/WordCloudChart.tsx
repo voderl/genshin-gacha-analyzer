@@ -34,7 +34,7 @@ export const WordCloudChart: FC<WordCloudChartProps> = ({  dataSource, type }) =
         display: inline-block;
         width: 100%;
         padding-top: 30px;
-        max-width: 520px;
+        max-width: 620px;
       `}
     >
       <Checkbox.Group
