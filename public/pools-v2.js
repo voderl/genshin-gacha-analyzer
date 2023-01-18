@@ -246,6 +246,18 @@ window.CHARACTER_POOLS = [
     five: ['raidenshogun', 'kamisatoayato'],
     four: ['rosaria', 'sayu', 'kujousara'],
   },
+  {
+    from: '2022-01-18 06:00:00',
+    to: '2023-02-07 17:59:59',
+    five: ['alhaitham', 'xiao'],
+    four: ['yaoyao', 'yunjin', 'xinyan'],
+  },
+  {
+    from: '2022-02-07 18:00:00',
+    to: '2023-02-28 14:59:59',
+    five: ['yelan', 'hutao'],
+    four: ['xingqiu', 'ningguang', 'beidou'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -483,12 +495,25 @@ window.WEAPON_POOLS = [
     five: ['engulfinglightning', 'harangeppakufutsu'],
     four: ['lionsroar', 'akuoumaru', 'favoniuslance', 'sacrificialfragments', 'mouunsmoon'],
   },
+  {
+    from: '2022-01-18 06:00:00',
+    to: '2023-02-07 17:59:59',
+    five: ['lightoffoliarincision', 'primordialjadewingedspear'],
+    four: ['theflute', 'rainslasher', 'lithicspear', 'thewidsith', 'sacrificialbow'],
+  },
+  {
+    from: '2022-02-07 18:00:00',
+    to: '2023-02-28 14:59:59',
+    five: ['staffofhoma', 'aquasimulacra'],
+    four: ['favoniussword', 'lithicblade', 'dragonsbane', 'favoniuscodex', 'rust'],
+  },
 ];
 
 window.LOCALES_DATA = {
 	"ChineseSimplified": {
 		"aether": "空",
 		"albedo": "阿贝多",
+		"alhaitham": "艾尔海森",
 		"aloy": "埃洛伊",
 		"amber": "安柏",
 		"aratakiitto": "荒泷一斗",
@@ -545,6 +570,7 @@ window.LOCALES_DATA = {
 		"xinyan": "辛焱",
 		"yaemiko": "八重神子",
 		"yanfei": "烟绯",
+		"yaoyao": "瑶瑶",
 		"yelan": "夜兰",
 		"yoimiya": "宵宫",
 		"yunjin": "云堇",
@@ -611,6 +637,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "圣显之钥",
 		"kingssquire": "王下近侍",
 		"kitaincrossspear": "喜多院十文字",
+		"lightoffoliarincision": "裁叶萃光",
 		"lionsroar": "匣里龙吟",
 		"lithicblade": "千岩古剑",
 		"lithicspear": "千岩长枪",
@@ -706,6 +733,7 @@ window.LOCALES_DATA = {
 	"ChineseTraditional": {
 		"aether": "空",
 		"albedo": "阿貝多",
+		"alhaitham": "艾爾海森",
 		"aloy": "亞蘿伊",
 		"amber": "安柏",
 		"aratakiitto": "荒瀧一斗",
@@ -762,6 +790,7 @@ window.LOCALES_DATA = {
 		"xinyan": "辛焱",
 		"yaemiko": "八重神子",
 		"yanfei": "煙緋",
+		"yaoyao": "瑤瑤",
 		"yelan": "夜蘭",
 		"yoimiya": "宵宮",
 		"yunjin": "雲堇",
@@ -828,6 +857,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "聖顯之鑰",
 		"kingssquire": "王下近侍",
 		"kitaincrossspear": "喜多院十文字",
+		"lightoffoliarincision": "裁葉萃光",
 		"lionsroar": "匣裡龍吟",
 		"lithicblade": "千岩古劍",
 		"lithicspear": "千岩長槍",
@@ -923,6 +953,7 @@ window.LOCALES_DATA = {
 	"English": {
 		"aether": "Aether",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -979,6 +1010,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -1045,6 +1077,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Key of Khaj-Nisut",
 		"kingssquire": "King's Squire",
 		"kitaincrossspear": "Kitain Cross Spear",
+		"lightoffoliarincision": "Light of Foliar Incision",
 		"lionsroar": "Lion's Roar",
 		"lithicblade": "Lithic Blade",
 		"lithicspear": "Lithic Spear",
@@ -1140,6 +1173,7 @@ window.LOCALES_DATA = {
 	"French": {
 		"aether": "Aether",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -1196,6 +1230,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -1262,6 +1297,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Clé de Khaj-Nisut",
 		"kingssquire": "Le valet du roi",
 		"kitaincrossspear": "Lance en croix de Kitain",
+		"lightoffoliarincision": "Lumière d'incision foliaire",
 		"lionsroar": "Rugissement du Lion",
 		"lithicblade": "Épée antique des Millelithes",
 		"lithicspear": "Lance des Millelithes",
@@ -1357,6 +1393,7 @@ window.LOCALES_DATA = {
 	"German": {
 		"aether": "Leer",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -1413,6 +1450,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -1479,6 +1517,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Khaj-Nisut-Schlüssel",
 		"kingssquire": "Gefolgsfrau des Königs",
 		"kitaincrossspear": "Kitain-Kreuzlanze",
+		"lightoffoliarincision": "Licht der schneidenden Blätter",
 		"lionsroar": "Drachenschrei",
 		"lithicblade": "Antikes Millelithenschwert",
 		"lithicspear": "Millelithenlanze",
@@ -1574,6 +1613,7 @@ window.LOCALES_DATA = {
 	"Indonesian": {
 		"aether": "Aether",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -1630,6 +1670,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -1696,6 +1737,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Key of Khaj-Nisut",
 		"kingssquire": "King's Squire",
 		"kitaincrossspear": "Kitain Cross Spear",
+		"lightoffoliarincision": "Light of Foliar Incision",
 		"lionsroar": "Lion's Roar",
 		"lithicblade": "Lithic Blade",
 		"lithicspear": "Lithic Spear",
@@ -1791,6 +1833,7 @@ window.LOCALES_DATA = {
 	"Japanese": {
 		"aether": "空",
 		"albedo": "アルベド",
+		"alhaitham": "アルハイゼン",
 		"aloy": "アーロイ",
 		"amber": "アンバー",
 		"aratakiitto": "荒瀧一斗",
@@ -1847,6 +1890,7 @@ window.LOCALES_DATA = {
 		"xinyan": "辛炎",
 		"yaemiko": "八重神子",
 		"yanfei": "煙緋",
+		"yaoyao": "ヨォーヨ",
 		"yelan": "夜蘭",
 		"yoimiya": "宵宮",
 		"yunjin": "雲菫",
@@ -1913,6 +1957,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "聖顕の鍵",
 		"kingssquire": "王の近侍",
 		"kitaincrossspear": "喜多院十文字槍",
+		"lightoffoliarincision": "萃光の裁葉",
 		"lionsroar": "匣中龍吟",
 		"lithicblade": "千岩古剣",
 		"lithicspear": "千岩長槍",
@@ -2008,6 +2053,7 @@ window.LOCALES_DATA = {
 	"Korean": {
 		"aether": "아이테르",
 		"albedo": "알베도",
+		"alhaitham": "알하이탐",
 		"aloy": "에일로이",
 		"amber": "엠버",
 		"aratakiitto": "아라타키 이토",
@@ -2064,6 +2110,7 @@ window.LOCALES_DATA = {
 		"xinyan": "신염",
 		"yaemiko": "야에 미코",
 		"yanfei": "연비",
+		"yaoyao": "요요",
 		"yelan": "야란",
 		"yoimiya": "요이미야",
 		"yunjin": "운근",
@@ -2130,6 +2177,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "성현의 열쇠",
 		"kingssquire": "왕의 측근",
 		"kitaincrossspear": "키타인 십자창",
+		"lightoffoliarincision": "잎을 가르는 빛",
 		"lionsroar": "용의 포효",
 		"lithicblade": "천암고검",
 		"lithicspear": "천암장창",
@@ -2225,6 +2273,7 @@ window.LOCALES_DATA = {
 	"Portuguese": {
 		"aether": "Aether",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -2281,6 +2330,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yunjin",
@@ -2347,6 +2397,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Chave de Hierofania",
 		"kingssquire": "Vassalo do Rei",
 		"kitaincrossspear": "Lança Cruzada de Kitain",
+		"lightoffoliarincision": "Luz das Folhas Cortadas",
 		"lionsroar": "Rugido do Leão",
 		"lithicblade": "Espada Antiga de Millelith",
 		"lithicspear": "Lança de Millelith",
@@ -2442,6 +2493,7 @@ window.LOCALES_DATA = {
 	"Russian": {
 		"aether": "Итэр",
 		"albedo": "Альбедо",
+		"alhaitham": "Аль-Хайтам",
 		"aloy": "Элой",
 		"amber": "Эмбер",
 		"aratakiitto": "Итто",
@@ -2498,6 +2550,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Синь Янь",
 		"yaemiko": "Яэ Мико",
 		"yanfei": "Янь Фэй",
+		"yaoyao": "Яо Яо",
 		"yelan": "Е Лань",
 		"yoimiya": "Ёимия",
 		"yunjin": "Юнь Цзинь",
@@ -2564,6 +2617,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Ключ Хадж-нисут",
 		"kingssquire": "Приближённый короля",
 		"kitaincrossspear": "Крест-копьё Китаин",
+		"lightoffoliarincision": "Свет лиственного разреза",
 		"lionsroar": "Драконий рык",
 		"lithicblade": "Каменный меч",
 		"lithicspear": "Каменное копьё",
@@ -2659,6 +2713,7 @@ window.LOCALES_DATA = {
 	"Spanish": {
 		"aether": "Éter",
 		"albedo": "Albedo",
+		"alhaitham": "Alhacén",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -2715,6 +2770,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -2781,6 +2837,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Llave de la Coronación",
 		"kingssquire": "Vasalla del Rey",
 		"kitaincrossspear": "Cruz de Kitain",
+		"lightoffoliarincision": "Clorofilo Refulgente",
 		"lionsroar": "Rugido del León",
 		"lithicblade": "Espada Lítica",
 		"lithicspear": "Lanza Lítica",
@@ -2876,6 +2933,7 @@ window.LOCALES_DATA = {
 	"Thai": {
 		"aether": "Aether",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -2932,6 +2990,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -2998,6 +3057,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Key of Khaj-Nisut",
 		"kingssquire": "King's Squire",
 		"kitaincrossspear": "Kitain Cross Spear",
+		"lightoffoliarincision": "Light of Foliar Incision",
 		"lionsroar": "Lion's Roar",
 		"lithicblade": "Lithic Blade",
 		"lithicspear": "Lithic Spear",
@@ -3093,6 +3153,7 @@ window.LOCALES_DATA = {
 	"Vietnamese": {
 		"aether": "Aether",
 		"albedo": "Albedo",
+		"alhaitham": "Alhaitham",
 		"aloy": "Aloy",
 		"amber": "Amber",
 		"aratakiitto": "Arataki Itto",
@@ -3149,6 +3210,7 @@ window.LOCALES_DATA = {
 		"xinyan": "Xinyan",
 		"yaemiko": "Yae Miko",
 		"yanfei": "Yanfei",
+		"yaoyao": "Yaoyao",
 		"yelan": "Yelan",
 		"yoimiya": "Yoimiya",
 		"yunjin": "Yun Jin",
@@ -3215,6 +3277,7 @@ window.LOCALES_DATA = {
 		"keyofkhajnisut": "Chìa Khóa Khaj-Nisut",
 		"kingssquire": "Cận Vệ Nhà Vua",
 		"kitaincrossspear": "Giáo Thập Tự Kitain",
+		"lightoffoliarincision": "Ánh Lá Phán Quyết",
 		"lionsroar": "Tiếng Hét Của Rồng",
 		"lithicblade": "Thiên Nham Cổ Kiếm",
 		"lithicspear": "Thương Thiên Nham",
@@ -3314,6 +3377,10 @@ window.DATA_INFO = {
 		"rarity": 5
 	},
 	"albedo": {
+		"type": "character",
+		"rarity": 5
+	},
+	"alhaitham": {
 		"type": "character",
 		"rarity": 5
 	},
@@ -3538,6 +3605,10 @@ window.DATA_INFO = {
 		"rarity": 5
 	},
 	"yanfei": {
+		"type": "character",
+		"rarity": 4
+	},
+	"yaoyao": {
 		"type": "character",
 		"rarity": 4
 	},
@@ -3804,6 +3875,10 @@ window.DATA_INFO = {
 	"kitaincrossspear": {
 		"type": "weapon",
 		"rarity": 4
+	},
+	"lightoffoliarincision": {
+		"type": "weapon",
+		"rarity": 5
 	},
 	"lionsroar": {
 		"type": "weapon",
