@@ -5,7 +5,7 @@
     "static/js/2.4fc6f4a6.chunk.js": "./static/js/2.4fc6f4a6.chunk.js",
     "static/js/3.2f3e2a73.chunk.js": "./static/js/3.2f3e2a73.chunk.js",
     "static/js/4.18d53da9.chunk.js": "./static/js/4.18d53da9.chunk.js",
-    "main.css": "./static/css/main.10055949.chunk.css",
+    "main.css": "./static/css/main.8fe45fa6.chunk.css",
     "main.js": "./static/js/main.29f2f0c3.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.0e23043d.js",
     "static/css/7.613b5f81.chunk.css": "./static/css/7.613b5f81.chunk.css",
@@ -27,13 +27,13 @@
     "static/js/3.2f3e2a73.chunk.js.LICENSE.txt": "./static/js/3.2f3e2a73.chunk.js.LICENSE.txt",
     "static/js/7.94432396.chunk.js.LICENSE.txt": "./static/js/7.94432396.chunk.js.LICENSE.txt",
     "static/js/8.82ca829c.chunk.js.LICENSE.txt": "./static/js/8.82ca829c.chunk.js.LICENSE.txt",
-    "static/media/App.css": "./static/media/HYWenHei-85W.bd13a17a.eot"
+    "static/media/App.css": "./static/media/HYWenHei-85W.d343b805.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.0e23043d.js",
     "static/css/7.613b5f81.chunk.css",
     "static/js/7.94432396.chunk.js",
-    "static/css/main.10055949.chunk.css",
+    "static/css/main.8fe45fa6.chunk.css",
     "static/js/main.29f2f0c3.chunk.js"
   ]
 }
