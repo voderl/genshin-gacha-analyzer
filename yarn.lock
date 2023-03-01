@@ -5906,10 +5906,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-genshin-db@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.npmjs.org/genshin-db/-/genshin-db-4.3.5.tgz#7c664944bcd72c623f7582ffe35a4efbd253c7f9"
-  integrity sha512-EjabM/fxFs+TQ2exsDfRmnMab4dLYUJzSoRZsJ2Jee1ajVUnyNAbpDvPAIuQwIXZXEXmSB6U0xLnKMZlsyX05g==
+genshin-db@^4.3.6:
+  version "4.3.6"
+  resolved "https://registry.npmjs.org/genshin-db/-/genshin-db-4.3.6.tgz#7eba5f2769357e3ee19815a3effea70a7a61a112"
+  integrity sha512-Zym0yhIlSkOdhIfl4CLe+HiyPehMsium9bWfZr2gq7sOVL9KAJrR0MtsrrxAj1PFfnzS6S44YOPyf/eeQKoPhA==
   dependencies:
     fuzzysort "^1.1.4"
     pako "^2.0.4"
