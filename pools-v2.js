@@ -264,6 +264,12 @@ window.CHARACTER_POOLS = [
     five: ['dehya', 'cyno'],
     four: ['bennett', 'barbara', 'collei'],
   },
+  {
+    from: '2022-03-21 18:00:00',
+    to: '2023-04-11 14:59:59',
+    five: ['shenhe', 'kamisatoayaka'],
+    four: ['mika', 'sucrose', 'diona'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -518,6 +524,12 @@ window.WEAPON_POOLS = [
     to: '2023-03-21 17:59:59',
     five: ['beaconofthereedsea', 'staffofthescarletsands'],
     four: ['thealleyflash', 'sacrificialgreatsword', 'dragonsbane', 'eyeofperception', 'alleyhunter'],
+  },
+  {
+    from: '2022-03-21 18:00:00',
+    to: '2023-04-11 14:59:59',
+    five: ['calamityqueller', 'mistsplitterreforged'],
+    four: ['sacrificialsword', 'thebell', 'favoniuslance', 'wineandsong', 'favoniuswarbow'],
   },
 ];
 
