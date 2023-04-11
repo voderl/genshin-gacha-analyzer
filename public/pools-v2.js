@@ -270,6 +270,12 @@ window.CHARACTER_POOLS = [
     five: ['shenhe', 'kamisatoayaka'],
     four: ['mika', 'sucrose', 'diona'],
   },
+  {
+    from: '2023-04-12 06:00:00',
+    to: '2023-05-02 17:59:59',
+    five: ['nahida', 'nilou'],
+    four: ['kukishinobu', 'dori', 'layla'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -530,6 +536,12 @@ window.WEAPON_POOLS = [
     to: '2023-04-11 14:59:59',
     five: ['calamityqueller', 'mistsplitterreforged'],
     four: ['sacrificialsword', 'thebell', 'favoniuslance', 'wineandsong', 'favoniuswarbow'],
+  },
+  {
+    from: '2023-04-12 06:00:00',
+    to: '2023-05-02 17:59:59',
+    five: ['athousandfloatingdreams', 'keyofkhajnisut'],
+    four: ['xiphosmoonlight', 'favoniusgreatsword', 'dragonsbane', 'sacrificialfragments', 'thestringless'],
   },
 ];
 
