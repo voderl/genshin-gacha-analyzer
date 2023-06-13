@@ -125,7 +125,7 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange, data, ..
           const pool = pools[hitPoolIndex];
           if (item.date > pool.to) {
             hitPoolIndex += 1;
-            if (hitPoolIndex > pools.length - 1) throw new Error('wrong data');
+            if (hitPoolIndex > pools.length - 1) break;
           } else if (item.date >= pool.from) {
             const idx = findIndex(data, (o) => o.date > pool.to, dataIndex + 1);
             filteredPools.push(pool);
@@ -139,7 +139,7 @@ export const Filter: FC<FilterProps> = function ({ activeKey, onChange, data, ..
         }
       } catch (e) {
         console.error(e);
-        filteredPools = pools;
+        filteredPools = [...pools];
       }
       return filteredPools.reverse();
     },
