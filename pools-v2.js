@@ -300,6 +300,12 @@ window.CHARACTER_POOLS = [
     five: ['eula', 'klee'],
     four: ['mika', 'razor', 'thoma'],
   },
+  {
+    from: '2023-07-25 18:00:00',
+    to: '2023-08-15 14:59:59',
+    five: ['wanderer', 'sangonomiyakokomi'],
+    four: ['faruzan', 'rosaria', 'yanfei'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -590,6 +596,12 @@ window.WEAPON_POOLS = [
     to: '2023-07-25 17:59:59',
     five: ['songofbrokenpines', 'lostprayertothesacredwinds'],
     four: ['thealleyflash', 'rainslasher', 'favoniuslance', 'eyeofperception', 'alleyhunter'],
+  },
+  {
+    from: '2023-07-25 18:00:00',
+    to: '2023-08-15 14:59:59',
+    five: ['everlastingmoonglow', 'tulaytullahsremembrance'],
+    four: ['lionsroar', 'thebell', 'dragonsbane', 'wineandsong', 'favoniuswarbow'],
   },
 ];
 
