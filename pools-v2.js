@@ -312,6 +312,12 @@ window.CHARACTER_POOLS = [
     five: ['lyney', 'yelan'],
     four: ['lynette', 'bennett', 'barbara'],
   },
+  {
+    from: '2023-09-05 18:00:00',
+    to: '2023-09-26 14:59:59',
+    five: ['zhongli', 'tartaglia'],
+    four: ['freminet', 'sayu', 'noelle'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -614,6 +620,12 @@ window.WEAPON_POOLS = [
     to: '2023-09-05 17:59:59',
     five: ['thefirstgreatmagic', 'aquasimulacra'],
     four: ['sacrificialsword', 'favoniusgreatsword', 'favoniuslance', 'sacrificialfragments', 'sacrificialbow'],
+  },
+  {
+    from: '2023-09-05 18:00:00',
+    to: '2023-09-26 14:59:59',
+    five: ['vortexvanquisher', 'polarstar'],
+    four: ['theflute', 'sacrificialgreatsword', 'dragonsbane', 'thewidsith', 'rust'],
   },
 ];
 
