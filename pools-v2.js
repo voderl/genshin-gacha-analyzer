@@ -324,6 +324,12 @@ window.CHARACTER_POOLS = [
     five: ['neuvillette', 'hutao'],
     four: ['fischl', 'xingqiu', 'diona'],
   },
+  {
+    from: '2023-10-17 18:00:00',
+    to: '2023-11-07 14:59:59',
+    five: ['wriothesley', 'venti'],
+    four: ['chongyun', 'thoma', 'dori'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -637,7 +643,13 @@ window.WEAPON_POOLS = [
     from: '2023-09-27 06:00:00',
     to: '2023-10-17 17:59:59',
     five: ['tomeoftheeternalflow', 'staffofhoma'],
-    four: ['thedockhandsassistant', 'portablepowersaw', 'mitternachtswaltz', 'favoniuslance', 'favoniuscodex'],
+    four: ['thedockhandsassistant', 'portablepowersaw', 'favoniuslance', 'favoniuscodex', 'mitternachtswaltz'],
+  },
+  {
+    from: '2023-10-17 18:00:00',
+    to: '2023-11-07 14:59:59',
+    five: ['cashflowsupervision', 'elegyfortheend'],
+    four: ['favoniussword', 'rainslasher', 'prospectorsdrill', 'eyeofperception', 'rangegauge'],
   },
 ];
 
