@@ -336,6 +336,12 @@ window.CHARACTER_POOLS = [
     five: ['furina', 'baizhu'],
     four: ['charlotte', 'collei', 'beidou'],
   },
+  {
+    from: '2023-11-28 18:00:00',
+    to: '2023-12-19 14:59:59',
+    five: ['cyno', 'kamisatoayato'],
+    four: ['kirara', 'kukishinobu', 'xiangling'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -662,6 +668,12 @@ window.WEAPON_POOLS = [
     to: '2023-11-28 17:59:59',
     five: ['splendoroftranquilwaters', 'jadefallssplendor'],
     four: ['sacrificialsword', 'thebell', 'dragonsbane', 'sacrificialfragments', 'thestringless'],
+  },
+  {
+    from: '2023-11-28 18:00:00',
+    to: '2023-12-19 14:59:59',
+    five: ['staffofthescarletsands', 'harangeppakufutsu'],
+    four: ['lionsroar', 'favoniusgreatsword', 'favoniuslance', 'thewidsith', 'favoniuswarbow'],
   },
 ];
 
