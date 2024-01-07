@@ -348,6 +348,12 @@ window.CHARACTER_POOLS = [
     five: ['kamisatoayaka', 'navia'],
     four: ['sucrose', 'rosaria', 'candace'],
   },
+  {
+    from: '2024-01-09 18:00:00',
+    to: '2024-01-30 14:59:59',
+    five: ['raidenshogun', 'yoimiya'],
+    four: ['chevreuse', 'kujousara', 'bennett'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -686,6 +692,12 @@ window.WEAPON_POOLS = [
     to: '2024-01-09 17:59:59',
     five: ['verdict', 'mistsplitterreforged'],
     four: ['theflute', 'akuoumaru', 'dragonsbane', 'favoniuscodex', 'mouunsmoon'],
+  },
+  {
+    from: '2024-01-09 18:00:00',
+    to: '2024-01-30 14:59:59',
+    five: ['engulfinglightning', 'thunderingpulse'],
+    four: ['favoniussword', 'rainslasher', 'wavebreakersfin', 'eyeofperception', 'rust'],
   },
 ];
 
