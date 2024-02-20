@@ -360,6 +360,12 @@ window.CHARACTER_POOLS = [
     five: ['nahida', 'xianyun'],
     four: ['gaming', 'faruzan', 'noelle'],
   },
+  {
+    from: '2024-02-20 18:00:00',
+    to: '2024-03-12 14:59:59',
+    five: ['xiao', 'yaemiko'],
+    four: ['yaoyao', 'xinyan', 'ningguang'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -710,6 +716,12 @@ window.WEAPON_POOLS = [
     to: '2024-02-20 17:59:59',
     five: ['cranesechoingcall', 'athousandfloatingdreams'],
     four: ['sacrificialsword', 'sacrificialgreatsword', 'lithicspear', 'sacrificialfragments', 'sacrificialbow'],
+  }, 
+  {
+    from: '2024-02-20 18:00:00',
+    to: '2024-03-12 14:59:59',
+    five: ['kagurasverity', 'primordialjadewingedspear'],
+    four: ['lionsroar', 'lithicblade', 'favoniuslance', 'thewidsith', 'thestringless'],
   },
 ];
 
