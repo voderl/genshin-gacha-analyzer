@@ -372,6 +372,12 @@ window.CHARACTER_POOLS = [
     five: ['chiori', 'aratakiitto'],
     four: ['gorou', 'yunjin', 'dori'],
   },
+  {
+    from: '2024-04-02 18:00:00',
+    to: '2024-04-23 14:59:59',
+    five: ['neuvillette', 'kaedeharakazuha'],
+    four: ['barbara', 'xingqiu', 'yanfei'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -734,6 +740,12 @@ window.WEAPON_POOLS = [
     to: '2024-04-02 17:59:59',
     five: ['urakumisugiri', 'redhornstonethresher'],
     four: ['thealleyflash', 'thebell', 'dragonsbane', 'favoniuscodex', 'alleyhunter'],
+  },
+  {
+    from: '2024-04-02 18:00:00',
+    to: '2024-04-23 14:59:59',
+    five: ['tomeoftheeternalflow', 'freedomsworn'],
+    four: ['theflute', 'favoniusgreatsword', 'favoniuslance', 'wineandsong', 'mitternachtswaltz'],
   },
 ];
 
