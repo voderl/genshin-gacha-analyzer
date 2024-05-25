@@ -384,6 +384,12 @@ window.CHARACTER_POOLS = [
     five: ['arlecchino', 'lyney'],
     four: ['freminet', 'lynette', 'xiangling'],
   },
+  {
+    from: '2024-05-14 18:00:00',
+    to: '2024-06-04 14:59:59',
+    five: ['baizhu', 'wanderer'],
+    four: ['layla', 'faruzan', 'beidou'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -758,6 +764,12 @@ window.WEAPON_POOLS = [
     to: '2024-05-14 17:59:59',
     five: ['crimsonmoonssemblance', 'thefirstgreatmagic'],
     four: ['thedockhandsassistant', 'portablepowersaw', 'dragonsbane', 'eyeofperception', 'favoniuswarbow'],
+  },
+  {
+    from: '2024-05-14 18:00:00',
+    to: '2024-06-04 14:59:59',
+    five: ['tulaytullahsremembrance', 'jadefallssplendor'],
+    four: ['favoniussword', 'rainslasher', 'prospectorsdrill', 'sacrificialfragments', 'rangegauge'],
   },
 ];
 
