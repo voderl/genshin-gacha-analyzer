@@ -396,6 +396,12 @@ window.CHARACTER_POOLS = [
     five: ['clorinde', 'alhaitham'],
     four: ['sethos', 'bennett', 'thoma'],
   },
+  {
+    from: '2024-06-25 18:00:00',
+    to: '2024-07-16 14:59:59',
+    five: ['sigewinne', 'furina'],
+    four: ['noelle', 'gaming', 'rosaria'],
+  },
 ];
 window.WEAPON_POOLS = [
   {
@@ -782,6 +788,12 @@ window.WEAPON_POOLS = [
     to: '2024-06-25 17:59:59',
     five: ['absolution', 'lightoffoliarincision'],
     four: ['sacrificialsword', 'sacrificialgreatsword', 'lithicspear', 'thewidsith', 'thestringless'],
+  },
+  {
+    from: '2024-06-25 18:00:00',
+    to: '2024-07-16 14:59:59',
+    five: ['silvershowerheartstrings', 'splendoroftranquilwaters'],
+    four: ['lionsroar', 'lithicblade', 'favoniuslance', 'favoniuscodex', 'sacrificialbow'],
   },
 ];
 
