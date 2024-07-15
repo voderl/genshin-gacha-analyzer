@@ -402,7 +402,13 @@ window.CHARACTER_POOLS = [
     five: ['sigewinne', 'furina'],
     four: ['noelle', 'gaming', 'rosaria'],
   },
-];
+  {
+    from: '2024-07-17 06:00:00',
+    to: '2024-08-06 17:59:59',
+    five: ['navia', 'nilou'],
+    four: ['kirara', 'kaveh', 'ningguang'],
+  },
+]
 window.WEAPON_POOLS = [
   {
     from: '2020-10-20 18:00:00',
@@ -752,7 +758,7 @@ window.WEAPON_POOLS = [
     to: '2024-02-20 17:59:59',
     five: ['cranesechoingcall', 'athousandfloatingdreams'],
     four: ['sacrificialsword', 'sacrificialgreatsword', 'lithicspear', 'sacrificialfragments', 'sacrificialbow'],
-  }, 
+  },
   {
     from: '2024-02-20 18:00:00',
     to: '2024-03-12 14:59:59',
@@ -795,7 +801,13 @@ window.WEAPON_POOLS = [
     five: ['silvershowerheartstrings', 'splendoroftranquilwaters'],
     four: ['lionsroar', 'lithicblade', 'favoniuslance', 'favoniuscodex', 'sacrificialbow'],
   },
-];
+  {
+    from: '2024-07-17 06:00:00',
+    to: '2024-08-06 17:59:59',
+    five: ['verdict', 'keyofkhajnisut'],
+    four: ['xiphosmoonlight', 'thebell', 'dragonsbane', 'eyeofperception', 'rust'],
+  },
+]
 
 window.LOCALES_DATA = {
 	"ChineseSimplified": {
