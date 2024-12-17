@@ -444,6 +444,12 @@ window.CHARACTER_POOLS = [
     five: ['chasca', 'lyney'],
     four: ['ororon', 'sucrose', 'barbara'],
   },
+  {
+    from: '2024-12-10 18:00:00',
+    to: '2024-12-31 14:59:59',
+    five: ['neuvillette', 'zhongli'],
+    four: ['shikanoinheizou', 'fischl', 'yaoyao'],
+  },
 ]
 window.WEAPON_POOLS = [
   {
@@ -878,6 +884,12 @@ window.WEAPON_POOLS = [
     to: '2024-12-10 17:59:59',
     five: ['astralvulturescrimsonplumage', 'thefirstgreatmagic'],
     four: ['theflute', 'thebell', 'favoniuslance', 'waveridingwhirl', 'flowerwreathedfeathers'],
+  },
+  {
+    from: '2024-12-10 18:00:00',
+    to: '2024-12-31 14:59:59',
+    five: ['tomeoftheeternalflow', 'vortexvanquisher'],
+    four: ['favoniussword', 'favoniusgreatsword', 'dragonsbane', 'sacrificialfragments', 'mitternachtswaltz'],
   },
 ]
 
