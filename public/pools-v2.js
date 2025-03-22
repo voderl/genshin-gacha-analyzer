@@ -468,6 +468,12 @@ window.CHARACTER_POOLS = [
     five: ['yumemizukimizuki', 'sigewinne'],
     four: ['gorou', 'sayu', 'xiangling'],
   },
+  {
+    from: '2025-03-04 18:00:00',
+    to: '2025-03-25 14:59:59',
+    five: ['wriothesley', 'furina'],
+    four: ['charlotte', 'chongyun', 'mika'],
+  },
 ]
 window.WEAPON_POOLS = [
   {
@@ -926,6 +932,12 @@ window.WEAPON_POOLS = [
     to: '2025-03-04 17:59:59',
     five: ['sunnymorningsleepin', 'silvershowerheartstrings'],
     four: ['theflute', 'akuoumaru', 'wavebreakersfin', 'eyeofperception', 'mouunsmoon'],
+  },
+  {
+    from: '2025-03-04 18:00:00',
+    to: '2025-03-25 14:59:59',
+    five: ['splendoroftranquilwaters', 'cashflowsupervision'],
+    four: ['favoniussword', 'sacrificialgreatsword', 'dragonsbane', 'sacrificialfragments', 'rust'],
   },
 ]
 
