@@ -492,6 +492,12 @@ window.CHARACTER_POOLS = [
     five: ['escoffier', 'navia'],
     four: ['ifa', 'ororon', 'layla'],
   },
+  {
+    from: '2025-05-27 18:00:00',
+    to: '2025-06-17 14:59:59',
+    five: ['kinich', 'raidenshogun'],
+    four: ['thoma', 'kujousara', 'lynette'],
+  },
 ]
 window.WEAPON_POOLS = [
   {
@@ -974,6 +980,12 @@ window.WEAPON_POOLS = [
     to: '2025-05-27 17:59:59',
     five: ['symphonistofscents', 'verdict'],
     four: ['thedockhandsassistant', 'portablepowersaw', 'prospectorsdrill', 'thewidsith', 'rangegauge'],
+  },
+  {
+    from: '2025-05-27 18:00:00',
+    to: '2025-06-17 14:59:59',
+    five: ['fangofthemountainking', 'engulfinglightning'],
+    four: ['lionsroar', 'favoniusgreatsword', 'dragonsbane', 'eyeofperception', 'thestringless'],
   },
 ]
 
