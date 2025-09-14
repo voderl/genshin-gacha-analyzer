@@ -5906,10 +5906,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-genshin-db@^5.2.3:
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/genshin-db/-/genshin-db-5.2.3.tgz#624a73ba105cd882f310adb025d114c36067ab09"
-  integrity sha512-wMuW12YuG+X8lgjeWuYTkhHtV2noGle2dRxGQdQCXxc7ET/al+BoEh5ZFusAPHRVUdoCsP9SPIn/10NsKaTN7g==
+genshin-db@^5.2.4:
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/genshin-db/-/genshin-db-5.2.5.tgz#1469853eb724c1f07139bd475a23f27ff54cd313"
+  integrity sha512-I9J65LLs0D9HaMtxORN0HAqGgAPxpU+UqhgDhWmJ5Ar/r37MYiwNdI2HtzORMFG13LFgAmZzumnOP46+zdZKVw==
   dependencies:
     fuzzysort "^1.1.4"
     pako "^2.0.4"
