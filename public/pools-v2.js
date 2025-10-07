@@ -527,6 +527,12 @@ window.CHARACTER_POOLS = [
     to: '2025-09-30 17:59:59',
     five: ['lauma', 'nahida'],
     four: ['barbara', 'kukishinobu', 'kaveh'],
+  },
+  {
+    from: '2025-09-30 18:00:00',
+    to: '2025-10-21 14:59:59',
+    five: ['yelan', 'flins'],
+    four: ['aino', 'sucrose', 'dori'],
   }
 ]
 window.WEAPON_POOLS = [
@@ -1046,6 +1052,12 @@ window.WEAPON_POOLS = [
     to: '2025-09-30 17:59:59',
     five: ['nightweaverslookingglass', 'athousandfloatingdreams'],
     four: ['theflute', 'sacrificialgreatsword', 'dragonsbane', 'sacrificialfragments', 'thestringless'],
+  },
+  {
+    from: '2025-09-30 18:00:00',
+    to: '2025-10-21 14:59:59',
+    five: ['bloodsoakedruins', 'aquasimulacra'],
+    four: ['lionsroar', 'favoniusgreatsword', 'favoniuslance', 'favoniuscodex', 'sacrificialbow'],
   }
 ]
 
